@@ -1,0 +1,42 @@
+@startuml Sequence Diagram
+title Gather Board State
+scale 1.5
+
+control GameManager
+entity PlayerController
+entity ShopController
+entity BankController
+entity PatronController
+
+
+[-> GameManager : Initialisation
+activate GameManager
+
+GameManager -> PlayerController : Initialize()
+activate PlayerController
+GameManager <-- PlayerController : ok
+deactivate PlayerController
+
+GameManager -> ShopController : Initialize()
+activate ShopController
+GameManager <-- ShopController : ok
+deactivate ShopController
+
+GameManager -> BankController : Initialize()
+activate BankController
+GameManager <-- BankController : ok
+deactivate BankController
+
+GameManager -> PatronController : Initialize()
+activate PatronController
+GameManager <-- PatronController : ok
+deactivate PatronController
+
+
+GameManager -> GameManager : BoardState
+deactivate GameManager
+[<-- GameManager : ok
+deactivate GameManager
+
+
+@enduml

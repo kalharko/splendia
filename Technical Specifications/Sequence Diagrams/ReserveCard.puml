@@ -1,0 +1,47 @@
+@startuml Sequence Diagram
+title User reserve card
+scale 1.5
+
+boundary Front
+control GameManager
+entity PlayerController
+entity ShopController
+entity BankController
+
+
+Front -> GameManager : P1 Reserve\n(Card)
+activate GameManager
+
+GameManager -> PlayerController : P1 Reserve\n(Card)
+activate PlayerController
+
+
+PlayerController -> ShopController : WithdrawCard\n(Card)
+activate ShopController
+ShopController -> ShopController : Draw()
+PlayerController <- ShopController : Card
+deactivate ShopController
+
+PlayerController -> BankController : Withdraw(TokenArray)
+activate BankController
+PlayerController <-- BankController : ok
+deactivate BankController
+
+PlayerController -> Player1 : DepositReserveCard(Card)
+activate Player1
+PlayerController <-- Player1 : ok
+
+PlayerController -> Player1 : Deposit(TokenArray)
+PlayerController <-- Player1 : ok
+deactivate Player1
+
+
+
+PlayerController --> GameManager : Validate
+deactivate PlayerController
+GameManager -> GameManager : GatherBoardState()
+GameManager -> Front : BoardState
+deactivate GameManager
+
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml Initialisation
+title User takes tokens from the bank
+scale 1.5
+
+boundary Front
+control GameManager
+entity PlayerController
+entity BankController
+
+
+Front -> GameManager : P1 Takes some tokens
+activate GameManager
+
+GameManager -> PlayerController : Player 1 Takes\n(TokenArray)
+activate PlayerController
+
+PlayerController -> BankController : Withdraw()
+activate BankController
+BankController --> PlayerController : ok
+deactivate BankController
+
+PlayerController -> Player1 : DepositTokens()
+activate Player1
+PlayerController <-- Player1 : ok
+deactivate Player1
+
+PlayerController --> GameManager : Validate
+deactivate PlayerController
+GameManager -> Front : BoardState
+deactivate GameManager
+
+@enduml
