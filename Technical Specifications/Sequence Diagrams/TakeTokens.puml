@@ -26,6 +26,7 @@ deactivate Player1
 
 PlayerController --> GameManager : Validate
 deactivate PlayerController
+GameManager -> GameManager : GatherBoardState()
 GameManager -> Front : BoardState
 deactivate GameManager
 
