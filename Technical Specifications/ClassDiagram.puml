@@ -1,0 +1,106 @@
+@startuml classDiagram
+title Model class diagram
+scale 1.5
+
+GameManager -- BankController
+GameManager -- PatronController
+GameManager -- PlayerController
+GameManager -- ShopController
+
+PatronController -- PatronModel
+PatronModel -- Patron
+Patron -- TokenArray
+
+BankController -down- BankModel
+BankModel <|-- TokenArray
+
+PlayerController -- PlayerModel
+PlayerModel -- Player
+Player <|-- TokenArray
+Player -- Hand
+Player -- Patron
+
+ShopController -- ShopModel
+ShopModel -- Rank
+Rank -- Hand
+Rank -- Deck
+
+Deck -- Card
+Hand -- Card
+
+Card -- TokenArray
+TokenArray <.. Color
+
+
+BankController .r[hidden]. PatronController
+PatronController .r[hidden]. PlayerController
+PlayerController .r[hidden]. ShopController
+
+BankModel .r[hidden]. PatronModel
+PatronModel .r[hidden]. PlayerModel
+PlayerModel .r[hidden]. ShopModel
+
+
+VictoryPoint .r[hidden]. Hand
+VictoryPoint -[norank]- Patron
+VictoryPoint -[norank]- Card
+VictoryPoint -[norank]- Player
+
+
+
+
+class GameManager {
+    +init(nbPlayer int) : void
+    +GatherBoardState() : BoardState
+}
+
+
+class BankController {
+    +Deposit(TokenArray) : void
+    +Withdraw(TokenArray) : void
+    +init(nbPlayer : int) : void
+}
+
+class PatronController {
+    +Withdraw(Hand) : Patron
+    +init(nbPlayer : int) : void
+}
+
+class PlayerController {
+    +DepositTokens(TokenArray) : void
+    +DepositCard(Card) : void
+    +DepositReservedCard(Card) : void
+    +WithdrawTokens(TokenArray) : void
+}
+
+class ShopController {
+    +SellCard()
+}
+
+
+
+
+
+
+
+
+
+class TokenArray {
+    -tokens : list<int>
+    +WithdrawTokens(TokenArray)
+    +WithdrawToken(Color, amount : int)
+}
+
+
+enum Color {
+    WHITE
+    BLUE
+    GREEN
+    RED
+    BLACK
+    GOLD
+}
+
+@enduml
+
+
