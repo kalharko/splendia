@@ -2,25 +2,25 @@
 title Model class diagram
 scale 1.5
 
-GameManager -- BankController
-GameManager -- PatronController
-GameManager -- PlayerController
-GameManager -- ShopController
+GameManager *-- BankController
+GameManager *-- PatronController
+GameManager *-- PlayerController
+GameManager *-- ShopController
 
-PatronController -- PatronModel
+PatronController o-- PatronModel
 PatronModel -- Patron
 Patron -- TokenArray
 
-BankController -down- BankModel
-BankModel <|-- TokenArray
+BankController o-down- BankModel
+BankModel -- TokenArray
 
-PlayerController -- PlayerModel
+PlayerController o-- PlayerModel
 PlayerModel -- Player
-Player <|-- TokenArray
+Player -- TokenArray
 Player -- Hand
 Player -- Patron
 
-ShopController -- ShopModel
+ShopController o-- ShopModel
 ShopModel -- Rank
 Rank -- Hand
 Rank -- Deck
