@@ -8,10 +8,10 @@ entity PlayerController
 entity BankController
 
 
-Front -> GameManager : P1 Takes some tokens
+Front -> GameManager : PlayerId Take Tokens
 activate GameManager
 
-GameManager -> PlayerController : Player 1 Takes\n(TokenArray)
+GameManager -> PlayerController : TakeToken\n(PlayerId, TokenArray)
 activate PlayerController
 
 PlayerController -> BankController : Withdraw()
@@ -19,14 +19,14 @@ activate BankController
 BankController --> PlayerController : ok
 deactivate BankController
 
-PlayerController -> Player1 : DepositTokens()
+PlayerController -> Player1 : DepositToken()
 activate Player1
 PlayerController <-- Player1 : ok
 deactivate Player1
 
 PlayerController --> GameManager : Validate
 deactivate PlayerController
-GameManager -> GameManager : GatherBoardState()
+GameManager --> GameManager : GatherBoardState()
 GameManager -> Front : BoardState
 deactivate GameManager
 

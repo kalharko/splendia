@@ -9,16 +9,16 @@ entity ShopController
 entity BankController
 
 
-Front -> GameManager : P1 Reserve\n(Card)
+Front -> GameManager : PlayerId Reserve CardId
 activate GameManager
 
-GameManager -> PlayerController : P1 Reserve\n(Card)
+GameManager -> PlayerController : ReserveCard\n(PlayerId, CardId)
 activate PlayerController
 
 
-PlayerController -> ShopController : WithdrawCard\n(Card)
+PlayerController -> ShopController : WithdrawCard\n(CardId)
 activate ShopController
-ShopController -> ShopController : Draw()
+ShopController --> ShopController : Draw()
 PlayerController <- ShopController : Card
 deactivate ShopController
 
@@ -31,15 +31,15 @@ PlayerController -> Player1 : DepositReserveCard(Card)
 activate Player1
 PlayerController <-- Player1 : ok
 
-PlayerController -> Player1 : Deposit(TokenArray)
+PlayerController -> Player1 : DepositToken(TokenArray)
 PlayerController <-- Player1 : ok
 deactivate Player1
 
 
 
-PlayerController --> GameManager : Validate
+PlayerController --> GameManager : ok
 deactivate PlayerController
-GameManager -> GameManager : GatherBoardState()
+GameManager --> GameManager : GatherBoardState()
 GameManager -> Front : BoardState
 deactivate GameManager
 

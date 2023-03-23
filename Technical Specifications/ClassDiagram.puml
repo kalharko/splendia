@@ -2,33 +2,30 @@
 title Model class diagram
 scale 1.5
 
-GameManager *-- BankController
-GameManager *-- PatronController
-GameManager *-- PlayerController
-GameManager *-- ShopController
+GameManager "1" *-- "1" BankController : bankController
+GameManager "1" *-- "1" PatronController : patronController
+GameManager "1" *-- "1" PlayerController : playerController
+GameManager "1" *-- "1" ShopController : shopController
 
-PatronController o-- PatronModel
-PatronModel -- Patron
-Patron -- TokenArray
+BankController "1" o-down- "1" Bank : bank
+Bank "1" *-- "1" TokenArray : tokens
 
-BankController o-down- BankModel
-BankModel -- TokenArray
+PatronController "1" *-- "3..5" Patron : patrons
+Patron "1" *-- "1" TokenArray : requirements
 
-PlayerController o-- PlayerModel
-PlayerModel -- Player
-Player -- TokenArray
-Player -- Hand
-Player -- Patron
+PlayerController "1" *-- "2..4" Player : players
+Player "1" *-- "1" TokenArray : tokens
+Player "1" *-- "2" Hand : hand, reserved
+Player "1" *-- "0..5" Patron : patrons
 
-ShopController o-- ShopModel
-ShopModel -- Rank
-Rank -- Hand
-Rank -- Deck
+ShopController "1" *-- "3" Rank : ranks
+Rank "1" *-- "1" Hand : hand
+Rank "1" *-- "1" Deck : deck
 
-Deck -- Card
-Hand -- Card
+Deck "1" *-- "20..40" Card : cards
+Hand "1" *-- "0..90" Card : cards
 
-Card -- TokenArray
+Card "1" *-- "2" TokenArray : price, bonus
 TokenArray <.. Color
 
 
@@ -36,15 +33,12 @@ BankController .r[hidden]. PatronController
 PatronController .r[hidden]. PlayerController
 PlayerController .r[hidden]. ShopController
 
-BankModel .r[hidden]. PatronModel
-PatronModel .r[hidden]. PlayerModel
-PlayerModel .r[hidden]. ShopModel
 
 
 VictoryPoint .r[hidden]. Hand
-VictoryPoint -[norank]- Patron
-VictoryPoint -[norank]- Card
-VictoryPoint -[norank]- Player
+VictoryPoint "1" -[norank]-* "1" Patron : victoryPoints
+VictoryPoint "1" -[norank]-* "1" Card : victoryPoints
+VictoryPoint "1" -[norank]-* "1" Player : victoryPoints
 
 
 
@@ -56,39 +50,77 @@ class GameManager {
 
 
 class BankController {
+    +init(nbPlayer : int) : void
     +Deposit(TokenArray) : void
     +Withdraw(TokenArray) : void
-    +init(nbPlayer : int) : void
 }
 
 class PatronController {
-    +Withdraw(Hand) : Patron
     +init(nbPlayer : int) : void
+    +Withdraw(Hand) : Patron
 }
 
 class PlayerController {
-    +DepositTokens(TokenArray) : void
-    +DepositCard(Card) : void
-    +DepositReservedCard(Card) : void
-    +WithdrawTokens(TokenArray) : void
+    +BuyReservedCard(PlayerId : int, CardId : int) : void
+    +BuyShopCard(PlayerId : int, CardId : int) : void
+    +ReserveCard(PlayerId : int, CardId : int) : void
+    +TakeToken(PlayerId : int, TokenArray) : void
 }
 
 class ShopController {
-    +SellCard()
+    +init() : void
+    +GetCardPrice(CardId : int) : TokenArray
+    +WithdrawCard(CardId : int) : Card
 }
 
 
 
+class Bank {
+    +Deposit(TokenArray) : void
+    +Withdraw(TokenArray) : void
+}
 
 
 
+class Player {
+    +GetCardPrice(CardId) : TokenArray
+    +Pay(TokenArray) : void
+    +WithdrawReserveCard(CardId) : Card
+    +DepositCard(Card) : void
+    +DepositReservedCard(Card) : void
+    +DepositTokens(TokenArray) : void
+}
+
+class Rank {
+    -int : level
+    +GetCardPrice(CardId : int) : TokenArray
+    +WithdrawCard(CardId : int) : Card
+    -Draw() : void
+}
+
+class Hand {
+    +GetCardPrice(CardId) : TokenArray
+    +WithdrawCard(CardId) : Card
+    +DepositCard(Card) : void
+}
+
+class Deck {
+    +Draw() : Card
+}
 
 
+class VictoryPoint {
+    -value : int
+    +Get() : int
+    +Set(value : int) : void
+}
 
 class TokenArray {
     -tokens : list<int>
-    +WithdrawTokens(TokenArray)
-    +WithdrawToken(Color, amount : int)
+    +WithdrawTokens(TokenArray) : void
+    +WithdrawToken(Color, amount : int) : void
+    +DepositTokens(TokenArray) : void
+    +DepositToken(Color, amount : int) : void
 }
 
 

@@ -1,6 +1,6 @@
 @startuml Sequence Diagram
 title User buy from reserved cards
-scale 1.5
+scale 1
 
 boundary Front
 control GameManager
@@ -8,16 +8,16 @@ entity PlayerController
 entity BankController
 
 
-Front -> GameManager : P1 Buy(Card)
+Front -> GameManager : PlayerId Buy CardId
 activate GameManager
 
-GameManager -> PlayerController : P1 Buy\n(Card)
+GameManager -> PlayerController : BuyReservedCard\n(PlayerId, CardId)
 activate PlayerController
 
-PlayerController -> Player1 : GetReservedCardPrice(Card)
+PlayerController -> Player1 : GetCardPrice(CardId)
 activate Player1
 PlayerController <- Player1 : TokenArray
-PlayerController -> Player1 : WithdrawTokens(TokenArray)
+PlayerController -> Player1 : Pay(TokenArray)
 PlayerController <-- Player1 : ok
 deactivate Player1
 
@@ -26,7 +26,7 @@ activate BankController
 PlayerController <-- BankController : ok
 deactivate BankController
 
-PlayerController -> Player1 : WithdrawReservedCard(Card)
+PlayerController -> Player1 : WithdrawReservedCard(CardId)
 activate Player1
 PlayerController <- Player1 : Card
 PlayerController -> Player1 : DepositCard(Card)
@@ -36,9 +36,9 @@ deactivate Player1
 
 
 
-PlayerController --> GameManager : Validate
+PlayerController --> GameManager : ok
 deactivate PlayerController
-GameManager -> GameManager : GatherBoardState()
+GameManager --> GameManager : GatherBoardState()
 GameManager -> Front : BoardState
 deactivate GameManager
 
