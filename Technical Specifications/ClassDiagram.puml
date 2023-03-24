@@ -63,6 +63,7 @@ class PatronController {
 }
 
 class PlayerController {
+    +init(nbPlayer : int) : void
     +BuyReservedCard(PlayerId : int, CardId : int) : void
     +BuyShopCard(PlayerId : int, CardId : int) : void
     +ReserveCard(PlayerId : int, CardId : int) : void
@@ -110,11 +111,22 @@ class Deck {
     +Draw() : Card
 }
 
+class Card {
+    +GetPrice() : TokenArray
+    +GetBonus() : TokenArray
+    +GetVictoryPoint() : VictoryPoint
+}
+
 
 class VictoryPoint {
     -value : int
     +Get() : int
     +Set(value : int) : void
+}
+
+class Patron {
+    +GetVictoryPoint() : VictoryPoint
+    +GetRequirements() : TokenArray
 }
 
 class TokenArray {
