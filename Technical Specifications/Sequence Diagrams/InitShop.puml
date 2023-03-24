@@ -1,0 +1,62 @@
+@startuml Sequence Diagram
+title Shop initialisation
+caption The initialisation process for RankI and RankII are not shown, because similar to RankIII.
+scale 1.5
+
+control GameManager
+entity ShopController
+participant RankI
+participant RankII
+participant RankIII
+
+[-> GameManager : Initialisation\n(nbPlayer)
+activate GameManager
+
+GameManager -> ShopController **: Init()
+activate ShopController
+
+ShopController -> RankI**: Init(level=1)
+activate RankI
+ShopController <-- RankI : ok
+deactivate RankI
+
+ShopController -> RankII**: Init(level=1)
+activate RankII
+ShopController <-- RankII : ok
+deactivate RankII
+
+ShopController -> RankIII** : Init(level=3)
+activate RankIII
+
+RankIII -> Deck** : Init(level=3)
+activate Deck
+RankIII -> Deck : Draw()
+RankIII <- Deck : card
+RankIII -> Deck : Draw()
+RankIII <- Deck : card
+RankIII -> Deck : Draw()
+RankIII <- Deck : card
+deactivate Deck
+
+RankIII -> Hand** : Init()
+activate Hand
+RankIII -> Hand : Deposit(Card)
+RankIII <-- Hand : ok
+RankIII -> Hand : Deposit(Card)
+RankIII <-- Hand : ok
+RankIII -> Hand : Deposit(Card)
+RankIII <-- Hand : ok
+deactivate Hand
+
+ShopController <-- RankIII : ok
+deactivate RankIII
+
+GameManager <-- ShopController : ok
+deactivate ShopController
+
+GameManager -> GameManager : BoardState
+[<-- GameManager : ok
+deactivate GameManager
+
+
+@enduml

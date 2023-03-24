@@ -10,7 +10,7 @@ GameManager "1" *-- "1" ShopController : shopController
 BankController "1" o-down- "1" Bank : bank
 Bank "1" *-- "1" TokenArray : tokens
 
-PatronController "1" *-- "3..5" Patron : patrons
+PatronController "1" *-- "0..5" Patron : patrons
 Patron "1" *-- "1" TokenArray : requirements
 
 PlayerController "1" *-- "2..4" Player : players
@@ -33,7 +33,9 @@ BankController .r[hidden]. PatronController
 PatronController .r[hidden]. PlayerController
 PlayerController .r[hidden]. ShopController
 
-
+Bank .r[hidden]. Patron
+Patron .r[hidden]. Player
+Player .r[hidden]. Rank
 
 VictoryPoint .r[hidden]. Hand
 VictoryPoint "1" -[norank]-* "1" Patron : victoryPoints

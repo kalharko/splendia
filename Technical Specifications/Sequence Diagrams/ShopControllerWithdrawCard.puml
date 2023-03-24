@@ -1,0 +1,53 @@
+@startuml Sequence Diagram
+title ShopController WithdrawCard(CardId)
+caption The card with the given id is not present in RankI or RankII, however, it is found in RankIII.
+scale 1
+
+entity PlayerController
+entity ShopController
+participant RankI
+participant RankII
+participant RankIII
+
+
+
+
+activate PlayerController
+PlayerController -> ShopController : WithdrawCard\n(cardId)
+activate ShopController
+
+ShopController -> RankI : WithdrawCard\n(CardId)
+activate RankI
+ShopController <-- RankI : Err:NotFound
+deactivate RankI
+
+ShopController -> RankII : WithdrawCard\n(CardId)
+activate RankII
+ShopController <-- RankII : Err:NotFound
+deactivate RankII
+
+ShopController -> RankIII : WithdrawCard\n(CardId)
+activate RankIII
+
+RankIII -> Hand : WithdrawCard\n(cardId)
+activate Hand
+RankIII <-- Hand : Card
+deactivate Hand
+RankIII -> Deck : Draw()
+activate Deck
+RankIII <-- Deck : Card
+deactivate Deck
+RankIII -> Hand : Deposit(Card)
+activate Hand
+RankIII <-- Hand : ok
+deactivate Hand
+ShopController <-- RankIII : Card
+deactivate RankIII
+
+
+PlayerController <- ShopController : Card
+deactivate ShopController
+deactivate PlayerController
+
+
+@enduml
