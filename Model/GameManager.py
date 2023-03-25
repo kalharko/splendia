@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-
+from Model.Controllers import BankController, PatronController, PlayerController, ShopController
 
 
 @dataclass
@@ -9,9 +9,4 @@ class GameManager():
     playerController: PlayerController
     shopController: ShopController
 
-
-
-@dataclass
-class BankController():
-    bankModel: BankModel
 
