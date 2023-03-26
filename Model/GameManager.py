@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from Model.Controllers import BankController, PatronController, PlayerController, ShopController
+from Model.Controllers import BankController, PatronController
+from Model.Controllers import PlayerController, ShopController
 
 
 @dataclass
@@ -9,4 +10,5 @@ class GameManager():
     playerController: PlayerController
     shopController: ShopController
 
-
+    def __init__(self) -> None:
+        pass

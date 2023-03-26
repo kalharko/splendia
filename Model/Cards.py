@@ -11,16 +11,18 @@ class Card():
     bonus: TokenArray
     victoryPoint: VictoryPoint
 
+
 @dataclass
 class Hand():
     cards: List[Card]
+
 
 @dataclass
 class Deck():
     cards: List[Card]
 
+
 @dataclass
 class Rank():
     hand: Hand
     deck: Deck
-

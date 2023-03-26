@@ -7,17 +7,14 @@ from Model.Patron import Patron
 from Model.Player import Player
 
 
-
 @dataclass
 class BankController():
     bank: Bank
 
 
-
 @dataclass
 class PatronController():
     patrons: List[Patron]
-
 
 
 @dataclass
