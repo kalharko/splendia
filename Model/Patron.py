@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Model.Bank import TokenArray
+from Model.TokenArray import TokenArray
 from Model.VictoryPoint import VictoryPoint
 
 

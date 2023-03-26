@@ -10,5 +10,9 @@ class GameManager():
     playerController: PlayerController
     shopController: ShopController
 
-    def __init__(self) -> None:
+    def __init__(self, nbPlayer: int) -> None:
+        pass
+
+    def gather_board_state(self) -> None:
+        # TODO: define what is a board state
         pass

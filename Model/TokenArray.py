@@ -20,7 +20,10 @@ class TokenArray():
     """This class represents a token inventory.
     py:class:: Class documentation ?
     """
-    tokens: List[int] = [0, 0, 0, 0, 0, 0]
+    tokens: List[int]
+
+    def __init__(self, value: List[int] = None) -> None:
+        self.tokens = value if value else [0, 0, 0, 0, 0, 0]
 
     def withdraw_token(self, color: Color, amount: int) -> None:
         if self.tokens[color] > amount:
@@ -29,13 +32,14 @@ class TokenArray():
         else:
             return Exception("Not enough tokens")
 
-    def withdraw_tokens(self, amount: List[int], ) -> None:
+    def withdraw_tokens(self, amount: List[int]) -> None:
+        "TODO : write the function"
         pass
 
     def deposit_token(self, color: Color, amount: int) -> None:
+        "TODO : write the function"
         pass
 
-
-@dataclass
-class Bank():
-    tokens: TokenArray
+    def deposit_tokens(self, amount: List[int]) -> None:
+        "TODO : write the function"
+        pass
