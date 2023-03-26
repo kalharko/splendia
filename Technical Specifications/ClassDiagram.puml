@@ -7,8 +7,7 @@ GameManager "1" *-- "1" PatronController : patronController
 GameManager "1" *-- "1" PlayerController : playerController
 GameManager "1" *-- "1" ShopController : shopController
 
-BankController "1" o-down- "1" Bank : bank
-Bank "1" *-- "1" TokenArray : tokens
+BankController "1" o-down- "1" TokenArray : tokens
 
 PatronController "1" *-- "0..5" Patron : patrons
 Patron "1" *-- "1" TokenArray : requirements
@@ -22,8 +21,9 @@ ShopController "1" *-- "3" Rank : ranks
 Rank "1" *-- "1" Hand : hand
 Rank "1" *-- "1" Deck : deck
 
-Deck "1" *-- "20..40" Card : cards
-Hand "1" *-- "0..90" Card : cards
+Deck <|-d- CardStack
+Hand <|-- CardStack
+Hand *-d[hidden]- Card
 
 Card "1" *-- "2" TokenArray : price, bonus
 TokenArray <.. Color
@@ -33,78 +33,78 @@ BankController .r[hidden]. PatronController
 PatronController .r[hidden]. PlayerController
 PlayerController .r[hidden]. ShopController
 
-Bank .r[hidden]. Patron
 Patron .r[hidden]. Player
 Player .r[hidden]. Rank
 
-VictoryPoint .r[hidden]. Hand
+' VictoryPoint .u[hidden]. Player
+VictoryPoint "1" -u-* "1" Player : victoryPoints
 VictoryPoint "1" -[norank]-* "1" Patron : victoryPoints
 VictoryPoint "1" -[norank]-* "1" Card : victoryPoints
-VictoryPoint "1" -[norank]-* "1" Player : victoryPoints
+
+CardStack "1" -l-* "0..40" Card : cards
 
 
 
 
 class GameManager {
     +init(nbPlayer int) : void
-    +GatherBoardState() : BoardState
+    +gather_board_state() : BoardState
 }
 
 
 class BankController {
     +init(nbPlayer : int) : void
-    +Deposit(TokenArray) : void
-    +Withdraw(TokenArray) : void
+    +deposit(TokenArray) : void
+    +withdraw(TokenArray) : void
 }
 
 class PatronController {
     +init(nbPlayer : int) : void
-    +Withdraw(Hand) : Patron
+    +withdraw(Hand) : Patron
 }
 
 class PlayerController {
     +init(nbPlayer : int) : void
-    +BuyReservedCard(PlayerId : int, CardId : int) : void
-    +BuyShopCard(PlayerId : int, CardId : int) : void
-    +ReserveCard(PlayerId : int, CardId : int) : void
-    +TakeToken(PlayerId : int, TokenArray) : void
+    +buy_reserved_card(PlayerId : int, CardId : int) : void
+    +buy_shop_card(PlayerId : int, CardId : int) : void
+    +reserve_card(PlayerId : int, CardId : int) : void
+    +take_tokens(PlayerId : int, TokenArray) : void
 }
 
 class ShopController {
     +init() : void
-    +GetCardPrice(CardId : int) : TokenArray
-    +WithdrawCard(CardId : int) : Card
+    +get_card_price(CardId : int) : TokenArray
+    +withdraw_card(CardId : int) : Card
 }
 
-
-
-class Bank {
-    +Deposit(TokenArray) : void
-    +Withdraw(TokenArray) : void
-}
 
 
 
 class Player {
-    +GetCardPrice(CardId) : TokenArray
-    +Pay(TokenArray) : void
-    +WithdrawReserveCard(CardId) : Card
-    +DepositCard(Card) : void
-    +DepositReservedCard(Card) : void
-    +DepositTokens(TokenArray) : void
+    +get_card_price(CardId) : TokenArray
+    +pay(TokenArray) : void
+    +withdraw_reserved_card(CardId) : Card
+    +deposit_card(Card) : void
+    +deposit_reserved_card(Card) : void
+    +deposit_token(TokenArray) : void
 }
 
 class Rank {
     -int : level
-    +GetCardPrice(CardId : int) : TokenArray
-    +WithdrawCard(CardId : int) : Card
+    +get_card_price(CardId : int) : TokenArray
+    +withdraw_card(CardId : int) : Card
     -Draw() : void
 }
 
+interface CardStack {
+    +add_card(card: Card) : void
+    +remove_card(cardId : int) : void
+}
+
 class Hand {
-    +GetCardPrice(CardId) : TokenArray
-    +WithdrawCard(CardId) : Card
-    +DepositCard(Card) : void
+    +get_card_price(CardId) : TokenArray
+    +withdraw_card(CardId) : Card
+    +deposit_card(Card) : void
 }
 
 class Deck {
@@ -112,29 +112,23 @@ class Deck {
 }
 
 class Card {
-    +GetPrice() : TokenArray
-    +GetBonus() : TokenArray
-    +GetVictoryPoint() : VictoryPoint
+    -int: id
 }
 
 
 class VictoryPoint {
     -value : int
-    +Get() : int
-    +Set(value : int) : void
 }
 
 class Patron {
-    +GetVictoryPoint() : VictoryPoint
-    +GetRequirements() : TokenArray
 }
 
 class TokenArray {
     -tokens : list<int>
-    +WithdrawTokens(TokenArray) : void
-    +WithdrawToken(Color, amount : int) : void
-    +DepositTokens(TokenArray) : void
-    +DepositToken(Color, amount : int) : void
+    +withdraw_tokens(TokenArray) : void
+    +withdraw_token(Color, amount : int) : void
+    +deposit_tokens(TokenArray) : void
+    +deposit_token(Color, amount : int) : void
 }
 
 

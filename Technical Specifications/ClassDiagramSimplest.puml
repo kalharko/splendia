@@ -10,8 +10,7 @@ GameManager *-- ShopController
 PatronController o-- Patron
 Patron o-- TokenArray
 
-BankController o-down- Bank
-Bank o-- TokenArray
+BankController o-down- TokenArray
 
 PlayerController o-- Player
 Player o-- TokenArray
@@ -33,7 +32,6 @@ BankController .r[hidden]. PatronController
 PatronController .r[hidden]. PlayerController
 PlayerController .r[hidden]. ShopController
 
-Bank .r[hidden]. Patron
 Patron .r[hidden]. Player
 Player .r[hidden]. Rank
 
