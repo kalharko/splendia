@@ -1,5 +1,7 @@
 from unittest import TestCase
-import Utils
+import model.utils as utils
+
+
 class Test(TestCase):
     def test_retrieve_and_parse_cards(self):
-        self.assertEqual(len(Utils.retrieve_and_parse_cards()), 90)
+        self.assertEqual(len(utils.retrieve_and_parse_cards()), 90)

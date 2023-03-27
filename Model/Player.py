@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import List
 
-from Model.token_array import TokenArray
-from Model.rank import Hand
-from Model.Patron import Patron
-from Model.victory_point import VictoryPoint
+from model.token_array import TokenArray
+from model.rank import Hand
+from model.patron import Patron
+from model.victory_point import VictoryPoint
 
 
 @dataclass

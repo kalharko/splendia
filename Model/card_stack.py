@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List
-from Model.card import Card
+from model.card import Card
+
 
 @dataclass
 class CardStack():

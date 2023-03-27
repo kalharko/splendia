@@ -1,20 +1,15 @@
 from dataclasses import dataclass
-from random import random
 from typing import List
-from Model.card import Card
-from Model.token_array import TokenArray
-from Model.Utils import retrieve_and_parse_cards
-from Model.victory_point import VictoryPoint
 import pandas as pd
+
+from model.card import Card
+from model.token_array import TokenArray
+from model.utils import retrieve_and_parse_cards
 """
 This module contains the classes that represent the cards in the game.
 """
-from Model.deck import Deck
-from Model.hand import Hand
-
-
-
-
+from model.deck import Deck
+from model.hand import Hand
 
 
 @dataclass

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from token_array import TokenArray
-from victory_point import VictoryPoint
+
+from model.token_array import TokenArray
+from model.victory_point import VictoryPoint
 
 
 @dataclass
@@ -16,4 +17,3 @@ class Card():
         self.bonus = bonus
         self.victoryPoint = victoryPoint
         self.card_id = card_id
-
