@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List
 
-from Model.Cards import Card, Hand, Rank
-from Model.TokenArray import TokenArray
+from Model.rank import Card, Hand, Rank
+from Model.token_array import TokenArray
 from Model.Patron import Patron
 from Model.Player import Player
 

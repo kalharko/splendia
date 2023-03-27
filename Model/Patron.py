@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from Model.TokenArray import TokenArray
-from Model.VictoryPoint import VictoryPoint
+from Model.token_array import TokenArray
+from Model.victory_point import VictoryPoint
 
 
 @dataclass
