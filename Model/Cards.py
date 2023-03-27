@@ -3,20 +3,25 @@ from random import random
 from typing import List
 
 from Model.TokenArray import TokenArray
+from Model.Utils import retrieve_and_parse_cards
 from Model.VictoryPoint import VictoryPoint
-
-
+import pandas as pd
+"""
+This module contains the classes that represent the cards in the game.
+"""
 @dataclass
 class Card():
+    card_id: int
     price: TokenArray
     bonus: TokenArray
     victoryPoint: VictoryPoint
 
     def __init__(self, price: TokenArray, bonus: TokenArray,
-                 victoryPoint: VictoryPoint) -> None:
+                 victoryPoint: VictoryPoint, card_id: int) -> None:
         self.price = price
         self.bonus = bonus
         self.victoryPoint = victoryPoint
+        self.card_id = card_id
 
 
 @dataclass
@@ -51,17 +56,8 @@ class Rank():
 
     def __init__(self, csv: List[str]) -> None:
         # load the deck with cards
-        for line in csv:
-            line = line.rstrip('\n').split(',')
-            line = [x if x != '' else '0' for x in line]
-            price = [int(x) for x in line[6:11]] + [0]
-            bonus = [0 for x in range(6)]
-            bonus[int(line[2])] = 1
-            self.deck.append(Card(
-                TokenArray(price),
-                TokenArray(bonus),
-                VictoryPoint(int(line[3]))
-            ))
+
+        self.deck = retrieve_and_parse_cards()
 
         # load the hand with 3 random cards
         for i in range(3):
