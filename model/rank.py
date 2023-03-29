@@ -17,10 +17,9 @@ class Rank():
     hand: Hand
     deck: Deck
 
-    def __init__(self, csv: List[str]) -> None:
+    def __init__(self, cards: List[Card]) -> None:
         # load the deck with cards
-
-        self.deck = retrieve_and_parse_cards()
+        self.deck = cards
 
         # load the hand with 3 random cards
         for i in range(3):
