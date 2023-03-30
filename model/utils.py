@@ -23,12 +23,14 @@ def bonus_color_to_enum_array(bonus_color: str) -> TokenArray:
 
 
 def retrieve_and_parse_cards() -> list[Card]:
-    df = pd.read_csv('data/card.csv')
-    df['id'] = range(1, len(df) + 1)
-    df.set_index('id', inplace=True)
+    df = pd.read_csv('model/data/card.csv')
+    df.set_index('Id', inplace=True)
 
     card_list = df.apply(
-        lambda card: Card(TokenArray([card['White'], card['Blue'], card['Green'], card['Red'], card['Black']]),
-                          bonus_color_to_enum_array(card['Color']), VictoryPoint(card['PV']), card_id=card.name),
+        lambda card: Card(
+            price=TokenArray([card['White'], card['Blue'], card['Green'], card['Red'], card['Black']]),
+            bonus=bonus_color_to_enum_array(card['Color']),
+            victoryPoint=VictoryPoint(card['PV']),
+            card_id=card.name),
         axis=1)
     return card_list
