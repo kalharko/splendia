@@ -11,4 +11,7 @@ class CardStack():
         self.cards.append(card)
 
     def pop_card(self, cardId: int) -> Card:
-        pass
+        for i in range(len(self.cards)):
+            if self.cards[i].id == cardId:
+                return self.cards.pop(i)
+        return None

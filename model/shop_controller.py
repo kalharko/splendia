@@ -10,10 +10,11 @@ class ShopController():
     ranks: List[Rank]
 
     def __init__(self) -> None:
+        self.ranks = []
         all_cards = retrieve_and_parse_cards()
-        self.ranks.append(Rank([x for x in all_cards if x.id <40]))
-        self.ranks.append(Rank([x for x in all_cards if 40 <= x.id <70]))
-        self.ranks.append(Rank([x for x in all_cards if 70 <= x.id]))
+        self.ranks.append(Rank([x for x in all_cards if x.card_id <40], 1))
+        self.ranks.append(Rank([x for x in all_cards if 40 <= x.card_id <70], 1))
+        self.ranks.append(Rank([x for x in all_cards if 70 <= x.card_id], 1))
 
     def get_card_price(self, cardId: int) -> Card:
         for rank in self.ranks:

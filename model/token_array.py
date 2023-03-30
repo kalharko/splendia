@@ -43,3 +43,6 @@ class TokenArray():
     def deposit_tokens(self, amount: List[int]) -> None:
         "TODO : write the function"
         pass
+
+    def __iadd__(self, other):
+        return [ x + y for x, y in zip(self.tokens, other.tokens)]
