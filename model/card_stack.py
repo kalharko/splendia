@@ -15,3 +15,6 @@ class CardStack():
             if self.cards[i].id == cardId:
                 return self.cards.pop(i)
         return None
+
+    def get_size(self):
+        return len(self.cards)

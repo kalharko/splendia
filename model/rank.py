@@ -3,10 +3,6 @@ from typing import List
 
 from model.card import Card
 from model.token_array import TokenArray
-from model.utils import retrieve_and_parse_cards
-"""
-This module contains the classes that represent the cards in the game.
-"""
 from model.deck import Deck
 from model.hand import Hand
 
@@ -32,7 +28,7 @@ class Rank():
         return None
 
     def withdraw_card(self, cardId: int) -> Card:
-        if type(card:=self.hand.pop_card(cardId)) == type(Card()) :
+        if isinstance((card := self.hand.pop_card(cardId)), Card):
             self.hand.add_card(self.deck.draw())
             return card
         return None
