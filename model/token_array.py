@@ -49,6 +49,15 @@ class TokenArray():
     def nb_of_tokens(self):
         return sum(self.tokens)
 
+    def can_buy(self, other: 'TokenArray') -> bool:
+        for color_index in range(len(self.tokens)):
+            if self.tokens[color_index] < other.tokens[color_index]:
+                return False
+        return True
+
+
+
+
     def __iadd__(self, other):
         self.tokens = [x + y for x, y in zip(self.tokens, other.tokens)]
         return self

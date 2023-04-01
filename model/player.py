@@ -7,7 +7,7 @@ from model.token_array import TokenArray
 from model.patron import Patron
 from model.rank import Hand
 from model.card import Card
-
+from model.patron_controller import PatronController
 
 @dataclass
 class Player():
@@ -17,14 +17,16 @@ class Player():
     tokens: TokenArray
     victoryPoints: VictoryPoint
     patrons: List[Patron]
+    observers : PatronController
 
-    def __init__(self, player_id: int) -> None:
+    def __init__(self, player_id: int, observer : PatronController) -> None:
         self.player_id = player_id
         self.hand = Hand()
         self.reserved = Hand()
         self.tokens = TokenArray()
         self.victoryPoints = VictoryPoint()
         self.patrons = []
+        self.observers = observer
 
     def get_card_price(self, cardId: int) -> TokenArray:
         return self.reserved.get_card_price(cardId)
@@ -40,6 +42,13 @@ class Player():
 
     def deposit_card(self, card: Card) -> None:
         self.hand.add_card(card)
+        patron_get = self.notify_observers()
+        if patron_get is not None:
+            self.patrons.append(patron_get)
+
+
+    def notify_observers(self) -> Patron:
+        return self.observers.update(self.hand)
 
     def deposit_reserved_card(self, card: Card) -> None:
         self.reserved.add_card(card)

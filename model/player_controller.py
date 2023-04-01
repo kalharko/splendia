@@ -8,14 +8,15 @@ from model.utils.singleton import SingletonMeta
 from model.token_array import TokenArray
 from model.player import Player
 from model.card import Card
-
+from model.patron_controller import PatronController
 
 @dataclass
 class PlayerController(metaclass=SingletonMeta):
     players: List[Player]
 
-    def __init__(self, nbPlayer: int) -> None:
-        self.players = [Player(i) for i in range(nbPlayer)]
+    def __init__(self, nbPlayer: int, observers: PatronController) -> None:
+        self.players = [Player(i,observers) for i in range(nbPlayer)]
+
 
     def buy_reserved_card(self, playerId: int, cardId: int) -> None:
         player = self.players[playerId]
