@@ -55,9 +55,6 @@ class TokenArray():
                 return False
         return True
 
-
-
-
     def __iadd__(self, other):
         self.tokens = [x + y for x, y in zip(self.tokens, other.tokens)]
         return self

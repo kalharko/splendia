@@ -8,6 +8,7 @@ from model.token_array import TokenArray
 from model.utils.singleton import SingletonMeta
 import pandas as pd
 
+
 @dataclass
 class PatronController(metaclass=SingletonMeta):
     patrons: List[Patron]
@@ -16,10 +17,11 @@ class PatronController(metaclass=SingletonMeta):
         patrons = self.initialize_patrons()
         index_patrons = [i for i in range(len(patrons))]
         random.shuffle(index_patrons)
-        self.patrons = [patrons[i] for i in index_patrons[:nbPlayer+1]]
+        self.patrons = [patrons[i] for i in index_patrons[:nbPlayer + 1]]
 
     def update(self, hand: Hand) -> Patron:
         return self.withdraw(hand)
+
     def withdraw(self, hand: Hand) -> Patron:
         token_player = hand.compute_hand_bonuses()
         for patron in self.patrons:
@@ -45,4 +47,3 @@ class PatronController(metaclass=SingletonMeta):
             token_array = TokenArray([white, blue, green, red, black, gold])
             patron_list.append(Patron(token_array, victory_point))
         return patron_list
-

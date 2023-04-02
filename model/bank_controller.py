@@ -9,7 +9,7 @@ class BankController(metaclass=SingletonMeta):
     bank: TokenArray
 
     def __init__(self, nbPlayer: int) -> None:
-        # number of tokens depends of the number of players
+        # number of tokens depends on the number of players
         if nbPlayer == 2:
             self.bank.deposit_tokens([4, 4, 4, 4, 4, 5])
         elif nbPlayer == 3:

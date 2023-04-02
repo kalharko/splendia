@@ -9,6 +9,7 @@ from model.rank import Hand
 from model.card import Card
 from model.patron_controller import PatronController
 
+
 @dataclass
 class Player():
     player_id: int
@@ -17,9 +18,9 @@ class Player():
     tokens: TokenArray
     victoryPoints: VictoryPoint
     patrons: List[Patron]
-    observers : PatronController
+    observers: PatronController
 
-    def __init__(self, player_id: int, observer : PatronController) -> None:
+    def __init__(self, player_id: int, observer: PatronController) -> None:
         self.player_id = player_id
         self.hand = Hand()
         self.reserved = Hand()
@@ -45,7 +46,6 @@ class Player():
         patron_get = self.notify_observers()
         if patron_get is not None:
             self.patrons.append(patron_get)
-
 
     def notify_observers(self) -> Patron:
         return self.observers.update(self.hand)
