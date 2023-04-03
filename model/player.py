@@ -22,10 +22,10 @@ class Player():
 
     def __init__(self, player_id: int, observer: PatronController) -> None:
         self.player_id = player_id
-        self.hand = Hand()
-        self.reserved = Hand()
+        self.hand = Hand([])
+        self.reserved = Hand([])
         self.tokens = TokenArray()
-        self.victoryPoints = VictoryPoint()
+        self.victoryPoints = VictoryPoint(0)
         self.patrons = []
         self.observers = observer
 

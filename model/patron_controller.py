@@ -32,7 +32,7 @@ class PatronController(metaclass=SingletonMeta):
         return None
 
     def initialize_patrons(self) -> List[Patron]:
-        noble_df = pd.read_csv('patrons.csv')
+        noble_df = pd.read_csv('model/data/patrons.csv')
 
         patron_list: List[Patron] = []
         for row in noble_df.itertuples():
