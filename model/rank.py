@@ -18,7 +18,7 @@ class Rank():
         self.hand = Hand([])
         self.deck = Deck(cards)
 
-        for i in range(3):
+        for i in range(4):
             self.hand.add_card(self.deck.draw())
 
     def get_card_price(self, cardId: int) -> TokenArray:
