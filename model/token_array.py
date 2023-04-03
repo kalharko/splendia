@@ -44,5 +44,34 @@ class TokenArray():
         "TODO : write the function"
         pass
 
+    def nb_of_tokens(self):
+        return sum(self.tokens)
+
+    def can_pay(self, other: 'TokenArray') -> bool:
+        assert other.tokens[-1] == 0
+
+        # can pay without gold
+        comparison = [x >= y for x, y in zip(self.tokens, other.tokens[:-1])]
+        if comparison == [True for x in range(len(comparison))]:
+            return True
+
+        # can pay with gold
+        gold_needed = -sum([x - y if x - y < 0 else 0 for x, y in zip(self.tokens, other.tokens[:-1])])
+        if gold_needed <= self.tokens[-1]:
+            return True
+        return False
+
     def __iadd__(self, other):
-        return [ x + y for x, y in zip(self.tokens, other.tokens)]
+        self.tokens = [x + y for x, y in zip(self.tokens, other.tokens)]
+        return self
+
+    def __isub__(self, other):
+        assert other.tokens[-1] == 0
+        assert self.can_pay(other)
+
+        self.tokens = [x - y for x, y in zip(self.tokens, other.tokens)]
+        for i in range(5):
+            if self.tokens[i] < 0:
+                self.tokens[-1] += self.tokens[i]
+                self.tokens[i] = 0
+        return self

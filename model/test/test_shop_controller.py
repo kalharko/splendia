@@ -5,16 +5,38 @@ from model.rank import Rank
 from model.hand import Hand
 from model.deck import Deck
 
+
 class Test_ShopController(unittest.TestCase):
-    def test_initialization(self):
+    def test_initialisation(self):
         sc = ShopController()
-        self.assertEqual(len(sc.ranks), 3)
-        for i, o in enumerate([40, 30, 20]):
-            self.assertIsInstance(sc.ranks[i], Rank)
-            self.assertIsInstance(sc.ranks[i].hand, Hand)
-            self.assertIsInstance(sc.ranks[i].deck, Deck)
-            self.assertEqual(len(sc.ranks[i].hand.cards), 3)
-            self.assertEqual(len(sc.ranks[i].deck.cards), o-3)
+        self.assertEqual(sc.ranks[0].level, 1)
+        self.assertIsInstance(sc.ranks[0], Rank)
+        self.assertIsInstance(sc.ranks[0].deck, Deck)
+        self.assertIsInstance(sc.ranks[0].hand, Hand)
+        self.assertIsInstance(sc.ranks[0].level, int)
+        self.assertEqual(sc.ranks[0].hand.get_size(), 4)
+        self.assertEqual(sc.ranks[0].deck.get_size(), 36)
+
+        self.assertEqual(sc.ranks[1].level, 2)
+        self.assertEqual(sc.ranks[1].hand.get_size(), 4)
+        self.assertEqual(sc.ranks[1].deck.get_size(), 26)
+
+        self.assertEqual(sc.ranks[2].level, 3)
+        self.assertEqual(sc.ranks[2].hand.get_size(), 4)
+        self.assertEqual(sc.ranks[2].deck.get_size(), 16)
+
+    def test_card_price(self):
+        sc = ShopController()
+        for i in range(3):
+            cardId = sc.ranks[i].hand.cards[i].card_id
+            cardPrice = sc.ranks[i].hand.cards[i].price
+            self.assertEqual(sc.get_card_price(cardId), cardPrice)
+
+    def test_withdraw(self):
+        sc = ShopController()
+        for i in range(3):
+            card = sc.ranks[i].hand.cards[i]
+            self.assertEqual(sc.withdraw_card(card.card_id), card)
 
 
 if __name__ == '__main__':
