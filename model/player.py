@@ -33,7 +33,7 @@ class Player():
         return self.reserved.get_card_price(cardId)
 
     def pay(self, price: TokenArray) -> None:
-        if self.tokens >= price:
+        if self.tokens.can_pay(price):
             self.tokens -= price
         else:
             return PlayerCanNotPay()

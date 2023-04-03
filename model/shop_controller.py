@@ -15,8 +15,8 @@ class ShopController(metaclass=SingletonMeta):
         self.ranks = []
         all_cards = retrieve_and_parse_cards()
         self.ranks.append(Rank([x for x in all_cards if x.card_id < 40], 1))
-        self.ranks.append(Rank([x for x in all_cards if 40 <= x.card_id < 70], 1))
-        self.ranks.append(Rank([x for x in all_cards if 70 <= x.card_id], 1))
+        self.ranks.append(Rank([x for x in all_cards if 40 <= x.card_id < 70], 2))
+        self.ranks.append(Rank([x for x in all_cards if 70 <= x.card_id], 3))
 
     def get_card_price(self, cardId: int) -> Card:
         for rank in self.ranks:

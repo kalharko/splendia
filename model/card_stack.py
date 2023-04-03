@@ -12,7 +12,7 @@ class CardStack():
 
     def pop_card(self, cardId: int) -> Card:
         for i in range(len(self.cards)):
-            if self.cards[i].id == cardId:
+            if self.cards[i].card_id == cardId:
                 return self.cards.pop(i)
         return None
 

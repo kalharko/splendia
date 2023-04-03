@@ -2,8 +2,6 @@ from dataclasses import dataclass
 from typing import List
 from enum import Enum
 
-from model.utils.exception import BrokenTokenArray
-
 
 class Color(Enum):
     """This enum describes the splendor game token colors.
@@ -49,26 +47,31 @@ class TokenArray():
     def nb_of_tokens(self):
         return sum(self.tokens)
 
-    def can_buy(self, other: 'TokenArray') -> bool:
-        for color_index in range(len(self.tokens)):
-            if self.tokens[color_index] < other.tokens[color_index]:
-                return False
-        return True
+    def can_pay(self, other: 'TokenArray') -> bool:
+        assert other.tokens[-1] == 0
+
+        # can pay without gold
+        comparison = [x >= y for x, y in zip(self.tokens, other.tokens[:-1])]
+        if comparison == [True for x in range(len(comparison))]:
+            return True
+
+        # can pay with gold
+        gold_needed = -sum([x - y if x - y < 0 else 0 for x, y in zip(self.tokens, other.tokens[:-1])])
+        if gold_needed <= self.tokens[-1]:
+            return True
+        return False
 
     def __iadd__(self, other):
         self.tokens = [x + y for x, y in zip(self.tokens, other.tokens)]
         return self
 
     def __isub__(self, other):
-        self.tokens = [x - y for x, y in zip(self.tokens, other.tokens[:-1])]
-        for i in range(len(self.tokens) - 1):
-            if self.tokens[i] < 0:
-                self.tokens[5] += self.tokens[i]
-                self.tokens[i] = 0
-        if self.tokens[-1] < 0:
-            raise BrokenTokenArray()
-        return self
+        assert other.tokens[-1] == 0
+        assert self.can_pay(other)
 
-    def __ge__(self, other):
-        distance = sum([x - y if x - y > 0 else 0 for x, y in zip(self.tokens, other.tokens[:-1])])
-        return distance <= self.tokens[5]
+        self.tokens = [x - y for x, y in zip(self.tokens, other.tokens)]
+        for i in range(5):
+            if self.tokens[i] < 0:
+                self.tokens[-1] += self.tokens[i]
+                self.tokens[i] = 0
+        return self

@@ -23,7 +23,7 @@ class Rank():
 
     def get_card_price(self, cardId: int) -> TokenArray:
         for card in self.hand.cards:
-            if card.id == cardId:
+            if card.card_id == cardId:
                 return card.price
         return None
 

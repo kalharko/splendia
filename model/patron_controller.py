@@ -36,7 +36,7 @@ class PatronController(metaclass=SingletonMeta):
 
         patron_list: List[Patron] = []
         for row in noble_df.itertuples():
-            print(row)
+            #print(row)
             white = row[1]
             blue = row[2]
             green = row[3]
