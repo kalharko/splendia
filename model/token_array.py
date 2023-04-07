@@ -28,30 +28,31 @@ class TokenArray():
         self.tokens = value if value else [0, 0, 0, 0, 0, 0]
 
     def withdraw_token(self, color: Color, amount: int) -> None:
-        if self.tokens[color] > amount:
-            self.tokens[color] -= amount
+        if self.tokens[color.value] > amount:
+            self.tokens[color.value] -= amount
             return
         else:
-            return Exception("Not enough tokens")
+            return NotEnoughTokens()
 
     def withdraw_tokens(self, tokens) -> None: #tokens : TokenArray
+        assert isinstance(tokens, TokenArray)
         if not self.can_withdraw(tokens):
             return NotEnoughTokens()
         else:
             self.tokens = [x - y for x, y in zip(self.tokens, tokens.tokens)]
 
     def deposit_token(self, color: Color, amount: int) -> None:
-        "TODO : write the function"
-        pass
+        self.tokens[color.value] += amount
 
     def deposit_tokens(self, tokens) -> None: #tokens : TokenArray
+        assert isinstance(tokens, TokenArray)
         self.tokens = [x + y for x, y in zip(self.tokens, tokens.tokens)]
-        pass
 
     def nb_of_tokens(self):
         return sum(self.tokens)
 
     def can_withdraw(self, other) -> bool: #tokens : TokenArray
+        assert isinstance(other, TokenArray)
         comparison = [x >= y for x, y in zip(self.tokens, other.tokens)]
         return comparison == [True for x in range(len(comparison))]
 
@@ -68,6 +69,18 @@ class TokenArray():
         if gold_needed <= self.tokens[-1]:
             return True
         return False
+
+    def pay(self, other: 'TokenArray') -> None: #other: TokenArray
+        assert isinstance(other, TokenArray)
+        assert other.tokens[-1] == 0
+        assert self.can_pay(other)
+
+        self.tokens = [x - y for x, y in zip(self.tokens, other.tokens)]
+        for i in range(5):
+            if self.tokens[i] < 0:
+                self.tokens[-1] += self.tokens[i]
+                self.tokens[i] = 0
+        return self
 
     def __iadd__(self, other):
         self.tokens = [x + y for x, y in zip(self.tokens, other.tokens)]
@@ -95,15 +108,3 @@ class TokenArray():
         assert isinstance(other, TokenArray)
         comparison = [x <= y for x, y in zip(self.tokens, other.tokens)]
         return comparison == [True for x in range(len(comparison))]
-
-    def __isub__(self, other):
-        assert isinstance(other, TokenArray)
-        assert other.tokens[-1] == 0
-        assert self.can_pay(other)
-
-        self.tokens = [x - y for x, y in zip(self.tokens, other.tokens)]
-        for i in range(5):
-            if self.tokens[i] < 0:
-                self.tokens[-1] += self.tokens[i]
-                self.tokens[i] = 0
-        return self

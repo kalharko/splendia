@@ -33,6 +33,11 @@ class Test_BankController(unittest.TestCase):
         bc.__init__(2)
         self.assertIsInstance(bc.deposit(TokenArray([1, 0, 0, 0, 0, 0])), TooMuchBankTokens)
 
+        bc.__init__(2)
+        bc.withdraw(TokenArray([2, 2, 2, 2, 2, 2]))
+        bc.deposit(TokenArray([1, 1, 1, 1, 1, 1]))
+        self.assertEqual(bc.bank.tokens, [3, 3, 3, 3, 3, 4])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -5,7 +5,7 @@ class TooMuchReservedCards(Exception):
 
 
 class CardIdNotFound(Exception):
-    "Raised when a hand does not contian the requested card"
+    "Raised when a hand does not contain the requested card"
 
 
 class NotEnoughTokens(Exception):
@@ -25,4 +25,4 @@ class PlayerCanNotPay(Exception):
 
 
 class BrokenTokenArray(Exception):
-    "Raised when a TokenArray has negative number of tokens after substraction"
+    "Raised when a TokenArray has negative number of tokens after subtraction"
