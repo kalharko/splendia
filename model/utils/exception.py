@@ -26,3 +26,7 @@ class PlayerCanNotPay(Exception):
 
 class BrokenTokenArray(Exception):
     "Raised when a TokenArray has negative number of tokens after subtraction"
+
+
+class InvalidTakeTokenAction(Exception):
+    "Raised when an invalid take token action is tried"
