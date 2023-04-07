@@ -44,6 +44,12 @@ class GameManager():
         out['player-bonus'] = self.playerController.players[3].hand.compute_hand_bonuses()
         out['player-tokens'] = self.playerController.players[3].tokens
         out['player-nbReserved'] = self.playerController.players[3].reserved.get_size()
+        out['player-reserved'] = []
+        for i in range(out['player-nbReserved']):
+            out['player-reserved'].append([
+                self.playerController.players[3].reserved.cards[i].price,
+                self.playerController.players[3].reserved.cards[i].bonus,
+                self.playerController.players[3].reserved.cards[i].victoryPoint])
 
         out['bank'] = self.bankController.bank.tokens
         out['patrons'] = [x.requirements for x in self.patronController.patrons]

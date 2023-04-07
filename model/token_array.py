@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from typing import List
 from enum import Enum
 
+from model.utils.exception import NotEnoughTokens
+
 
 class Color(Enum):
     """This enum describes the splendor game token colors.
@@ -32,20 +34,26 @@ class TokenArray():
         else:
             return Exception("Not enough tokens")
 
-    def withdraw_tokens(self, amount: List[int]) -> None:
-        "TODO : write the function"
-        pass
+    def withdraw_tokens(self, tokens) -> None: #tokens : TokenArray
+        if not self.can_withdraw(tokens):
+            return NotEnoughTokens()
+        else:
+            self.tokens = [x - y for x, y in zip(self.tokens, tokens.tokens)]
 
     def deposit_token(self, color: Color, amount: int) -> None:
         "TODO : write the function"
         pass
 
-    def deposit_tokens(self, amount: List[int]) -> None:
-        "TODO : write the function"
+    def deposit_tokens(self, tokens) -> None: #tokens : TokenArray
+        self.tokens = [x + y for x, y in zip(self.tokens, tokens.tokens)]
         pass
 
     def nb_of_tokens(self):
         return sum(self.tokens)
+
+    def can_withdraw(self, other) -> bool: #tokens : TokenArray
+        comparison = [x >= y for x, y in zip(self.tokens, other.tokens)]
+        return comparison == [True for x in range(len(comparison))]
 
     def can_pay(self, other: 'TokenArray') -> bool:
         assert other.tokens[-1] == 0
@@ -66,6 +74,30 @@ class TokenArray():
         return self
 
     def __isub__(self, other):
+        assert isinstance(other, TokenArray)
+        self.tokens = [x - y for x, y in zip(self.tokens, other.tokens)]
+        return self
+
+    def __add__(self, other):
+        assert isinstance(other, TokenArray)
+        return TokenArray([x + y for x, y in zip(self.tokens, other.tokens)])
+
+    def __sub__(self, other):
+        assert isinstance(other, TokenArray)
+        return TokenArray([x - y for x, y in zip(self.tokens, other.tokens)])
+
+    def __ge__(self, other):
+        assert isinstance(other, TokenArray)
+        comparison = [x >= y for x, y in zip(self.tokens, other.tokens)]
+        return comparison == [True for x in range(len(comparison))]
+
+    def __le__(self, other):
+        assert isinstance(other, TokenArray)
+        comparison = [x <= y for x, y in zip(self.tokens, other.tokens)]
+        return comparison == [True for x in range(len(comparison))]
+
+    def __isub__(self, other):
+        assert isinstance(other, TokenArray)
         assert other.tokens[-1] == 0
         assert self.can_pay(other)
 

@@ -51,7 +51,6 @@ class PlayerController(metaclass=SingletonMeta):
         player.deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1]))
 
     def take_tokens(self, playerId: int, tokens: TokenArray) -> None:
-        player = self.players[playerId]
-        if not isinstance(error := BankController().withdraw(tokens), TokenArray):
+        if (error := BankController().withdraw(tokens)):
             return error
-        player.deposit_tokens(tokens)
+        self.players[playerId].deposit_tokens(tokens)

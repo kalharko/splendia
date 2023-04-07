@@ -9,7 +9,11 @@ class CardIdNotFound(Exception):
 
 
 class NotEnoughTokens(Exception):
-    "Raised when there are not enough tokens in the bank to complete a transaction"
+    "Raised when there are not enough tokens in a TokenArray to complete a transaction"
+
+
+class TooMuchBankTokens(Exception):
+    "Raised when there are too much tokens in the bank to complete a transaction"
 
 
 class NotEnoughTokensToTakeTwo(Exception):
