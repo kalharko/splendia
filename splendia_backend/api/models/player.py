@@ -14,8 +14,8 @@ from django.db import models
 @dataclass
 class Player(models.Model):
     player_id: int = models.IntegerField()
-    hand: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE)
-    reserved: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE)
+    hand: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE, related_name='hand')
+    reserved: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE, related_name='reserved')
     tokens: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE)
     victoryPoints: VictoryPoint = models.OneToOneField(VictoryPoint, on_delete=models.CASCADE)
     patrons: List[Patron] = models.ForeignKey(Patron, on_delete=models.CASCADE)
