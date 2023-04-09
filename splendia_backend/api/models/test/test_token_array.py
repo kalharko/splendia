@@ -1,7 +1,7 @@
 from unittest import TestCase
 from typing import List
 
-from model.token_array import TokenArray
+from models.token_array import TokenArray
 
 
 class Test_TokenArray(TestCase):

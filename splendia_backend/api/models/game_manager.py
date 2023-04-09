@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from model.bank_controller import BankController
-from model.patron_controller import PatronController
-from model.player_controller import PlayerController
-from model.shop_controller import ShopController
+from api.models import BankController
+from api.models import PatronController
+from api.models import PlayerController
+from api.models import ShopController
 from django.db import models
 
 

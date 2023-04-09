@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import List
-from model.card import Card
+from api.models import Card
 from django.db import models
 
 

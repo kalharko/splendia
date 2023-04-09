@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from logging import raiseExceptions
-from model.token_array import TokenArray
-from model.utils.singleton import SingletonMeta
+from api.models import TokenArray
+from api.models.utils.singleton_model import SingletonModel
 from django.db import models
 
 
 @dataclass
-class BankController(models.Model, metaclass=SingletonMeta):
+class BankController(SingletonModel):
     bank: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE)
     
     def __init__(self, nbPlayer: int) -> None:

@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from typing import List
 from random import randrange
 
-from model.card_stack import CardStack
-from model.card import Card
+from api.models import CardStack
+from api.models import Card
 
 
 @dataclass

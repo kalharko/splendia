@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from typing import List
 
-from model.utils.exception import PlayerCanNotPay
-from model.victory_point import VictoryPoint
-from model.token_array import TokenArray
-from model.patron import Patron
-from model.rank import Hand
-from model.card import Card
-from model.patron_controller import PatronController
+from models.utils.exception import PlayerCanNotPay
+from api.models import VictoryPoint
+from api.models import TokenArray
+from api.models import Patron
+from api.models import Hand
+from api.models import Card
+from api.models import PatronController
 from django.db import models
 
 

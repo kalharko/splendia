@@ -1,6 +1,6 @@
 import unittest
 
-from model.game_manager import GameManager
+from models.game_manager import GameManager
 
 
 class Test_GameManager(unittest.TestCase):

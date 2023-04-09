@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from model.token_array import TokenArray
-from model.victory_point import VictoryPoint
+from api.models import TokenArray
+from api.models import VictoryPoint
 from django.db import models
 
 

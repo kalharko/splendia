@@ -1,17 +1,17 @@
 from dataclasses import dataclass
 from typing import List
 import random
-from model.rank import Hand
-from model.patron import Patron
-from model.victory_point import VictoryPoint
-from model.token_array import TokenArray
-from model.utils.singleton import SingletonMeta
+from api.models import Hand
+from api.models import Patron
+from api.models import VictoryPoint
+from api.models import TokenArray
+from api.models.utils.singleton_model import SingletonModel
 import pandas as pd
 from django.db import models
 
 
 @dataclass
-class PatronController(models.Model, metaclass=SingletonMeta):
+class PatronController(SingletonModel):
     patrons: List[Patron] = models.ForeignKey(Patron, on_delete=models.CASCADE)
 
     def __init__(self, nbPlayer: int) -> None:

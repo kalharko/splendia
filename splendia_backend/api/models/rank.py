@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import List
 
-from model.card import Card
-from model.token_array import TokenArray
-from model.deck import Deck
-from model.hand import Hand
+from api.models import Card
+from api.models import TokenArray
+from api.models import Deck
+from api.models import Hand
 from django.db import models
 
 

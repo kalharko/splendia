@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import List
 
-from model.rank import Card, Rank
-from model.token_array import TokenArray
-from model.utils.parsing import retrieve_and_parse_cards
-from model.utils.singleton import SingletonMeta
+from api.models import Card, Rank
+from api.models import TokenArray
+from models.utils.parsing import retrieve_and_parse_cards
+from api.models.utils.singleton_model import SingletonMeta
 from django.db import models
 
 

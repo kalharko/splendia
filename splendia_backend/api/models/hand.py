@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from model.card_stack import CardStack
-from model.token_array import TokenArray
-from model.utils.exception import CardIdNotFound
-from model.card import Card
+from api.models import CardStack
+from api.models import TokenArray
+from models.utils.exception import CardIdNotFound
+from api.models import Card
 from typing import List
 
 

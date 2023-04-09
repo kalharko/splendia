@@ -1,19 +1,19 @@
 from dataclasses import dataclass
 from typing import List
 
-from model.utils.exception import TooMuchReservedCards
-from model.bank_controller import BankController
-from model.shop_controller import ShopController
-from model.utils.singleton import SingletonMeta
-from model.token_array import TokenArray
-from model.player import Player
-from model.card import Card
-from model.patron_controller import PatronController
+from models.utils.exception import TooMuchReservedCards
+from api.models import BankController
+from api.models import ShopController
+from models.utils.singleton_model import SingletonModel
+from api.models import TokenArray
+from api.models import Player
+from api.models import Card
+from api.models import PatronController
 from django.db import models
 
 
 @dataclass
-class PlayerController(models.Model, metaclass=SingletonMeta):
+class PlayerController(SingletonModel):
     players: List[Player] = models.ForeignKey(Player, on_delete=models.CASCADE)
 
     def __init__(self, nbPlayer: int, observers: PatronController) -> None:
