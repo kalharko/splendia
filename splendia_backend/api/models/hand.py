@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from api.models import CardStack
 from api.models import TokenArray
-from models.utils.exception import CardIdNotFound
+from .utils.exception import CardIdNotFoundException
 from api.models import Card
 from typing import List
 
@@ -14,7 +14,7 @@ class Hand(CardStack):
         for card in self.cards:
             if card.id == cardId:
                 return card.id
-        return CardIdNotFound()
+        return CardIdNotFoundException()
 
     def compute_hand_bonuses(self) -> TokenArray:
         out = TokenArray()

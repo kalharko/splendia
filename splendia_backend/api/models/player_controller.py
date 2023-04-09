@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import List
 
-from models.utils.exception import TooMuchReservedCards
+from .utils.exception import TooManyReservedCardsException
 from api.models import BankController
 from api.models import ShopController
-from models.utils.singleton_model import SingletonModel
+from api.models.utils.singleton_model import SingletonModel
 from api.models import TokenArray
 from api.models import Player
 from api.models import Card
@@ -43,7 +43,7 @@ class PlayerController(SingletonModel):
     def reserve_card(self, playerId: int, cardId: int) -> None:
         player = self.players[playerId]
         if player.nb_reserved_cards() >= 3:
-            return TooMuchReservedCards()
+            return TooManyReservedCardsException()
         if not isinstance(card := ShopController().withdraw_card(cardId), Card):
             return card
         if not isinstance(error := BankController().withdraw(TokenArray([0, 0, 0, 0, 0, 1])), TokenArray):

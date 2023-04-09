@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 
-from models.utils.exception import PlayerCanNotPay
+from .utils.exception import PlayerCanNotPayException
 from api.models import VictoryPoint
 from api.models import TokenArray
 from api.models import Patron
@@ -37,7 +37,7 @@ class Player(models.Model):
         if self.tokens.can_pay(price):
             self.tokens -= price
         else:
-            return PlayerCanNotPay()
+            return PlayerCanNotPayException()
 
     def withdraw_reserved_card(self, cardId: int) -> Card:
         return self.reserved.pop_card(cardId)

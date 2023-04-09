@@ -1,22 +1,22 @@
 
 
-class TooMuchReservedCards(Exception):
+class TooManyReservedCardsException(Exception):
     "Raised when a players tries to reserve a card but already has 3"
 
 
-class CardIdNotFound(Exception):
+class CardIdNotFoundException(Exception):
     "Raised when a hand does not contian the requested card"
 
 
-class NotEnoughTokens(Exception):
+class NotEnoughTokensException(Exception):
     "Raised when there are not enough tokens in the bank to complete a transaction"
 
 
-class NotEnoughTokensToTakeTwo(Exception):
+class NotEnoughTokensToTakeTwoException(Exception):
     "Raised when tries to take 2 tokens of the same color when there are less than four of them in the bank"
 
 
-class PlayerCanNotPay(Exception):
+class PlayerCanNotPayException(Exception):
     "Raised when a player can not pay"
 
 

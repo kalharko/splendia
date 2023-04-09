@@ -3,13 +3,13 @@ from typing import List
 
 from api.models import Card, Rank
 from api.models import TokenArray
-from models.utils.parsing import retrieve_and_parse_cards
-from api.models.utils.singleton_model import SingletonMeta
+from .utils.parsing import retrieve_and_parse_cards
+from api.models.utils.singleton_model import SingletonModel
 from django.db import models
 
 
 @dataclass
-class ShopController(models.Model, metaclass=SingletonMeta):
+class ShopController(SingletonModel):
     ranks: List[Rank] = models.ForeignKey(Rank, on_delete=models.CASCADE)
 
     def __init__(self) -> None:
