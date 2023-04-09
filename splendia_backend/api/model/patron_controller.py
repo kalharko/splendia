@@ -7,11 +7,12 @@ from model.victory_point import VictoryPoint
 from model.token_array import TokenArray
 from model.utils.singleton import SingletonMeta
 import pandas as pd
+from django.db import models
 
 
 @dataclass
-class PatronController(metaclass=SingletonMeta):
-    patrons: List[Patron]
+class PatronController(models.Model, metaclass=SingletonMeta):
+    patrons: List[Patron] = models.ForeignKey(Patron, on_delete=models.CASCADE)
 
     def __init__(self, nbPlayer: int) -> None:
         patrons = self.initialize_patrons()

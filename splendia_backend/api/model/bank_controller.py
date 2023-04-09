@@ -2,12 +2,13 @@ from dataclasses import dataclass
 from logging import raiseExceptions
 from model.token_array import TokenArray
 from model.utils.singleton import SingletonMeta
+from django.db import models
 
 
 @dataclass
-class BankController(metaclass=SingletonMeta):
-    bank: TokenArray
-
+class BankController(models.Model, metaclass=SingletonMeta):
+    bank: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE)
+    
     def __init__(self, nbPlayer: int) -> None:
         # number of tokens depends on the number of players
         if nbPlayer == 2:

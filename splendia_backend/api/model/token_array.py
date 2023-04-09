@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 from enum import Enum
+from django.db import models
 
 
 class Color(Enum):
@@ -16,11 +17,11 @@ class Color(Enum):
 
 
 @dataclass
-class TokenArray():
+class TokenArray(models.Model):
     """This class represents a token inventory.
     py:class:: Class documentation ?
     """
-    tokens: List[int]
+    tokens: List[int] = models.ForeignKey(int, on_delete=models.CASCADE)
 
     def __init__(self, value: List[int] = None) -> None:
         self.tokens = value if value else [0, 0, 0, 0, 0, 0]

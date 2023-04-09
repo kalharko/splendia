@@ -1,9 +1,10 @@
 from dataclasses import dataclass
+from django.db import models
 
 
 @dataclass
-class VictoryPoint():
-    value: int
+class VictoryPoint(models.Model):
+    value: int = models.IntegerField()
 
     def get_value(self) -> int:
         return self.value

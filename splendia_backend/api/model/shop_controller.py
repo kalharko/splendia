@@ -5,11 +5,12 @@ from model.rank import Card, Rank
 from model.token_array import TokenArray
 from model.utils.parsing import retrieve_and_parse_cards
 from model.utils.singleton import SingletonMeta
+from django.db import models
 
 
 @dataclass
-class ShopController(metaclass=SingletonMeta):
-    ranks: List[Rank]
+class ShopController(models.Model, metaclass=SingletonMeta):
+    ranks: List[Rank] = models.ForeignKey(Rank, on_delete=models.CASCADE)
 
     def __init__(self) -> None:
         self.ranks = []

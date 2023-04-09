@@ -8,17 +8,18 @@ from model.patron import Patron
 from model.rank import Hand
 from model.card import Card
 from model.patron_controller import PatronController
+from django.db import models
 
 
 @dataclass
-class Player():
-    player_id: int
-    hand: Hand
-    reserved: Hand
-    tokens: TokenArray
-    victoryPoints: VictoryPoint
-    patrons: List[Patron]
-    observers: PatronController
+class Player(models.Model):
+    player_id: int = models.IntegerField()
+    hand: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE)
+    reserved: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE)
+    tokens: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE)
+    victoryPoints: VictoryPoint = models.OneToOneField(VictoryPoint, on_delete=models.CASCADE)
+    patrons: List[Patron] = models.ForeignKey(Patron, on_delete=models.CASCADE)
+    observers: PatronController = models.OneToOneField(PatronController, on_delete=models.CASCADE)
 
     def __init__(self, player_id: int, observer: PatronController) -> None:
         self.player_id = player_id

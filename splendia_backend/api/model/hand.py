@@ -9,7 +9,6 @@ from typing import List
 
 @dataclass
 class Hand(CardStack):
-    cards: List[Card]
 
     def get_card_price(self, cardId: int) -> TokenArray:
         for card in self.cards:

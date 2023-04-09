@@ -5,13 +5,14 @@ from model.card import Card
 from model.token_array import TokenArray
 from model.deck import Deck
 from model.hand import Hand
+from django.db import models
 
 
 @dataclass
-class Rank():
-    level: int
-    hand: Hand
-    deck: Deck
+class Rank(models.Model):
+    level: int = models.IntegerField()
+    hand: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE)
+    deck: Deck = models.OneToOneField(Deck, on_delete=models.CASCADE)
 
     def __init__(self, cards: List[Card], level: int) -> None:
         self.level = level

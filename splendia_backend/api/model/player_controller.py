@@ -9,11 +9,12 @@ from model.token_array import TokenArray
 from model.player import Player
 from model.card import Card
 from model.patron_controller import PatronController
+from django.db import models
 
 
 @dataclass
-class PlayerController(metaclass=SingletonMeta):
-    players: List[Player]
+class PlayerController(models.Model, metaclass=SingletonMeta):
+    players: List[Player] = models.ForeignKey(Player, on_delete=models.CASCADE)
 
     def __init__(self, nbPlayer: int, observers: PatronController) -> None:
         self.players = [Player(i, observers) for i in range(nbPlayer)]

@@ -12,7 +12,7 @@ source env/bin/activate
 ```
 To install the necessary dependancies :
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 To quit the virtual environnement :
 ```

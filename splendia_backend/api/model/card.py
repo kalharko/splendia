@@ -2,14 +2,15 @@ from dataclasses import dataclass
 
 from model.token_array import TokenArray
 from model.victory_point import VictoryPoint
+from django.db import models
 
 
 @dataclass
-class Card():
-    card_id: int
-    price: TokenArray
-    bonus: TokenArray
-    victoryPoint: VictoryPoint
+class Card(models.Model):
+    card_id: int = models.IntegerField()
+    price: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE)
+    bonus: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE)
+    victoryPoint: VictoryPoint = models.OneToOneField(VictoryPoint, on_delete=models.CASCADE)
 
     # def __init__(self, price: TokenArray, bonus: TokenArray,
     #              victoryPoint: VictoryPoint, card_id: int) -> None:
