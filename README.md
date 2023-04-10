@@ -19,6 +19,14 @@ To quit the virtual environnement :
 deactivate
 ```
 
+To run the backend :
+---
+Place yourself in splendia_backend then run :
+```
+python manage.py runserver 8080
+```
+
+
 To run tests on the model :
 ```
 python -m unittest -v

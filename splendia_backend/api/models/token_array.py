@@ -16,16 +16,20 @@ class Color(Enum):
     BLACK = 4
     GOLD = 5
 
+class TokenArrayManager(models.Manager):
+    def create_token_array(self, value: List[int] = None):
+        token_array = self.create(tokensJSON = "")
+        token_array.set_tokens(value if value else [0, 0, 0, 0, 0, 0])
+        return token_array
 
-@dataclass
+
 class TokenArray(models.Model):
     """This class represents a token inventory.
     py:class:: Class documentation ?
     """
-    tokensJSON = models.JSONField()
+    tokensJSON = models.JSONField(blank=True)
+    objects = TokenArrayManager()
 
-    def __init__(self, value: List[int] = None) -> None:
-        self.set_tokens(value if value else [0, 0, 0, 0, 0, 0])
         
     def set_tokens(self, list: List[int]) -> None:
         self.tokens = json.dumps(list)
@@ -72,13 +76,13 @@ class TokenArray(models.Model):
             return True
         return False
 
-    def __iadd__(self, other):
+    """def __iadd__(self, other):
         tokens: List[int] = self.get_tokens()
         tokens = [x + y for x, y in zip(tokens, other.tokens)]
         self.set_tokens(tokens)
-        return self
+        return self"""
 
-    def __isub__(self, other):
+    """def __isub__(self, other):
         assert other.tokens[-1] == 0
         assert self.can_pay(other)
 
@@ -89,4 +93,4 @@ class TokenArray(models.Model):
                 self.tokens[-1] += self.tokens[i]
                 self.tokens[i] = 0
         self.set_tokens(tokens)
-        return self
+        return self"""

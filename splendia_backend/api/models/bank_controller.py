@@ -5,20 +5,28 @@ from api.models.utils.singleton_model import SingletonModel
 from django.db import models
 
 
-@dataclass
-class BankController(SingletonModel):
-    bank: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE)
+class BankControllerManager(models.Manager):
     
-    def __init__(self, nbPlayer: int) -> None:
+    def create_bank_controller(self, nbPlayer: int):
+        bank_controller = self.create(bank = TokenArray.objects.create_token_array())
         # number of tokens depends on the number of players
         if nbPlayer == 2:
-            self.bank.deposit_tokens([4, 4, 4, 4, 4, 5])
+            bank_controller.bank.deposit_tokens([4, 4, 4, 4, 4, 5])
         elif nbPlayer == 3:
-            self.bank.deposit_tokens([5, 5, 5, 5, 5, 5])
+            bank_controller.bank.deposit_tokens([5, 5, 5, 5, 5, 5])
         elif nbPlayer == 4:
-            self.bank.deposit_tokens([7, 7, 7, 7, 7, 5])
+            bank_controller.bank.deposit_tokens([7, 7, 7, 7, 7, 5])
         else:
             raiseExceptions("Number of players unsupported")
+        
+            
+        return bank_controller
+    
+
+class BankController(SingletonModel):
+    bank: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE)
+    objects = BankControllerManager()
+
 
     def deposit(self, tokens: TokenArray) -> None:
         pass
