@@ -6,8 +6,8 @@ from django.db import models
 
 class Card(models.Model):
     card_id: int = models.IntegerField()
-    price: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE, related_name='price')
-    bonus: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE, related_name='bonus')
+    price: TokenArray = models.ManyToManyField(TokenArray, related_name='price', blank=True)
+    bonus: TokenArray = models.ManyToManyField(TokenArray, related_name='bonus', blank=True)
     victoryPoint: VictoryPoint = models.OneToOneField(VictoryPoint, on_delete=models.CASCADE)
 
     # def __init__(self, price: TokenArray, bonus: TokenArray,

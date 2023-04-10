@@ -23,7 +23,7 @@ class BankControllerManager(models.Manager):
     
 
 class BankController(SingletonModel):
-    bank: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE)
+    bank: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE, blank=True)
     objects = BankControllerManager()
 
 

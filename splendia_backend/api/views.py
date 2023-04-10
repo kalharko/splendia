@@ -5,6 +5,5 @@ from api.models.game_manager import GameManager
 
 def start_game(request):
     GameManager.objects.all().delete()
-    game_manager = GameManager.objects.create_game_manager(2)
-    game_manager.save()
+    game_manager = GameManager.objects.create()
     return JsonResponse(status = status.HTTP_OK)

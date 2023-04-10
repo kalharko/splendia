@@ -5,6 +5,7 @@ from api.models import CardStack
 from api.models import Card
 
 
+
 class Deck(CardStack):
 
     def __init__(self, cards: List[Card]):

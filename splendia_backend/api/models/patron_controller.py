@@ -8,9 +8,16 @@ from api.models.utils.singleton_model import SingletonModel
 import pandas as pd
 from django.db import models
 
+class GameManagerManager(models.Manager):
+    def create_patron_controller(self, nbPlayer: int):
+        patron_controller = self.create()
+        patrons = patron_controller.initialize_patrons()
+        patron_controller.index_patrons = [i for i in range(len(patrons))]
+        random.shuffle(index_patrons)
+        self.patrons = [patrons[i] for i in index_patrons[:nbPlayer + 1]]
 
 class PatronController(SingletonModel):
-    patrons: List[Patron] = models.ForeignKey(Patron, on_delete=models.CASCADE)
+    patrons: List[Patron] = models.ManyToManyField(Patron, blank=True)
 
     def __init__(self, nbPlayer: int) -> None:
         patrons = self.initialize_patrons()

@@ -8,7 +8,7 @@ from django.db import models
 
 
 class ShopController(SingletonModel):
-    ranks: List[Rank] = models.ForeignKey(Rank, on_delete=models.CASCADE)
+    ranks: List[Rank] = models.ManyToManyField(Rank, blank=True)
 
     def __init__(self) -> None:
         self.ranks = []
