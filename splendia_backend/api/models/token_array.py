@@ -26,15 +26,17 @@ class TokenArray(models.Model):
     """This class represents a token inventory.
     py:class:: Class documentation ?
     """
-    tokensJSON = models.JSONField(blank=True)
+    tokensJSON = models.CharField(max_length=250, null=True)
     objects = TokenArrayManager()
 
         
     def set_tokens(self, list: List[int]) -> None:
-        self.tokens = json.dumps(list)
+        self.tokensJSON = json.dumps(list)
+
+
         
     def get_tokens(self) -> List[int]:
-        return json.loads(self.tokens)
+        return json.loads(self.tokensJSON)
 
     def withdraw_token(self, color: Color, amount: int) -> None:
         tokens: List[int] = self.get_tokens()

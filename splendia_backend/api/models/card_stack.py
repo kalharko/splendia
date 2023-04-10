@@ -4,7 +4,7 @@ from django.db import models
 
 
 class CardStack(models.Model):
-    cards: List[Card] = models.ManyToManyField(Card, blank=True)
+    cards: List[Card] = models.ManyToManyField(Card)
 
     def add_card(self, card: Card) -> None:
         self.cards.append(card)

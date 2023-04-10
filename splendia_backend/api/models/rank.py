@@ -9,8 +9,8 @@ from django.db import models
 
 class Rank(models.Model):
     level: int = models.IntegerField(blank=True)
-    hand: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE, blank=True)
-    deck: Deck = models.OneToOneField(Deck, on_delete=models.CASCADE, blank=True)
+    hand: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE, null=True)
+    deck: Deck = models.OneToOneField(Deck, on_delete=models.CASCADE, null=True)
 
     def __init__(self, cards: List[Card], level: int) -> None:
         self.level = level

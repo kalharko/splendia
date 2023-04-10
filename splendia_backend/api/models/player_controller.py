@@ -12,7 +12,7 @@ from django.db import models
 
 
 class PlayerController(SingletonModel):
-    players: List[Player] = models.ManyToManyField(Player, blank=True)
+    players: List[Player] = models.ManyToManyField(Player)
 
     def __init__(self, nbPlayer: int, observers: PatronController) -> None:
         self.players = [Player(i, observers) for i in range(nbPlayer)]

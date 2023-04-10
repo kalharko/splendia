@@ -12,12 +12,12 @@ from django.db import models
 
 class Player(models.Model):
     player_id: int = models.IntegerField()
-    hand: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE, related_name='hand', blank=True)
-    reserved: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE, related_name='reserved', blank=True)
-    tokens: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE, blank=True)
-    victoryPoints: VictoryPoint = models.OneToOneField(VictoryPoint, on_delete=models.CASCADE, blank=True)
+    hand: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE, related_name='hand', null=True)
+    reserved: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE, related_name='reserved', null=True)
+    tokens: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE, null=True)
+    victoryPoints: VictoryPoint = models.OneToOneField(VictoryPoint, on_delete=models.CASCADE, null=True)
     patrons: List[Patron] = models.ManyToManyField(Patron, blank=True)
-    observers: PatronController = models.OneToOneField(PatronController, on_delete=models.CASCADE, blank=True)
+    observers: PatronController = models.OneToOneField(PatronController, on_delete=models.CASCADE, null=True)
 
     def __init__(self, player_id: int, observer: PatronController) -> None:
         self.player_id = player_id

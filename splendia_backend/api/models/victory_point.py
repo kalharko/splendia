@@ -2,7 +2,7 @@ from django.db import models
 
 
 class VictoryPoint(models.Model):
-    value: int = models.IntegerField(blank=True)
+    value: int = models.IntegerField(null=True)
 
     def get_value(self) -> int:
         return self.value
