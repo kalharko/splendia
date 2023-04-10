@@ -8,13 +8,9 @@ from django.db import models
 class BankController(SingletonModel):
     bank: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE, null=True)
     
-    def reset_data(self) -> None:
+    def reset_data(self, nbPlayer: int) -> None:
         if(self.bank is None):
             self.bank = TokenArray.objects.create()
-        self.bank.set_tokens([0, 0, 0, 0, 0, 0])
-        self.save()
-    
-    def set_nb_player(self, nbPlayer: int):
         # number of tokens depends on the number of players
         if nbPlayer == 2:
             self.bank.set_tokens([4, 4, 4, 4, 4, 5])

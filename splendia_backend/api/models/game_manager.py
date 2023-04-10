@@ -21,11 +21,9 @@ class GameManager(SingletonModel):
     objects = GameManagerManager()
     
     def start_new_game(self, nbPlayer: int) -> None:
-        self.reset_data()
-        self.bankController.set_nb_player(nbPlayer)
+        self.bankController.reset_data(nbPlayer) 
+        self.patronController.reset_data(nbPlayer)
     
-    def reset_data(self) -> None:
-        self.bankController.reset_data() 
 
 
     def gather_board_state(self) -> None:

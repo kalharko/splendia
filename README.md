@@ -25,6 +25,13 @@ Place yourself in splendia_backend then run :
 ```
 python manage.py runserver 8080
 ```
+To create and update the database:
+---
+
+Place yourself in splendia_backend then run :
+```
+python manage.py migrate api
+```
 
 
 To run tests on the model :

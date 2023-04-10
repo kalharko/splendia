@@ -4,5 +4,5 @@ from django.db import models
 
 
 class Patron(models.Model):
-    requirements: TokenArray() = models.OneToOneField(TokenArray, null=True, on_delete=models.CASCADE,)
-    victoryPoints: VictoryPoint = models.OneToOneField(VictoryPoint, blank=True, on_delete=models.CASCADE,)
+    requirements: TokenArray() = models.OneToOneField(TokenArray, null=True, on_delete=models.CASCADE)
+    victoryPoints: VictoryPoint = models.OneToOneField(VictoryPoint, blank=True, on_delete=models.CASCADE)

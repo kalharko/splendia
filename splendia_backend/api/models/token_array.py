@@ -17,8 +17,9 @@ class Color(Enum):
 
 class TokenArrayManager(models.Manager):
     def create_token_array(self, value: List[int] = None):
-        token_array = self.create(tokensJSON = "")
+        token_array = TokenArray(tokensJSON = "")
         token_array.set_tokens(value if value else [0, 0, 0, 0, 0, 0])
+        token_array.save()
         return token_array
 
 
