@@ -1,8 +1,6 @@
-from dataclasses import dataclass
 from django.db import models
 
 
-@dataclass
 class VictoryPoint(models.Model):
     value: int = models.IntegerField()
 

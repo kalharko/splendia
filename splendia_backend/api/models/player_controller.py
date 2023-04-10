@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List
 
 from .utils.exception import TooManyReservedCardsException
@@ -12,7 +11,6 @@ from api.models import PatronController
 from django.db import models
 
 
-@dataclass
 class PlayerController(SingletonModel):
     players: List[Player] = models.ForeignKey(Player, on_delete=models.CASCADE)
 

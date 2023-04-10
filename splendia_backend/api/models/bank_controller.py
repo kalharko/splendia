@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from logging import raiseExceptions
 from api.models import TokenArray
 from api.models.utils.singleton_model import SingletonModel

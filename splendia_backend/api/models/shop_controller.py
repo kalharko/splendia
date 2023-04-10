@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List
 
 from api.models import Card, Rank
@@ -8,7 +7,6 @@ from api.models.utils.singleton_model import SingletonModel
 from django.db import models
 
 
-@dataclass
 class ShopController(SingletonModel):
     ranks: List[Rank] = models.ForeignKey(Rank, on_delete=models.CASCADE)
 

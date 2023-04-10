@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List
 from enum import Enum
 from django.db import models

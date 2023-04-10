@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List
 from random import randrange
 
@@ -6,7 +5,6 @@ from api.models import CardStack
 from api.models import Card
 
 
-@dataclass
 class Deck(CardStack):
 
     def __init__(self, cards: List[Card]):

@@ -7,7 +7,6 @@ from api.models import Card
 from typing import List
 
 
-@dataclass
 class Hand(CardStack):
 
     def get_card_price(self, cardId: int) -> TokenArray:

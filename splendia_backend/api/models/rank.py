@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List
 
 from api.models import Card
@@ -8,7 +7,6 @@ from api.models import Hand
 from django.db import models
 
 
-@dataclass
 class Rank(models.Model):
     level: int = models.IntegerField()
     hand: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE)

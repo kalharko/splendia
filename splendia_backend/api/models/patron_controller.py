@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List
 import random
 from api.models import Hand
@@ -10,7 +9,6 @@ import pandas as pd
 from django.db import models
 
 
-@dataclass
 class PatronController(SingletonModel):
     patrons: List[Patron] = models.ForeignKey(Patron, on_delete=models.CASCADE)
 

@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List
 
 from .utils.exception import PlayerCanNotPayException
@@ -11,7 +10,6 @@ from api.models import PatronController
 from django.db import models
 
 
-@dataclass
 class Player(models.Model):
     player_id: int = models.IntegerField()
     hand: Hand = models.OneToOneField(Hand, on_delete=models.CASCADE, related_name='hand')

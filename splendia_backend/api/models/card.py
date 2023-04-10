@@ -1,11 +1,9 @@
-from dataclasses import dataclass
-
 from api.models import TokenArray
 from api.models import VictoryPoint
 from django.db import models
 
 
-@dataclass
+
 class Card(models.Model):
     card_id: int = models.IntegerField()
     price: TokenArray = models.OneToOneField(TokenArray, on_delete=models.CASCADE, related_name='price')

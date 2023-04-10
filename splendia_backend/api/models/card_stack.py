@@ -1,10 +1,8 @@
-from dataclasses import dataclass
 from typing import List
 from api.models import Card
 from django.db import models
 
 
-@dataclass
 class CardStack(models.Model):
     cards: List[Card] = models.ForeignKey(Card, on_delete=models.CASCADE)
 
