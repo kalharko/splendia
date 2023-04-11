@@ -12,12 +12,27 @@ source env/bin/activate
 ```
 To install the necessary dependancies :
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 To quit the virtual environnement :
 ```
 deactivate
 ```
+
+To run the backend :
+---
+Place yourself in splendia_backend then run :
+```
+python manage.py runserver 8080
+```
+To create and update the database:
+---
+
+Place yourself in splendia_backend then run :
+```
+python manage.py migrate api
+```
+
 
 To run tests on the model :
 ```
