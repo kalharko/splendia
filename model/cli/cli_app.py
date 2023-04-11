@@ -12,6 +12,7 @@ class CliApp():
 
         # constants
         self.ESCAPE = ['q']
+        self.SCREEN_HEIGHT = 47
         self.COMMANDS = [
             'token3',
             'token2',
@@ -62,7 +63,7 @@ class CliApp():
                     self.nextPlayer()
             elif command == 'buyshop':
                 cardId = self.gm.shopController.ranks[int(arguments[0])].hand.cards[int(arguments[1])].card_id
-                if not self.gm.playerController.buy_shop_card(self.c, cardId):
+                if not self.gm.playerController.buy_shop_card(self.currentPlayer, cardId):
                     self.nextPlayer()
             elif command == 'buyreserved':
                 cardId = self.gm.playerController.players[self.currentPlayer].reserved.cards[int(arguments[0])].card_id
@@ -102,6 +103,8 @@ class CliApp():
         print("+--            displayreserved                                  --+")
 
     def display(self, boardState) -> None:
+        print((self.SCREEN_HEIGHT-2) * "\n")
+
         bs = boardState
         print("+---------+----------------------------------+--------------------+")
 

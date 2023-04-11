@@ -5,5 +5,6 @@ from model.victory_point import VictoryPoint
 
 @dataclass
 class Patron():
+    patron_id: int
     requirements: TokenArray()
     victoryPoints: VictoryPoint

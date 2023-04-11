@@ -1,23 +1,23 @@
 from dataclasses import dataclass
 from typing import List
 import random
+
 from model.rank import Hand
 from model.patron import Patron
 from model.victory_point import VictoryPoint
 from model.token_array import TokenArray
 from model.utils.singleton import SingletonMeta
 import pandas as pd
-
+from model.utils.parsing import retrieve_and_parse_patrons
 
 @dataclass
 class PatronController(metaclass=SingletonMeta):
     patrons: List[Patron]
 
     def __init__(self, nbPlayer: int) -> None:
-        patrons = self.initialize_patrons()
-        index_patrons = [i for i in range(len(patrons))]
-        random.shuffle(index_patrons)
-        self.patrons = [patrons[i] for i in index_patrons[:nbPlayer + 1]]
+        patrons = retrieve_and_parse_patrons()
+        random.shuffle(patrons)
+        self.patrons = patrons[:nbPlayer + 1]
 
     def update(self, hand: Hand) -> Patron:
         return self.withdraw(hand)
@@ -30,9 +30,6 @@ class PatronController(metaclass=SingletonMeta):
                 self.patrons.remove(patron)
                 return patron_temp
         return None
-
-    def initialize_patrons(self) -> List[Patron]:
-        noble_df = pd.read_csv('model/data/patrons.csv')
 
         patron_list: List[Patron] = []
         for row in noble_df.itertuples():
