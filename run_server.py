@@ -14,26 +14,26 @@ def index():
     return render_template('front/index.html')
 
 
-@app.route('/api/launchGame')
-def launchGame():
-    gameManager = GameManager()
-    return jsonify(gameManager.gather_board_state())
+@app.route('/api/launchGame/<nbPlayer>')
+def launchGame(nbPlayer=4):
+    gameManager = GameManager(nbPlayer)
+    return jsonify(gameManager.gather_cli_board_state())
 
 
-@app.route('/api/buyCard')
-def buyCard():
+@app.route('/api/buyCard/<cardId>')
+def buyCard(cardId=-1):
     pass
     return jsonify(gameManager.gather_board_state())
 
 
-@app.route('/api/reserveCard')
-def reserveCard():
+@app.route('/api/reserveCard/<cardId>')
+def reserveCard(cardId=-1):
     pass
     return jsonify(gameManager.gather_board_state())
 
 
-@app.route('/api/reserveCardOnPile')
-def reserveCardOnPile():
+@app.route('/api/reserveCardOnPile/<deckLevel>')
+def reserveCardOnPile(deckLevel=-1):
     pass
     return jsonify(gameManager.gather_board_state())
 
