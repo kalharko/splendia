@@ -16,5 +16,8 @@ class CardStack():
                 return self.cards.pop(i)
         return None
 
-    def get_size(self):
+    def get_size(self): #deprecated
+        return len(self.cards)
+
+    def __len__(self):
         return len(self.cards)

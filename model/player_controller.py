@@ -15,8 +15,8 @@ from model.patron_controller import PatronController
 class PlayerController(metaclass=SingletonMeta):
     players: List[Player]
 
-    def __init__(self, nbPlayer: int, observers: PatronController) -> None:
-        self.players = [Player(i, observers) for i in range(nbPlayer)]
+    def __init__(self, nbPlayer: int, observer: PatronController) -> None:
+        self.players = [Player(i, observer) for i in range(nbPlayer)]
 
     def buy_reserved_card(self, playerId: int, cardId: int) -> None:
         player = self.players[playerId]
@@ -51,6 +51,6 @@ class PlayerController(metaclass=SingletonMeta):
         player.deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1]))
 
     def take_tokens(self, playerId: int, tokens: TokenArray) -> None:
-        if (error := BankController().withdraw(tokens)):
+        if (error := BankController().withdraw(tokens)) != None:
             return error
         self.players[playerId].deposit_tokens(tokens)

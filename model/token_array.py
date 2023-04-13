@@ -57,7 +57,7 @@ class TokenArray():
         return comparison == [True for x in range(len(comparison))]
 
     def can_pay(self, other: 'TokenArray') -> bool:
-        assert other.tokens[-1] == 0
+        assert other.tokens[Color.GOLD.value] == 0
 
         # can pay without gold
         comparison = [x >= y for x, y in zip(self.tokens, other.tokens[:-1])]

@@ -9,6 +9,7 @@ from model.deck import Deck
 class Test_ShopController(unittest.TestCase):
     def test_initialisation(self):
         sc = ShopController()
+        sc.__init__()
         self.assertEqual(sc.ranks[0].level, 1)
         self.assertIsInstance(sc.ranks[0], Rank)
         self.assertIsInstance(sc.ranks[0].deck, Deck)

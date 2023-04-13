@@ -22,3 +22,9 @@ class Hand(CardStack):
         for card in self.cards:
             out += card.bonus
         return out
+
+    def compute_victory_points(self) -> int:
+        out = 0
+        for card in self.cards:
+            out += card.victoryPoint
+        return out

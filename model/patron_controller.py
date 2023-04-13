@@ -30,17 +30,3 @@ class PatronController(metaclass=SingletonMeta):
                 self.patrons.remove(patron)
                 return patron_temp
         return None
-
-        patron_list: List[Patron] = []
-        for row in noble_df.itertuples():
-            #print(row)
-            white = row[1]
-            blue = row[2]
-            green = row[3]
-            red = row[4]
-            black = row[5]
-            gold = 0
-            victory_point = VictoryPoint(3)
-            token_array = TokenArray([white, blue, green, red, black, gold])
-            patron_list.append(Patron(token_array, victory_point))
-        return patron_list
