@@ -195,30 +195,30 @@ class CliApp():
 
     def str_token_array(self, ta: TokenArray) -> str:
         out = ""
-        out += c(f'({ta.tokens[0]})', 'white')
-        out += c(f'({ta.tokens[1]})', 'blue')
-        out += c(f'({ta.tokens[2]})', 'green')
-        out += c(f'({ta.tokens[3]})', 'red')
-        out += c(f'({ta.tokens[4]})', 'light_grey')
-        out += c(f'({ta.tokens[5]})', 'yellow')
+        out += c(f'({ta.get_tokens()[0]})', 'white')
+        out += c(f'({ta.get_tokens()[1]})', 'blue')
+        out += c(f'({ta.get_tokens()[2]})', 'green')
+        out += c(f'({ta.get_tokens()[3]})', 'red')
+        out += c(f'({ta.get_tokens()[4]})', 'light_grey')
+        out += c(f'({ta.get_tokens()[5]})', 'yellow')
         return out
 
     def str_bonus_array(self, ta: TokenArray) -> str:
         out = ""
-        out += c(f'[{ta.tokens[0]}]', 'white')
-        out += c(f'[{ta.tokens[1]}]', 'blue')
-        out += c(f'[{ta.tokens[2]}]', 'green')
-        out += c(f'[{ta.tokens[3]}]', 'red')
-        out += c(f'[{ta.tokens[4]}]', 'light_grey')
+        out += c(f'[{ta.get_tokens()[0]}]', 'white')
+        out += c(f'[{ta.get_tokens()[1]}]', 'blue')
+        out += c(f'[{ta.get_tokens()[2]}]', 'green')
+        out += c(f'[{ta.get_tokens()[3]}]', 'red')
+        out += c(f'[{ta.get_tokens()[4]}]', 'light_grey')
         return out
 
     def str_patron_price(self, ta: TokenArray) -> str:
         out = ""
         count = 0
         for i, color in enumerate(['white', 'blue', 'green', 'red', 'light_grey']):
-            if ta.tokens[i] != 0:
+            if ta.get_tokens()[i] != 0:
                 count += 1
-                out += c(f'[{ta.tokens[i]}]', color)
+                out += c(f'[{ta.get_tokens()[i]}]', color)
         out += (9 - 3 * count) * " "
         return out
 
@@ -226,8 +226,8 @@ class CliApp():
         out = ""
         count = 0
         for i, color in enumerate(['white', 'blue', 'green', 'red', 'light_grey']):
-            if ta.tokens[i] != 0:
-                out += c(f'({ta.tokens[i]})', color)
+            if ta.get_tokens()[i] != 0:
+                out += c(f'({ta.get_tokens()[i]})', color)
                 count += 1
             if count >= 2:
                 break
@@ -238,10 +238,10 @@ class CliApp():
         out = ""
         count = 0
         for i, color in enumerate(['white', 'blue', 'green', 'red', 'light_grey']):
-            if ta.tokens[i] != 0:
+            if ta.get_tokens()[i] != 0:
                 count += 1
                 if count > 2:
-                    out += c(f'({ta.tokens[i]})', color)
+                    out += c(f'({ta.get_tokens()[i]})', color)
         if count == 1:
             out += 6 * " "
         else:
@@ -250,6 +250,6 @@ class CliApp():
 
     def str_card_bonus(self, ta: TokenArray) -> str:
         for i, color in enumerate(['white', 'blue', 'green', 'red', 'light_grey']):
-            if ta.tokens[i] != 0:
+            if ta.get_tokens()[i] != 0:
                 return c('[]', color)
         return 'er'

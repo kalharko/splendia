@@ -48,7 +48,7 @@ class Player():
             self.patrons.append(patron_get)
 
     def notify_observers(self) -> Patron:
-        return self.observers.update(self.hand)
+        return self.observer.update(self.hand)
 
     def deposit_reserved_card(self, card: Card) -> None:
         self.reserved.add_card(card)
@@ -57,7 +57,7 @@ class Player():
             self.update_victory_points()
 
     def deposit_tokens(self, tokens: TokenArray) -> None:
-        self.tokens.deposit_tokens(tokens)
+        self.get_tokens().deposit_tokens(tokens)
 
     def nb_reserved_cards(self):
         return self.reserved.get_size()

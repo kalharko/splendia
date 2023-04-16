@@ -31,16 +31,16 @@ class BankController(metaclass=SingletonMeta):
             return TooMuchBankTokens()
 
     def withdraw(self, tokens: TokenArray) -> None:
-        if tokens.tokens[Color.GOLD.value] != 0:
+        if tokens.get_tokens()[Color.GOLD.value] != 0:
             return InvalidTakeTokenAction()
         if 2 < tokens.nb_of_tokens() > 3:
             return InvalidTakeTokenAction()
         if tokens.nb_of_tokens() == 2:
-            if sum([1 if x == 2 else 0 for x in tokens.tokens]) != 1:
+            if sum([1 if x == 2 else 0 for x in tokens.get_tokens()]) != 1:
                 return InvalidTakeTokenAction()
-            elif self.bank.tokens[tokens.tokens.index(2)] < 4:
+            elif self.bank.get_tokens()[tokens.get_tokens().index(2)] < 4:
                 return InvalidTakeTokenAction()
-        elif sum([1 if x == 1 else 0 for x in tokens.tokens]) != 3:
+        elif sum([1 if x == 1 else 0 for x in tokens.get_tokens()]) != 3:
             return InvalidTakeTokenAction()
 
         if error := self.bank.withdraw_tokens(tokens):

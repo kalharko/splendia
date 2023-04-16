@@ -25,7 +25,7 @@ class PatronController(metaclass=SingletonMeta):
     def withdraw(self, hand: Hand) -> Patron:
         token_player = hand.compute_hand_bonuses()
         for patron in self.patrons:
-            if token_player.can_buy(patron.requirements):
+            if token_player.can_pay(patron.requirements):
                 patron_temp = patron
                 self.patrons.remove(patron)
                 return patron_temp
