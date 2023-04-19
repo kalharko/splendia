@@ -63,7 +63,6 @@ class TokenArray():
         assert isinstance(other, TokenArray)
 
         # can pay without gold
-        with open('log.txt', 'a') as file: file.write('can_pay tokenarray : ' + str(type(self._tokens)) + '\n')
         comparison = [x >= y for x, y in zip(self._tokens, other.get_tokens()[:-1])]
         if comparison == [True for x in range(len(comparison))]:
             return True

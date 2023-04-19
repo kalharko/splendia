@@ -14,7 +14,10 @@ from model.utils.parsing import retrieve_and_parse_patrons
 class PatronController(metaclass=SingletonMeta):
     patrons: List[Patron]
 
-    def __init__(self, nbPlayer: int) -> None:
+    def __init__(self):
+        pass
+
+    def load(self, nbPlayer: int) -> None:
         patrons = retrieve_and_parse_patrons()
         random.shuffle(patrons)
         self.patrons = patrons[:nbPlayer + 1]

@@ -14,10 +14,14 @@ class GameManager():
     shopController: ShopController
 
     def __init__(self, nbPlayer: int) -> None:
-        self.bankController = BankController(nbPlayer)
-        self.patronController = PatronController(nbPlayer)
-        self.playerController = PlayerController(nbPlayer, self.patronController)
+        self.bankController = BankController()
+        self.bankController.load(nbPlayer)
+        self.patronController = PatronController()
+        self.patronController.load(nbPlayer)
+        self.playerController = PlayerController()
+        self.playerController.load(nbPlayer, self.patronController)
         self.shopController = ShopController()
+        self.shopController.load()
 
     def gather_board_state(self) -> None:
         # TODO: define what is a board state

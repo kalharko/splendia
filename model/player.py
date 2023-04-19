@@ -33,6 +33,8 @@ class Player():
         return self.reserved.get_card_price(cardId)
 
     def pay(self, price: TokenArray) -> None:
+        assert isinstance(price, TokenArray)
+
         if self.tokens.can_pay(price):
             self.tokens -= price
         else:
@@ -52,12 +54,10 @@ class Player():
 
     def deposit_reserved_card(self, card: Card) -> None:
         self.reserved.add_card(card)
-        if isinstance(patron := self.observer.update(self.hand.compute_hand_bonuses()), Patron):
-            self.patrons.append(patron)
-            self.update_victory_points()
 
     def deposit_tokens(self, tokens: TokenArray) -> None:
-        self.get_tokens().deposit_tokens(tokens)
+        if err := self.tokens.deposit_tokens(tokens):
+            return err
 
     def nb_reserved_cards(self):
         return self.reserved.get_size()

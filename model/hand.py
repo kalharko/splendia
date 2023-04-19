@@ -13,8 +13,8 @@ class Hand(CardStack):
 
     def get_card_price(self, cardId: int) -> TokenArray:
         for card in self.cards:
-            if card.id == cardId:
-                return card.id
+            if card.card_id == cardId:
+                return card.price
         return CardIdNotFound()
 
     def compute_hand_bonuses(self) -> TokenArray:
