@@ -1,9 +1,11 @@
 from dataclasses import dataclass
+from random import randint
 
 from model.bank_controller import BankController
 from model.patron_controller import PatronController
 from model.player_controller import PlayerController
 from model.shop_controller import ShopController
+from model.token_array import TokenArray
 
 
 @dataclass
@@ -12,16 +14,20 @@ class GameManager():
     patronController: PatronController
     playerController: PlayerController
     shopController: ShopController
+    nbPlayer: int
+    currentPlayer: int
+    firstPlayerId: int
+    userId: int
 
     def __init__(self, nbPlayer: int) -> None:
         self.bankController = BankController()
-        self.bankController.load(nbPlayer)
         self.patronController = PatronController()
-        self.patronController.load(nbPlayer)
         self.playerController = PlayerController()
-        self.playerController.load(nbPlayer, self.patronController)
         self.shopController = ShopController()
-        self.shopController.load()
+        self.currentPlayer = 0
+        self.userId = 0
+        self.firstPlayerId = 0
+        self.nbPlayer = 4
 
     def gather_board_state(self) -> None:
         # TODO: define what is a board state
@@ -65,3 +71,34 @@ class GameManager():
                 out[f'shop{x}{y}-price'] = self.shopController.ranks[yy].hand.cards[x].price
 
         return out
+
+    def launch_game(self, nbPlayer: int) -> None:
+        self.bankController.load(nbPlayer)
+        self.patronController.load(nbPlayer)
+        self.playerController.load(nbPlayer, self.patronController)
+        self.shopController.load()
+
+        self.nbPlayer = nbPlayer
+        self.firstPlayerId = randint(0, nbPlayer)
+        self.currentPlayer = self.firstPlayerId
+        self.userId = 0
+
+    def buy_card(self, cardId: int) -> None:
+        # TODO: return err si current player != userId
+        pass
+
+    def reserve_card(self, cardId: int) -> None:
+        # TODO: return err si current player != userId
+        pass
+
+    def reserve_card_on_pile(self, pile_level: int) -> None:
+        # TODO: return err si current player != userId
+        pass
+
+    def take_token(self, tokens: TokenArray) -> None:
+        # TODO: return err si current player != userId
+        pass
+
+    def cpu_turn(self) -> None:
+        # TODO: return err si current player != userId
+        pass

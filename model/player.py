@@ -9,7 +9,6 @@ from model.rank import Hand
 from model.card import Card
 from model.patron_controller import PatronController
 
-
 @dataclass
 class Player():
     player_id: int
@@ -18,7 +17,7 @@ class Player():
     tokens: TokenArray
     victoryPoints: VictoryPoint
     patrons: List[Patron]
-    observers: PatronController
+    observer: PatronController
 
     def __init__(self, player_id: int, observer: PatronController) -> None:
         self.player_id = player_id
