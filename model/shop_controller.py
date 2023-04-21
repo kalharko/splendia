@@ -5,13 +5,17 @@ from model.rank import Card, Rank
 from model.token_array import TokenArray
 from model.utils.parsing import retrieve_and_parse_cards
 from model.utils.singleton import SingletonMeta
+from model.utils.exception import CardIdNotFound
 
 
 @dataclass
 class ShopController(metaclass=SingletonMeta):
     ranks: List[Rank]
 
-    def __init__(self) -> None:
+    def __init__(self):
+        pass
+
+    def load(self) -> None:
         self.ranks = []
         all_cards = retrieve_and_parse_cards()
         self.ranks.append(Rank([x for x in all_cards if x.card_id < 40], 1))
@@ -28,4 +32,4 @@ class ShopController(metaclass=SingletonMeta):
         for rank in self.ranks:
             if isinstance((card := rank.withdraw_card(cardId)), Card):
                 return card
-        return None
+        return CardIdNotFound()
