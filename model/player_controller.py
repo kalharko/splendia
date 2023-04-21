@@ -28,7 +28,6 @@ class PlayerController(metaclass=SingletonMeta):
             print('aaa\n')
             return error
 
-
         BankController().deposit(price)
         if not isinstance(card := self.players[playerId].withdraw_reserved_card(cardId), Card):
             return card
@@ -54,6 +53,12 @@ class PlayerController(metaclass=SingletonMeta):
         self.players[playerId].deposit_reserved_card(card)
         if err := self.players[playerId].deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1])):
             return err
+
+    def reserve_pile_card(self, playerId: int, pileLevel: int) -> None:
+        if self.players[playerId].nb_reserved_cards() >= 3:
+            return TooMuchReservedCards()
+        if ShopController().can_withdraw_pile_card(pileLevel):
+            self.players[playerId].deposit_reserved_card(ShopController().withdraw_pile_card(pileLevel))
 
     def take_tokens(self, playerId: int, tokens: TokenArray) -> None:
         if (error := BankController().withdraw(tokens)) != None:

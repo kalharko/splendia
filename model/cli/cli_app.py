@@ -8,7 +8,7 @@ class CliApp():
     def __init__(self, nbPlayer: int) -> None:
         # game
         self.gm = GameManager(nbPlayer)
-        self.currentPlayer = 0
+        self.gm.launch_game(4)
 
         # constants
         self.ESCAPE = ['q']
@@ -47,7 +47,7 @@ class CliApp():
                 continue
             if command == 'token3':
                 tokens = [1 if x in arguments else 0 for x in ['white', 'blue', 'green', 'red', 'black']] + [0]
-                if err := self.gm.playerController.take_tokens(self.currentPlayer, TokenArray(tokens)):
+                if err := self.gm.take_token(TokenArray(tokens)):
                     print(err)
                     break
                 else:
@@ -55,20 +55,20 @@ class CliApp():
             elif command == 'token2':
                 tokens = [2 if x in arguments else 0 for x in ['white', 'blue', 'green', 'red', 'black']] + [0]
                 tokens = TokenArray(tokens)
-                if not self.gm.playerController.take_tokens(self.currentPlayer, tokens):
-                    self.nextPlayer()
+                if not self.gm.take_token(tokens):
+                    pass
             elif command == 'reserve':
                 cardId = self.gm.shopController.ranks[int(arguments[0])].hand.cards[int(arguments[1])].card_id
-                if not self.gm.playerController.reserve_card(self.currentPlayer, cardId):
-                    self.nextPlayer()
+                if not self.gm.reserve_card(cardId):
+                    pass
             elif command == 'buyshop':
                 cardId = self.gm.shopController.ranks[int(arguments[0])].hand.cards[int(arguments[1])].card_id
-                if not self.gm.playerController.buy_shop_card(self.currentPlayer, cardId):
-                    self.nextPlayer()
+                if not self.gm.buy_card(cardId):
+                    pass
             elif command == 'buyreserved':
                 cardId = self.gm.playerController.players[self.currentPlayer].reserved.cards[int(arguments[0])].card_id
-                if not self.gm.playerController.buy_reserved_card(self.currentPlayer, cardId):
-                    self.nextPlayer()
+                if not self.gm.buy_card(cardId):
+                    pass
             elif command == 'displayreserved':
                 if boardState['player-nbReserved'] == 0:
                     print('No reserved cards')
@@ -87,12 +87,6 @@ class CliApp():
 
     def get_input(self) -> str:
         return input('=> ')
-
-    def nextPlayer(self) -> None:
-        self.currentPlayer += 1
-        if self.currentPlayer == 4:
-            self.currentPlayer = 0
-        print('current player :', self.currentPlayer)
 
     def print_help(self) -> None:
         print("+-- Commands : take3 color,color,color                          --+")
@@ -194,6 +188,7 @@ class CliApp():
         print("+---------+----------------------------------+--------------------+")
 
     def str_token_array(self, ta: TokenArray) -> str:
+        assert isinstance(ta, TokenArray)
         out = ""
         out += c(f'({ta.get_tokens()[0]})', 'white')
         out += c(f'({ta.get_tokens()[1]})', 'blue')

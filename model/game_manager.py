@@ -6,6 +6,7 @@ from model.patron_controller import PatronController
 from model.player_controller import PlayerController
 from model.shop_controller import ShopController
 from model.token_array import TokenArray
+from model.utils.logger import Logger
 
 
 @dataclass
@@ -37,22 +38,22 @@ class GameManager():
         out = {}
         out['cpu1-vp'] = self.playerController.players[0].victoryPoints.value
         out['cpu1-bonus'] = self.playerController.players[0].hand.compute_hand_bonuses()
-        out['cpu1-tokens'] = self.playerController.players[0].get_tokens()
+        out['cpu1-tokens'] = self.playerController.players[0].tokens
         out['cpu1-nbReserved'] = self.playerController.players[0].reserved.get_size()
 
         out['cpu2-vp'] = self.playerController.players[1].victoryPoints.value
         out['cpu2-bonus'] = self.playerController.players[1].hand.compute_hand_bonuses()
-        out['cpu2-tokens'] = self.playerController.players[1].get_tokens()
+        out['cpu2-tokens'] = self.playerController.players[1].tokens
         out['cpu2-nbReserved'] = self.playerController.players[1].reserved.get_size()
 
         out['cpu3-vp'] = self.playerController.players[2].victoryPoints.value
         out['cpu3-bonus'] = self.playerController.players[2].hand.compute_hand_bonuses()
-        out['cpu3-tokens'] = self.playerController.players[2].get_tokens()
+        out['cpu3-tokens'] = self.playerController.players[2].tokens
         out['cpu3-nbReserved'] = self.playerController.players[2].reserved.get_size()
 
         out['player-vp'] = self.playerController.players[3].victoryPoints.value
         out['player-bonus'] = self.playerController.players[3].hand.compute_hand_bonuses()
-        out['player-tokens'] = self.playerController.players[3].get_tokens()
+        out['player-tokens'] = self.playerController.players[3].tokens
         out['player-nbReserved'] = self.playerController.players[3].reserved.get_size()
         out['player-reserved'] = []
         for i in range(out['player-nbReserved']):
@@ -83,22 +84,47 @@ class GameManager():
         self.currentPlayer = self.firstPlayerId
         self.userId = 0
 
+    def next_player(self) -> None:
+        self.currentPlayer += 1
+        if self.currentPlayer >= self.nbPlayer:
+            self.currentPlayer = 0
+
     def buy_card(self, cardId: int) -> None:
-        # TODO: return err si current player != userId
-        pass
+        if self.shopController.has_card(cardId):
+            if err := self.playerController.buy_shop_card(self.currentPlayer, cardId):
+                Logger().log(0, err, 'GameManager buy_card')
+                return err
+        elif err := self.playerController.buy_reserved_card(self.currentPlayer, cardId):
+                Logger().log(0, err, 'GameManager buy_card')
+                return err
+
+        if err == None:
+            self.next_player()
 
     def reserve_card(self, cardId: int) -> None:
-        # TODO: return err si current player != userId
-        pass
+        if err := self.playerController.reserve_card(self.currentPlayer, cardId):
+            Logger().log(0, err, 'GameManager reserve_card')
+            return err
 
-    def reserve_card_on_pile(self, pile_level: int) -> None:
-        # TODO: return err si current player != userId
-        pass
+        if err == None:
+            self.next_player()
+
+    def reserve_pile_card(self, pile_level: int) -> None:
+        if err := self.playerController.reserve_pile_card(self.currentPlayer, pileLevel):
+            Logger().log(0, err, 'GameManager reserve_pile_card')
+            return err
+
+        if err == None:
+            self.next_player()
 
     def take_token(self, tokens: TokenArray) -> None:
-        # TODO: return err si current player != userId
-        pass
+        if err := self.playerController.take_tokens(self.currentPlayer, tokens):
+            Logger().log(0, err, 'GameManager take_token')
+            return err
+
+        if err == None:
+            self.next_player()
 
     def cpu_turn(self) -> None:
-        # TODO: return err si current player != userId
+        # TODO: call ai
         pass

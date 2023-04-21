@@ -11,7 +11,7 @@ gameManager: GameManager = GameManager(4)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('front/index.html')
+    return render_template('front/splendia/src/index.html')
 
 
 @app.route('/api/launchGame/<nbPlayer>')

@@ -22,6 +22,12 @@ class ShopController(metaclass=SingletonMeta):
         self.ranks.append(Rank([x for x in all_cards if 40 <= x.card_id < 70], 2))
         self.ranks.append(Rank([x for x in all_cards if 70 <= x.card_id], 3))
 
+    def has_card(self, cardId: int) -> bool:
+        for rank in self.ranks:
+            if isinstance((price := rank.get_card_price(cardId)), TokenArray):
+                return True
+        return False
+
     def get_card_price(self, cardId: int) -> Card:
         for rank in self.ranks:
             if isinstance((price := rank.get_card_price(cardId)), TokenArray):
@@ -33,3 +39,13 @@ class ShopController(metaclass=SingletonMeta):
             if isinstance((card := rank.withdraw_card(cardId)), Card):
                 return card
         return CardIdNotFound()
+
+    def can_withdraw_pile_card(self, pileLevel: int) -> bool:
+        assert isinstance(pileLevel, int)
+        assert 0 <= pileLevel <= 3
+        return self.ranks[pileLevel].can_draw()
+
+    def withdraw_pile_card(self, pileLevel: int) -> Card:
+        assert isinstance(pileLevel, int)
+        assert 0 <= pileLevel <= 3
+        return self.ranks[pileLevel].withdraw_pile_card()

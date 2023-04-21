@@ -49,3 +49,9 @@ class InvalidTakeTokenAction(Exception):
     "Raised when an invalid take token action is tried"
     def __init__(self):
         super().__init__()
+
+
+class EmptyDeck(Exception):
+    "Raised when a deck is empty and can not be drawn from"
+    def __init__(self):
+        super().__init__()
