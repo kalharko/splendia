@@ -32,3 +32,9 @@ class Rank():
             self.hand.add_card(self.deck.draw())
             return card
         return None
+
+    def can_draw(self) -> bool:
+        return self.deck.can_draw()
+
+    def withdraw_pile_card(self) -> Card:
+        return self.deck.draw()

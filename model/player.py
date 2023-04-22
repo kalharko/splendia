@@ -9,7 +9,6 @@ from model.rank import Hand
 from model.card import Card
 from model.patron_controller import PatronController
 
-
 @dataclass
 class Player():
     player_id: int
@@ -18,7 +17,7 @@ class Player():
     tokens: TokenArray
     victoryPoints: VictoryPoint
     patrons: List[Patron]
-    observers: PatronController
+    observer: PatronController
 
     def __init__(self, player_id: int, observer: PatronController) -> None:
         self.player_id = player_id
@@ -27,12 +26,14 @@ class Player():
         self.tokens = TokenArray()
         self.victoryPoints = VictoryPoint(0)
         self.patrons = []
-        self.observers = observer
+        self.observer = observer
 
     def get_card_price(self, cardId: int) -> TokenArray:
         return self.reserved.get_card_price(cardId)
 
     def pay(self, price: TokenArray) -> None:
+        assert isinstance(price, TokenArray)
+
         if self.tokens.can_pay(price):
             self.tokens -= price
         else:
@@ -48,13 +49,21 @@ class Player():
             self.patrons.append(patron_get)
 
     def notify_observers(self) -> Patron:
-        return self.observers.update(self.hand)
+        return self.observer.update(self.hand)
 
     def deposit_reserved_card(self, card: Card) -> None:
         self.reserved.add_card(card)
 
     def deposit_tokens(self, tokens: TokenArray) -> None:
-        self.tokens.deposit_tokens(tokens)
+        if err := self.tokens.deposit_tokens(tokens):
+            return err
 
     def nb_reserved_cards(self):
         return self.reserved.get_size()
+
+    def update_victory_points(self):
+        out = 0
+        out += self.hand.compute_victory_points()
+        for patron in self.patrons:
+            out += patron.victoryPoints.get_value()
+        self.victoryPoints.set_value(out)
