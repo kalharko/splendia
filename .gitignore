@@ -131,4 +131,9 @@ dmypy.json
 # Plant UML
 out
 .out/
-.vscode/launch.json
+
+# Vscode
+.vscode/
+
+# log
+log.txt
