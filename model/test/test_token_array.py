@@ -52,6 +52,8 @@ class Test_TokenArray(TestCase):
         ta2 = TokenArray([1, 1, 1, 1, 3, 0])
         self.assertTrue(ta1.can_pay(ta2))
 
+
+
     def test_pay(self):
         ta1 = TokenArray([2, 2, 2, 2, 2, 2])
         ta1.pay(TokenArray([1, 1, 1, 1, 3, 0]))
