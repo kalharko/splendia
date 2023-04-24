@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from typing import List
-
 from model.utils.exception import TooMuchReservedCards
 from model.patron_controller import PatronController
 from model.bank_controller import BankController

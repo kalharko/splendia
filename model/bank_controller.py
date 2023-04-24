@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-
+from logging import raiseExceptions
+from logging import log
 from model.utils.exception import NotEnoughTokens, TooMuchBankTokens,InvalidTakeTokenAction
 from model.utils.singleton import SingletonMeta
 from model.token_array import TokenArray, Color
@@ -11,10 +12,10 @@ class BankController(metaclass=SingletonMeta):
     bank: TokenArray = None
     maxInBank: TokenArray = None
 
-    def __init__(self):
+    def __init__(self,nb_player=4):
         if not self.bank:
             Logger().log(1, self, 'BankController not loaded')
-            self.load(4)
+            self.load(nb_player)
 
     def load(self, nbPlayer: int) -> None:
         # number of tokens depends on the number of players

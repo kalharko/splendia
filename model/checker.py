@@ -8,22 +8,22 @@ class Checker:
 
     @staticmethod
     def possible_token_to_take_2(player_token: TokenArray, bank_token: TokenArray):
-        token_list = [0, 0, 0, 0, 0, 0]
+        token_list = [0, 0, 0, 0, 0]
         higher_than_8 = []
         iterator = 0
         number_of_token = 0
         if (numpy.array(player_token.get_tokens()).sum()) > 8:
-            return [0, 0, 0, 0, 0, 0]
+            return [0, 0, 0, 0, 0]
 
         for token in bank_token.get_tokens():
-
+            if iterator >= 5:
+                break
             if token >= 4:
                 token_list[iterator] = 1
             else:
                 token_list[iterator] = 0
             iterator += 1
 
-        token_list[-1] = 0
         return token_list
 
     @staticmethod

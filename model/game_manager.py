@@ -20,19 +20,47 @@ class GameManager():
     firstPlayerId: int
     userId: int
 
-    def __init__(self, nbPlayer: int) -> None:
-        self.bankController = BankController()
+    def __init__(self,nbPlayer=2) -> None:
+        self.bankController = BankController(nbPlayer)
         self.patronController = PatronController()
         self.playerController = PlayerController()
         self.shopController = ShopController()
         self.currentPlayer = 0
         self.userId = 0
         self.firstPlayerId = 0
-        self.nbPlayer = 4
 
-    def gather_board_state(self) -> None:
-        # TODO: define what is a board state
-        pass
+    def gather_board_state(self,nb_players=2) -> None:
+        if nb_players==2:
+
+            dictionnary = {
+                'player1' : {
+                    'cards' : self.playerController.players[0].hand.cards,
+                    'tokens' : self.playerController.players[0].tokens.get_tokens(),
+                    'reserved' : self.playerController.players[0].reserved.cards,
+                    'nobles' : self.playerController.players[0].patrons
+                },
+                'player2' : {
+                    'cards' : self.playerController.players[1].hand.cards,
+                    'tokens' : self.playerController.players[1].tokens.get_tokens(),
+                    'reserved' : self.playerController.players[1].reserved.cards,
+                    'nobles' : self.playerController.players[1].patrons
+                },
+                'shop' : {
+                    'rank1_cards' : self.shopController.ranks[0].hand.cards,
+                    'rank2_cards' : self.shopController.ranks[1].hand.cards,
+                    'rank3_cards' : self.shopController.ranks[2].hand.cards,
+                    'rank1_size'  : self.shopController.ranks[0].deck.get_size(),
+                    'rank2_size'  : self.shopController.ranks[1].deck.get_size(),
+                    'rank3_size'  : self.shopController.ranks[2].deck.get_size(),
+                    'nobles' : self.patronController.patrons,
+                    'tokens' : self.bankController.bank,
+                },
+
+
+                }
+            return dictionnary
+
+
 
     def gather_cli_board_state(self) -> dict:
         out = {}
@@ -46,7 +74,7 @@ class GameManager():
         out['cpu2-tokens'] = self.playerController.players[1].tokens
         out['cpu2-nbReserved'] = self.playerController.players[1].reserved.get_size()
 
-        out['cpu3-vp'] = self.playerController.players[2].victoryPoints.value
+        """out['cpu3-vp'] = self.playerController.players[2].victoryPoints.value
         out['cpu3-bonus'] = self.playerController.players[2].hand.compute_hand_bonuses()
         out['cpu3-tokens'] = self.playerController.players[2].tokens
         out['cpu3-nbReserved'] = self.playerController.players[2].reserved.get_size()
@@ -54,13 +82,13 @@ class GameManager():
         out['player-vp'] = self.playerController.players[3].victoryPoints.value
         out['player-bonus'] = self.playerController.players[3].hand.compute_hand_bonuses()
         out['player-tokens'] = self.playerController.players[3].tokens
-        out['player-nbReserved'] = self.playerController.players[3].reserved.get_size()
-        out['player-reserved'] = []
+        out['player-nbReserved'] = self.playerController.players[3].reserved.get_size()"""
+        """out['player-reserved'] = []
         for i in range(out['player-nbReserved']):
             out['player-reserved'].append([
                 self.playerController.players[3].reserved.cards[i].price,
                 self.playerController.players[3].reserved.cards[i].bonus,
-                self.playerController.players[3].reserved.cards[i].victoryPoint])
+                self.playerController.players[3].reserved.cards[i].victoryPoint])"""
 
         out['bank'] = self.bankController.bank.get_tokens()
         out['patrons'] = [x.requirements for x in self.patronController.patrons]
@@ -110,7 +138,7 @@ class GameManager():
             self.next_player()
 
     def reserve_pile_card(self, pile_level: int) -> None:
-        if err := self.playerController.reserve_pile_card(self.currentPlayer, pileLevel):
+        if err := self.playerController.reserve_pile_card(self.currentPlayer, pile_level):
             Logger().log(0, err, 'GameManager reserve_pile_card')
             return err
 

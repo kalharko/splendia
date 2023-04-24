@@ -15,6 +15,7 @@ class PatronController(metaclass=SingletonMeta):
     patrons: List[Patron]
 
     def __init__(self):
+
         pass
 
     def load(self, nbPlayer: int) -> None:

@@ -38,7 +38,7 @@ def retrieve_and_parse_cards() -> list[Card]:
 
 def retrieve_and_parse_patrons() -> list[Patron]:
     df = pd.read_csv('model/data/card.csv')
-    df.set_index('Id', inplace=True)
+    #df.set_index('Id', inplace=True)
 
     patron_list = df.apply(
         lambda patron: Patron(
