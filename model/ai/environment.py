@@ -45,7 +45,7 @@ class SplendorEnv(gym.Env):
         pass
 
     def from_board_states_to_obs(self):
-        state = self.game.gather_board_state()
+        state = self.game.gather_ia_board_state()
         obs = numpy.zeros(88)
         obs[0:6] = state['player1']['tokens']
         # if the length of the list smaller than 20, we padd with 90
@@ -61,7 +61,10 @@ class SplendorEnv(gym.Env):
             for i in range(5-len(list_of_nobles)):
                 list_of_nobles.append(10)
 
+
         obs[26:31] = list_of_nobles
+
+        self.reserved_cards = [card.card_id for card in state['player1']['reserved']]
         # same for reserved cards, if the length of the list smaller than 3, we padd with 90
         list_of_reserved = [card.card_id for card in state['player1']['reserved']]
         if len(list_of_reserved) < 3:
@@ -90,6 +93,7 @@ class SplendorEnv(gym.Env):
         obs[65:68] = list_of_reserved
 
         # same for shop
+        self.shop1_cards = state['shop']['rank1_cards']
         list_of_cards_rank1 = [card.card_id for card in state['shop']['rank1_cards']]
 
         if len(list_of_cards_rank1) < 4:
@@ -97,12 +101,14 @@ class SplendorEnv(gym.Env):
                 list_of_cards_rank1.append(90)
         obs[68:72] = list_of_cards_rank1
 
+        self.shop2_cards = state['shop']['rank2_cards']
         list_of_cards_rank2 = [card.card_id for card in state['shop']['rank2_cards']]
         if len(list_of_cards_rank2) < 4:
             for i in range(4 - len(list_of_cards_rank2)):
                 list_of_cards_rank2.append(90)
         obs[72:76] = list_of_cards_rank2
 
+        self.shop3_cards = state['shop']['rank3_cards']
         list_of_cards_rank3 = [card.card_id for card in state['shop']['rank3_cards']]
         if len(list_of_cards_rank3) < 4:
             for i in range(4 - len(list_of_cards_rank3)):
@@ -122,7 +128,7 @@ class SplendorEnv(gym.Env):
         self.obs = obs
         self.get_mask()
     def get_mask(self):
-        state = self.game.gather_board_state()
+        state = self.game.gather_ia_board_state()
         mask = numpy.zeros(88)
         shop_cards = state['shop']['rank1_cards'] + state['shop']['rank2_cards'] + state['shop']['rank3_cards']
         mask = Checker.get_mask(state['player1']['cards'],shop_cards,state['shop']['rank1_size'],state['shop']['rank2_size'],state['shop']['rank3_size'],len(state['player1']['reserved']),TokenArray(state['player1']['tokens']),state['shop']['tokens'])
@@ -130,12 +136,119 @@ class SplendorEnv(gym.Env):
 
 
     def reset(self):
+        self.game.launch_game(2)
+        self.from_board_states_to_obs()
         pass
 
     def step(self, action):
-        pass
+        if action == 0:
+            # take [1,1,1,0,0,0] tokens
+            self.game.take_token(TokenArray([1,1,1,0,0,0]))
+        elif action ==1:
+            # take [1,1,0,1,0,0] tokens
+            self.game.take_token(TokenArray([1,1,0,1,0,0]))
+        elif action ==2:
+            # take [1,1,0,0,1,0] tokens
+            self.game.take_token(TokenArray([1,1,0,0,1,0]))
+        elif action ==3:
+            # take [1,0,1,1,0,0] tokens
+            self.game.take_token(TokenArray([1,0,1,1,0,0]))
+        elif action ==4:
+            # take [1,0,1,0,1,0] tokens
+            self.game.take_token(TokenArray([1,0,1,0,1,0]))
+        elif action ==5:
+            # take [1,0,0,1,1,0] tokens
+            self.game.take_token(TokenArray([1,0,0,1,1,0]))
+        elif action ==6:
+            # take [0,1,1,1,0,0] tokens
+            self.game.take_token(TokenArray([0,1,1,1,0,0]))
+        elif action ==7:
+            # take [0,1,1,0,1,0] tokens
+            self.game.take_token(TokenArray([0,1,1,0,1,0]))
+        elif action ==8:
+            # take [0,1,0,1,1,0] tokens
+            self.game.take_token(TokenArray([0,1,0,1,1,0]))
+        elif action ==9:
+            # take [0,0,1,1,1,0] tokens
+            self.game.take_token(TokenArray([0,0,1,1,1,0]))
+        elif action ==10:
+            self.game.take_token(TokenArray([2,0,0,0,0,0]))
+        elif action ==11:
+            self.game.take_token(TokenArray([0,2,0,0,0,0]))
+        elif action ==12:
+            self.game.take_token(TokenArray([0,0,2,0,0,0]))
+        elif action ==13:
+            self.game.take_token(TokenArray([0,0,0,2,0,0]))
+        elif action ==14:
+            self.game.take_token(TokenArray([0,0,0,0,2,0]))
+        elif action ==15:
+            self.game.buy_card(self.shop1_cards[0].card_id)
+        elif action ==16:
+            self.game.buy_card(self.shop1_cards[1].card_id)
+        elif action ==17:
+            self.game.buy_card(self.shop1_cards[2].card_id)
+        elif action ==18:
+            self.game.buy_card(self.shop1_cards[3].card_id)
+        elif action ==19:
+            self.game.buy_card(self.shop2_cards[0].card_id)
+        elif action ==20:
+            self.game.buy_card(self.shop2_cards[1].card_id)
+        elif action ==21:
+            self.game.buy_card(self.shop2_cards[2].card_id)
+        elif action ==22:
+            self.game.buy_card(self.shop2_cards[3].card_id)
+        elif action ==23:
+            self.game.buy_card(self.shop3_cards[0].card_id)
+        elif action ==24:
+            self.game.buy_card(self.shop3_cards[1].card_id)
+        elif action ==25:
+            self.game.buy_card(self.shop3_cards[2].card_id)
+        elif action ==26:
+            self.game.buy_card(self.shop3_cards[3].card_id)
+        elif action ==27:
+            self.game.buy_card(self.reserved_cards[0].card_id)
+        elif action ==28:
+            self.game.buy_card(self.reserved_cards[1].card_id)
+        elif action ==29:
+            self.game.buy_card(self.reserved_cards[2].card_id)
+        elif action ==30:
+            self.game.reserve_card(self.shop1_cards[0].card_id)
+        elif action ==31:
+            self.game.reserve_card(self.shop1_cards[1].card_id)
+        elif action ==32:
+            self.game.reserve_card(self.shop1_cards[2].card_id)
+        elif action ==33:
+            self.game.reserve_card(self.shop1_cards[3].card_id)
+        elif action ==34:
+            self.game.reserve_card(self.shop2_cards[0].card_id)
+        elif action ==35:
+            self.game.reserve_card(self.shop2_cards[1].card_id)
+        elif action ==36:
+            self.game.reserve_card(self.shop2_cards[2].card_id)
+        elif action ==37:
+            self.game.reserve_card(self.shop2_cards[3].card_id)
+        elif action ==38:
+            self.game.reserve_card(self.shop3_cards[0].card_id)
+        elif action ==39:
+            self.game.reserve_card(self.shop3_cards[1].card_id)
+        elif action ==40:
+            self.game.reserve_card(self.shop3_cards[2].card_id)
+        elif action ==41:
+            self.game.reserve_card(self.shop3_cards[3].card_id)
+        elif action ==42:
+            self.game.reserve_pile_card(0)
+        elif action ==43:
+            self.game.reserve_pile_card(1)
+        elif action ==44:
+            self.game.reserve_pile_card(2)
 
+        obs = self.from_board_states_to_obs()
+        reward = self.game.playerController.players[0].victoryPoints
+        done = False
+        info = {}
+        return obs, reward, done, info
     def render(self):
+        # prin
         pass
 
     def close(self):

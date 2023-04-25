@@ -29,7 +29,7 @@ class GameManager():
         self.userId = 0
         self.firstPlayerId = 0
 
-    def gather_board_state(self,nb_players=2) -> None:
+    def gather_ia_board_state(self, nb_players=2) -> None:
         if nb_players==2:
 
             dictionnary = {
