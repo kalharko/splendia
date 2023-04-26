@@ -47,20 +47,20 @@ class PlayerController(metaclass=SingletonMeta):
             return TooMuchReservedCards()
         if not isinstance(card := ShopController().withdraw_card(cardId), Card):
             return card
-        BankController().withdraw(TokenArray([0, 0, 0, 0, 0, 1]))
         self.players[playerId].deposit_reserved_card(card)
-        if err := self.players[playerId].deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1])):
-            return err
+        if not BankController().withdraw(TokenArray([0, 0, 0, 0, 0, 1])):
+            if err := self.players[playerId].deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1])):
+                return err
 
     def reserve_pile_card(self, playerId: int, pileLevel: int) -> None:
         if self.players[playerId].nb_reserved_cards() >= 3:
             return TooMuchReservedCards()
         if not ShopController().can_withdraw_pile_card(pileLevel):
             return EmptyDeck()
-        BankController().withdraw(TokenArray([0, 0, 0, 0, 0, 1]))
         self.players[playerId].deposit_reserved_card(ShopController().withdraw_pile_card(pileLevel))
-        if err := self.players[playerId].deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1])):
-            return err
+        if not BankController().withdraw(TokenArray([0, 0, 0, 0, 0, 1])):
+            if err := self.players[playerId].deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1])):
+                return err
 
     def take_tokens(self, playerId: int, tokens: TokenArray) -> None:
         if error := BankController().withdraw(tokens):
