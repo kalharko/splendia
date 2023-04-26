@@ -1,8 +1,3 @@
-import traceback
-
-from model.utils.logger import Logger
-
-
 class TooMuchReservedCards(Exception):
     "Raised when a players tries to reserve a card but already has 3"
     def __init__(self):

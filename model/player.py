@@ -9,6 +9,7 @@ from model.rank import Hand
 from model.card import Card
 from model.patron_controller import PatronController
 
+
 @dataclass
 class Player():
     player_id: int

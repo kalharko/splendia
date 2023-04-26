@@ -4,11 +4,9 @@ import random
 
 from model.rank import Hand
 from model.patron import Patron
-from model.victory_point import VictoryPoint
-from model.token_array import TokenArray
 from model.utils.singleton import SingletonMeta
-import pandas as pd
 from model.utils.parsing import retrieve_and_parse_patrons
+
 
 @dataclass
 class PatronController(metaclass=SingletonMeta):
