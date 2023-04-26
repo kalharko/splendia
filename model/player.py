@@ -32,11 +32,14 @@ class Player():
     def get_card_price(self, cardId: int) -> TokenArray:
         return self.reserved.get_card_price(cardId)
 
+    def can_pay(self, price: TokenArray) -> None:
+        return self.tokens.can_pay(price)
+
     def pay(self, price: TokenArray) -> None:
         assert isinstance(price, TokenArray)
 
         if self.tokens.can_pay(price):
-            self.tokens -= price
+            self.tokens.pay(price)
         else:
             return PlayerCanNotPay()
 

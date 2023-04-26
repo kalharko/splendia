@@ -50,3 +50,9 @@ class EmptyDeck(Exception):
     "Raised when a deck is empty and can not be drawn from"
     def __init__(self):
         super().__init__()
+
+
+class InvalidRejectTokenAction(Exception):
+    "Raised when a reject token action is invalid"
+    def __init__(self):
+        super().__init__()

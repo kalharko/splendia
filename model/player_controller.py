@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import List
-from model.utils.exception import TooMuchReservedCards
+from model.utils.exception import TooMuchReservedCards, InvalidRejectTokenAction, EmptyDeck
 from model.patron_controller import PatronController
 from model.bank_controller import BankController
 from model.shop_controller import ShopController
@@ -47,8 +47,7 @@ class PlayerController(metaclass=SingletonMeta):
             return TooMuchReservedCards()
         if not isinstance(card := ShopController().withdraw_card(cardId), Card):
             return card
-        if error := BankController().withdraw(TokenArray([0, 0, 0, 0, 0, 1])):
-            return error
+        BankController().withdraw(TokenArray([0, 0, 0, 0, 0, 1]))
         self.players[playerId].deposit_reserved_card(card)
         if err := self.players[playerId].deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1])):
             return err
@@ -56,14 +55,28 @@ class PlayerController(metaclass=SingletonMeta):
     def reserve_pile_card(self, playerId: int, pileLevel: int) -> None:
         if self.players[playerId].nb_reserved_cards() >= 3:
             return TooMuchReservedCards()
-        if ShopController().can_withdraw_pile_card(pileLevel):
-            self.players[playerId].deposit_reserved_card(ShopController().withdraw_pile_card(pileLevel))
+        if not ShopController().can_withdraw_pile_card(pileLevel):
+            return EmptyDeck()
+        BankController().withdraw(TokenArray([0, 0, 0, 0, 0, 1]))
+        self.players[playerId].deposit_reserved_card(ShopController().withdraw_pile_card(pileLevel))
+        if err := self.players[playerId].deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1])):
+            return err
 
     def take_tokens(self, playerId: int, tokens: TokenArray) -> None:
-        if (error := BankController().withdraw(tokens)) != None:
-            with open('log.txt', 'a') as file: file.write('err' + str(type(error)) + '\n')
+        if error := BankController().withdraw(tokens):
             return error
         self.players[playerId].deposit_tokens(tokens)
+
+    def reject_tokens(self, playerId: int, tokens: TokenArray) -> None:
+        if not (self.players[playerId].tokens.nb_of_tokens() - tokens.nb_of_tokens()) == 10:
+            return InvalidRejectTokenAction
+        if not self.players[playerId].can_pay(tokens):
+            return InvalidRejectTokenAction
+        if not BankController().can_deposit(tokens):
+            return InvalidRejectTokenAction
+
+        self.players[playerId].pay(tokens)
+        BankController().deposit(tokens)
 
     def cheat_take_tokens(self, playerId: int, tokens: TokenArray) -> None:
         BankController().cheat_withdraw(tokens)

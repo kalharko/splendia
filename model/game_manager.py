@@ -119,6 +119,8 @@ class GameManager():
                 Logger().log(0, err, 'GameManager buy_card')
                 return err
         elif err := self.playerController.buy_reserved_card(self.currentPlayer, cardId):
+            Logger().log(0, err, 'GameManager buy_card')
+            return err
 
         if err is None:
             self.next_player()
@@ -146,6 +148,13 @@ class GameManager():
 
         if err is None:
             self.next_player()
+
+    def reject_token(self, tokens: TokenArray) -> None:
+        if err := self.playerController.reject_tokens(self.currentPlayer, tokens):
+            Logger().log(0, err, 'GameManager reject_token')
+            return err
+
+        if err is None:
             self.next_player()
 
     def cpu_turn(self) -> None:
