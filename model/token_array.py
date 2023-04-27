@@ -25,8 +25,8 @@ class TokenArray():
     _tokens: List[int]
 
     def __init__(self, value: List[int] = None) -> None:
-        assert isinstance(value, list) or value == None
-        assert value == None or len(value) == 6
+        assert isinstance(value, list) or value is None
+        assert value is None or len(value) == 6
         self._tokens = value if value else [0, 0, 0, 0, 0, 0]
 
     def withdraw_token(self, color: Color, amount: int) -> None:
@@ -36,7 +36,7 @@ class TokenArray():
         else:
             return NotEnoughTokens()
 
-    def withdraw_tokens(self, tokens) -> None: #tokens : TokenArray
+    def withdraw_tokens(self, tokens) -> None:  # tokens : TokenArray
         assert isinstance(tokens, TokenArray)
         if not self.can_withdraw(tokens):
             return NotEnoughTokens()
@@ -46,14 +46,14 @@ class TokenArray():
     def deposit_token(self, color: Color, amount: int) -> None:
         self._tokens[color.value] += amount
 
-    def deposit_tokens(self, tokens) -> None: #tokens : TokenArray
+    def deposit_tokens(self, tokens) -> None:  # tokens : TokenArray
         assert isinstance(tokens, TokenArray)
         self._tokens = [x + y for x, y in zip(self._tokens, tokens.get_tokens())]
 
     def nb_of_tokens(self):
         return sum(self._tokens)
 
-    def can_withdraw(self, other) -> bool: #tokens : TokenArray
+    def can_withdraw(self, other) -> bool:  # tokens : TokenArray
         assert isinstance(other, TokenArray)
         comparison = [x >= y for x, y in zip(self._tokens, other.get_tokens())]
         return comparison == [True for x in range(len(comparison))]
@@ -73,7 +73,7 @@ class TokenArray():
             return True
         return False
 
-    def pay(self, other: 'TokenArray') -> None: #other: TokenArray
+    def pay(self, other: 'TokenArray') -> None:  # other: TokenArray
         assert isinstance(other, TokenArray)
         assert other.get_tokens()[Color.GOLD.value] == 0
         assert self.can_pay(other)

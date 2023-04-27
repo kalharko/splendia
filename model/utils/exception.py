@@ -1,8 +1,3 @@
-import traceback
-
-from model.utils.logger import Logger
-
-
 class TooMuchReservedCards(Exception):
     "Raised when a players tries to reserve a card but already has 3"
     def __init__(self):
@@ -53,5 +48,11 @@ class InvalidTakeTokenAction(Exception):
 
 class EmptyDeck(Exception):
     "Raised when a deck is empty and can not be drawn from"
+    def __init__(self):
+        super().__init__()
+
+
+class InvalidRejectTokenAction(Exception):
+    "Raised when a reject token action is invalid"
     def __init__(self):
         super().__init__()
