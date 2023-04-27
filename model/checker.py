@@ -67,30 +67,41 @@ class Checker:
         return mask_list
 
     @staticmethod
-    def possible_card_to_buy(player_token: TokenArray, shop_cards: list[Card]):
+    def possible_card_to_buy(player_token: TokenArray, shop_cards: list[Card], player_hand: list[Card], player):
         mask = []
-        for card in shop_cards:
-            if card is None:
-                mask.append(0)
-            else:
-                if player_token.can_pay(card.price):
-                    mask.append(1)
-                else:
+        count_not_none = [card for card in player_hand if card is not None]
+        if len(count_not_none) == 20:
+            return [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        for rank_cards in shop_cards:
+            for card in rank_cards:
+                if card is None:
                     mask.append(0)
+                else:
+                    boolean , _ = player.can_pay_with_reduced_price(card.price)
+                    if boolean:
+                        mask.append(1)
+                    else:
+                        mask.append(0)
+        if len(mask) < 12:
+            for i in range(12 - len(mask)):
+                mask.append(0)
         return mask
 
     @staticmethod
-    def possible_card_to_buy_in_reserve(player_token: TokenArray, reserved_cards: list[Card]):
+    def possible_card_to_buy_in_reserve(player_token: TokenArray, reserved_cards: list[Card], player_hand: list[Card],player):
 
         mask = []
-        if len(reserved_cards) == 0:
+        count_not_none = [card for card in player_hand if card is not None]
+        if len(count_not_none) == 20:
+
             return [0, 0, 0]
 
         for card in reserved_cards:
             if card is None:
                 mask.append(0)
             else:
-                if player_token.can_pay(card.price):
+                boolean , _ = player.can_pay_with_reduced_price(card.price)
+                if boolean:
                     mask.append(1)
                 else:
                     mask.append(0)
@@ -101,17 +112,22 @@ class Checker:
         mask = []
         if player_reserved_cards == 3:
             return [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        for rank_cards in shop_cards:
 
-        for card in shop_cards:
-            if card is None:
+            for card in rank_cards:
+                if card is None:
+                    mask.append(0)
+                else:
+                    mask.append(1)
+        if len(mask) < 12:
+            for i in range(12 - len(mask)):
                 mask.append(0)
-            else:
-                mask.append(1)
         return mask
 
     @staticmethod
     def possible_card_to_reserve_top_deck(player_reserved_number: int, tier1: int, tier2: int, tier3: int):
         mask = []
+
         if (player_reserved_number) == 3:
             return [0, 0, 0]
 
@@ -132,7 +148,8 @@ class Checker:
 
     @staticmethod
     def get_mask(player_hand: list[Card], shop_cards: list[Card], tier1: int, tier2: int, tier3: int,
-                 player_reserved_number: int, player_token: TokenArray, bank_token: TokenArray):
+                 player_reserved_number: int, player_token: TokenArray, bank_token: TokenArray,
+                 player_reserved_cards: list[Card], player):
         """
         the mask :
         10 bites for 10 possible combination of 3 tokens to take
@@ -142,12 +159,17 @@ class Checker:
         12 bites to reserve in the shop
         3 bites to reserve card at the top of the deck
         """
-        mask = numpy.zeros(45)
+        # count none values of player_reserved cards
+
+        mask = numpy.zeros(46)
         mask[0:10] = Checker.possible_token_to_take_3(player_token, bank_token)
         mask[10:15] = Checker.possible_token_to_take_2(player_token, bank_token)
-        mask[15:27] = Checker.possible_card_to_buy(player_token, shop_cards)
-        mask[27:30] = Checker.possible_card_to_buy_in_reserve(player_token, player_hand)
+        mask[15:27] = Checker.possible_card_to_buy(player_token, shop_cards, player_hand, player)
+        mask[27:30] = Checker.possible_card_to_buy_in_reserve(player_token, player_reserved_cards, player_hand,player)
         mask[30:42] = Checker.possible_card_to_reserve_in_shop(player_reserved_number, shop_cards)
         mask[42:45] = Checker.possible_card_to_reserve_top_deck(player_reserved_number, tier1, tier2, tier3)
-
+        #
+        # check if mask is full of 0
+        if numpy.all(mask == 0):
+            mask[-1] = 1
         return mask

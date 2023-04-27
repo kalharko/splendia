@@ -20,6 +20,7 @@ class PatronController(metaclass=SingletonMeta):
 
     def load(self, nbPlayer: int) -> None:
         patrons = retrieve_and_parse_patrons()
+        patrons = patrons.tolist()
         random.shuffle(patrons)
         self.patrons = patrons[:nbPlayer + 1]
 

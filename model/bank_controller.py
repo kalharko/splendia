@@ -32,6 +32,7 @@ class BankController(metaclass=SingletonMeta):
             raiseExceptions("Number of players unsupported")
 
     def deposit(self, tokens: TokenArray) -> None:
+
         if self.bank + tokens <= self.maxInBank:
             self.bank += tokens
         else:

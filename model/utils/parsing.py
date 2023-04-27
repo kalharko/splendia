@@ -24,7 +24,7 @@ def bonus_color_to_enum_array(bonus_color: str) -> TokenArray:
 
 
 def retrieve_and_parse_cards() -> list[Card]:
-    df = pd.read_csv('model/data/card.csv')
+    df = pd.read_csv('/Users/maximeszymanski/PycharmProjects/splendia/model/data/card.csv')
     df.set_index('Id', inplace=True)
 
     card_list = df.apply(
@@ -37,13 +37,14 @@ def retrieve_and_parse_cards() -> list[Card]:
     return card_list
 
 def retrieve_and_parse_patrons() -> list[Patron]:
-    df = pd.read_csv('model/data/card.csv')
-    #df.set_index('Id', inplace=True)
+    df = pd.read_csv('/Users/maximeszymanski/PycharmProjects/splendia/model/data/patrons.csv')
+    df.set_index('id', inplace=True)
 
     patron_list = df.apply(
         lambda patron: Patron(
-            requirements=TokenArray([patron['White'], patron['Blue'], patron['Green'], patron['Red'], patron['Black'], 0]),
-            victoryPoints=VictoryPoint(0),
+            requirements=TokenArray([patron['blanc'], patron['bleu'], patron['vert'], patron['rouge'], patron['noir'], 0]),
+            victoryPoints=VictoryPoint(3),
             patron_id=patron.name),
         axis=1)
+
     return patron_list

@@ -26,6 +26,7 @@ class GameManager():
         self.playerController = PlayerController()
         self.shopController = ShopController()
         self.currentPlayer = 0
+        self.nbPlayer = nbPlayer
         self.userId = 0
         self.firstPlayerId = 0
 
@@ -34,15 +35,22 @@ class GameManager():
 
             dictionnary = {
                 'player1' : {
-                    'cards' : self.playerController.players[0].hand.cards,
+                    'object' : self.playerController.players[0],
+                    # pad with none to have 20 reserved cards
+                    'cards' : self.playerController.players[0].hand.cards + [None] * (20 - self.playerController.players[0].hand.get_size()),
                     'tokens' : self.playerController.players[0].tokens.get_tokens(),
-                    'reserved' : self.playerController.players[0].reserved.cards,
+                    # pad with none to have 3 reserved cards
+                    'reserved' : self.playerController.players[0].reserved.cards + [None] * (3 - self.playerController.players[0].reserved.get_size()),
+
                     'nobles' : self.playerController.players[0].patrons
                 },
                 'player2' : {
-                    'cards' : self.playerController.players[1].hand.cards,
+                    'object' : self.playerController.players[1],
+                    # pad with none to have 20 reserved cards
+                    'cards' : self.playerController.players[1].hand.cards + [None] * (20 - self.playerController.players[1].hand.get_size()),
                     'tokens' : self.playerController.players[1].tokens.get_tokens(),
-                    'reserved' : self.playerController.players[1].reserved.cards,
+                    # pad with none to have 3 reserved cards
+                    'reserved' : self.playerController.players[1].reserved.cards + [None] * (3 - self.playerController.players[1].reserved.get_size()),
                     'nobles' : self.playerController.players[1].patrons
                 },
                 'shop' : {
@@ -108,16 +116,19 @@ class GameManager():
         self.shopController.load()
 
         self.nbPlayer = nbPlayer
-        self.firstPlayerId = randint(0, nbPlayer)
+        #self.firstPlayerId = randint(0, nbPlayer-1)
+        self.firstPlayerId = 0
         self.currentPlayer = self.firstPlayerId
         self.userId = 0
 
     def next_player(self) -> None:
         self.currentPlayer += 1
+
         if self.currentPlayer >= self.nbPlayer:
             self.currentPlayer = 0
 
     def buy_card(self, cardId: int) -> None:
+        #print('bank token before', self.bankController.bank.get_tokens())
         if self.shopController.has_card(cardId):
             if err := self.playerController.buy_shop_card(self.currentPlayer, cardId):
                 Logger().log(0, err, 'GameManager buy_card')
@@ -125,6 +136,7 @@ class GameManager():
         elif err := self.playerController.buy_reserved_card(self.currentPlayer, cardId):
                 Logger().log(0, err, 'GameManager buy_card')
                 return err
+        #print('bank token after', self.bankController.bank.get_tokens())
 
         if err == None:
             self.next_player()
@@ -152,6 +164,16 @@ class GameManager():
 
         if err == None:
             self.next_player()
+    def pass_turn(self):
+        self.next_player()
+
+    def is_last_turn(self) -> bool:
+        finished = False
+        for player in self.playerController.players:
+            if player.victoryPoints.value >= 15:
+                finished = True
+            return finished
+        return finished
 
     def cpu_turn(self) -> None:
         # TODO: call ai

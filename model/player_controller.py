@@ -23,11 +23,12 @@ class PlayerController(metaclass=SingletonMeta):
     def buy_reserved_card(self, playerId: int, cardId: int) -> None:
         if not isinstance(price := self.players[playerId].get_card_price(cardId), TokenArray):
             return price
-        if error := self.players[playerId].pay(price):
+        to_deposit, _ = self.players[playerId].pay(price)
+        """ if error := self.players[playerId].pay(price):
             print('aaa\n')
-            return error
+            return error"""
 
-        BankController().deposit(price)
+        BankController().deposit(to_deposit)
         if not isinstance(card := self.players[playerId].withdraw_reserved_card(cardId), Card):
             return card
         self.players[playerId].deposit_card(card)
@@ -36,9 +37,10 @@ class PlayerController(metaclass=SingletonMeta):
         player = self.players[playerId]
         if not isinstance(price := ShopController().get_card_price(cardId), TokenArray):
             return price
-        if error := player.pay(price):
-            return error
-        BankController().deposit(price)
+        to_deposit , _ = player.pay(price)
+        """if error := player.pay(price):
+            return error"""
+        BankController().deposit(to_deposit)
         card = ShopController().withdraw_card(cardId)
         player.deposit_card(card)
 
@@ -47,11 +49,13 @@ class PlayerController(metaclass=SingletonMeta):
             return TooMuchReservedCards()
         if not isinstance(card := ShopController().withdraw_card(cardId), Card):
             return card
-        if error := BankController().withdraw(TokenArray([0, 0, 0, 0, 0, 1])):
-            return error
+        if BankController().bank.get_tokens()[5] != 0:
+            if error := BankController().withdraw(TokenArray([0, 0, 0, 0, 0, 1])):
+                return error
+            if err := self.players[playerId].deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1])):
+                return err
         self.players[playerId].deposit_reserved_card(card)
-        if err := self.players[playerId].deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1])):
-            return err
+
 
     def reserve_pile_card(self, playerId: int, pileLevel: int) -> None:
         if self.players[playerId].nb_reserved_cards() >= 3:

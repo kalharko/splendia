@@ -77,13 +77,17 @@ class TokenArray():
         assert isinstance(other, TokenArray)
         assert other.get_tokens()[Color.GOLD.value] == 0
         assert self.can_pay(other)
-
+        before = self.get_tokens()
         self._tokens = [x - y for x, y in zip(self._tokens, other.get_tokens())]
+
         for i in range(5):
             if self._tokens[i] < 0:
                 self._tokens[-1] += self._tokens[i]
                 self._tokens[i] = 0
-        return self
+        after = self.get_tokens()
+        to_deposit= [x - y for x, y in zip(before, after)]
+
+        return TokenArray(to_deposit)
 
     def __iadd__(self, other):
         self._tokens = [x + y for x, y in zip(self._tokens, other.get_tokens())]
