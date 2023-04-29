@@ -66,6 +66,7 @@ class Player():
         patron_get = self.notify_observers()
         if patron_get is not None:
             self.patrons.append(patron_get)
+            #self.victoryPoints.set_value(self.victoryPoints.get_value() + patron_get.victoryPoints.get_value())
 
     def notify_observers(self) -> Patron:
         return self.observer.update(self.hand)
@@ -86,3 +87,7 @@ class Player():
         for patron in self.patrons:
             out += patron.victoryPoints.get_value()
         self.victoryPoints.set_value(out)
+
+    def take_randoms_tokens(self, bank_controller : TokenArray):
+
+        pass

@@ -82,7 +82,7 @@ class GameManager():
         out['cpu2-tokens'] = self.playerController.players[1].tokens
         out['cpu2-nbReserved'] = self.playerController.players[1].reserved.get_size()
 
-        """out['cpu3-vp'] = self.playerController.players[2].victoryPoints.value
+        out['cpu3-vp'] = self.playerController.players[2].victoryPoints.value
         out['cpu3-bonus'] = self.playerController.players[2].hand.compute_hand_bonuses()
         out['cpu3-tokens'] = self.playerController.players[2].tokens
         out['cpu3-nbReserved'] = self.playerController.players[2].reserved.get_size()
@@ -90,13 +90,13 @@ class GameManager():
         out['player-vp'] = self.playerController.players[3].victoryPoints.value
         out['player-bonus'] = self.playerController.players[3].hand.compute_hand_bonuses()
         out['player-tokens'] = self.playerController.players[3].tokens
-        out['player-nbReserved'] = self.playerController.players[3].reserved.get_size()"""
-        """out['player-reserved'] = []
+        out['player-nbReserved'] = self.playerController.players[3].reserved.get_size()
+        out['player-reserved'] = []
         for i in range(out['player-nbReserved']):
             out['player-reserved'].append([
                 self.playerController.players[3].reserved.cards[i].price,
                 self.playerController.players[3].reserved.cards[i].bonus,
-                self.playerController.players[3].reserved.cards[i].victoryPoint])"""
+                self.playerController.players[3].reserved.cards[i].victoryPoint])
 
         out['bank'] = self.bankController.bank.get_tokens()
         out['patrons'] = [x.requirements for x in self.patronController.patrons]
@@ -159,14 +159,14 @@ class GameManager():
 
     def take_token(self, tokens: TokenArray) -> None:
         if err := self.playerController.take_tokens(self.currentPlayer, tokens):
+
             Logger().log(0, err, 'GameManager take_token')
             return err
 
         if err == None:
             self.next_player()
-    def pass_turn(self):
+    def pass_turn(self) -> None:
         self.next_player()
-
     def is_last_turn(self) -> bool:
         finished = False
         for player in self.playerController.players:

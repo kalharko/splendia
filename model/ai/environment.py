@@ -5,9 +5,10 @@ from model.checker import Checker
 from model.token_array import TokenArray
 import pickle
 
+
 class SplendorEnv(gym.Env):
-    def __init__(self,game,nb_player=2):
-        self.action_space = gym.spaces.Discrete(46)
+    def __init__(self, game, nb_player=2):
+        self.action_space = gym.spaces.Discrete(66)
         """
         Player 1 state:
         5 tokens: 0-4
@@ -49,30 +50,29 @@ class SplendorEnv(gym.Env):
         # if the length of the list smaller than 20, we padd with 90
         list_of_cards = [card.card_id for card in state['player1']['cards'] if card is not None]
         if len(list_of_cards) < 20:
-            for i in range(20-len(list_of_cards)):
+            for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
 
         obs[6:26] = list_of_cards
         # same for nobles, if the length of the list smaller than 5, we padd with 10
         list_of_nobles = [patron.patron_id for patron in state['player1']['nobles']]
         if len(list_of_nobles) < 5:
-            for i in range(5-len(list_of_nobles)):
+            for i in range(5 - len(list_of_nobles)):
                 list_of_nobles.append(10)
-
 
         obs[26:31] = list_of_nobles
         # we save the reserved cards in a list, if the card is None, we padd with 90
 
         self.reserved_cards = [card.card_id for card in state['player1']['reserved'] if card is not None]
         if len(self.reserved_cards) < 3:
-            for i in range(3-len(self.reserved_cards)):
+            for i in range(3 - len(self.reserved_cards)):
                 self.reserved_cards.append(90)
         # same for reserved cards, if the length of the list smaller than 3, we padd with 90
         list_of_reserved = [card.card_id for card in state['player1']['reserved'] if card is not None]
         if len(list_of_reserved) < 3:
-            for i in range(3-len(list_of_reserved)):
+            for i in range(3 - len(list_of_reserved)):
                 list_of_reserved.append(90)
-        obs[31:34] =  list_of_reserved
+        obs[31:34] = list_of_reserved
 
         obs[34:40] = state['player2']['tokens']
         # same for player 2
@@ -131,7 +131,6 @@ class SplendorEnv(gym.Env):
         with open('obs.pkl', 'wb') as f:
             pickle.dump(state, f)
 
-
         self.obs = obs
         return obs
 
@@ -153,7 +152,7 @@ class SplendorEnv(gym.Env):
 
         obs[26:31] = list_of_nobles
 
-        self.reserved_cards = [card.card_id for card in state['player2']['reserved']    if card is not None]
+        self.reserved_cards = [card.card_id for card in state['player2']['reserved'] if card is not None]
         # same for reserved cards, if the length of the list smaller than 3, we padd with 90
         list_of_reserved = [card.card_id for card in state['player2']['reserved'] if card is not None]
         if len(list_of_reserved) < 3:
@@ -220,19 +219,15 @@ class SplendorEnv(gym.Env):
         self.obs = obs
         return obs
 
-
-
     def reset(self):
         self.game.launch_game(2)
-        return  self.from_board_states_to_obs_train()
-
+        return self.from_board_states_to_obs_train()
 
     def is_last_turn(self):
         return self.game.is_last_turn()
 
-    def step(self, action,model):
+    def step(self, action, model):
         self.apply_action(action)
-
 
         # the ai has played
         obs = self.from_board_states_to_obs_test()
@@ -241,13 +236,14 @@ class SplendorEnv(gym.Env):
         self.apply_action(action_two)
 
         obs = self.from_board_states_to_obs_train()
-        #reward = self.game.playerController.players[0].victoryPoints.value
-        reward  = -1
+        # reward = self.game.playerController.players[0].victoryPoints.value
+        reward = -1
         reward += self.game.playerController.players[0].victoryPoints.value
         reward -= self.game.playerController.players[1].victoryPoints.value
 
         if self.game.is_last_turn():
-            if self.game.playerController.players[0].victoryPoints.value > self.game.playerController.players[1].victoryPoints.value:
+            if self.game.playerController.players[0].victoryPoints.value > self.game.playerController.players[
+                1].victoryPoints.value:
                 reward = 100
                 print('win')
             else:
@@ -257,9 +253,9 @@ class SplendorEnv(gym.Env):
             print('last turn')
         else:
             done = False
-        if action and action_two == 45:
+        if action and action_two == 65:
             done = True
-            reward = -1000
+            reward = -10
             print('blocked')
 
         info = {}
@@ -267,7 +263,7 @@ class SplendorEnv(gym.Env):
 
     def apply_action(self, action):
         # print the action done
-        #print('action done : ', action)
+        # print('action done : ', action)
         if action == 0:
             # take [1,1,1,0,0,0] tokens
             self.game.take_token(TokenArray([1, 1, 1, 0, 0, 0]))
@@ -369,6 +365,46 @@ class SplendorEnv(gym.Env):
         elif action == 44:
             self.game.reserve_pile_card(2)
         elif action == 45:
+            self.game.take_token(TokenArray([1, 0, 0, 0, 0, 0]))
+        elif action == 46:
+            self.game.take_token(TokenArray([0, 1, 0, 0, 0, 0]))
+        elif action == 47:
+            self.game.take_token(TokenArray([0, 0, 1, 0, 0, 0]))
+        elif action == 48:
+            self.game.take_token(TokenArray([0, 0, 0, 1, 0, 0]))
+        elif action == 49:
+            self.game.take_token(TokenArray([0, 0, 0, 0, 1, 0]))
+        elif action == 50:
+            self.game.take_token(TokenArray([1, 1, 0, 0, 0, 0]))
+        elif action == 51:
+            self.game.take_token(TokenArray([1, 0, 1, 0, 0, 0]))
+        elif action == 52:
+            self.game.take_token(TokenArray([1, 0, 0, 1, 0, 0]))
+        elif action == 53:
+            self.game.take_token(TokenArray([1, 0, 0, 0, 1, 0]))
+        elif action == 54:
+            self.game.take_token(TokenArray([0, 1, 1, 0, 0, 0]))
+        elif action == 55:
+            self.game.take_token(TokenArray([0, 1, 0, 1, 0, 0]))
+        elif action == 56:
+            self.game.take_token(TokenArray([0, 1, 0, 0, 1, 0]))
+        elif action == 57:
+            self.game.take_token(TokenArray([0, 0, 1, 1, 0, 0]))
+        elif action == 58:
+            self.game.take_token(TokenArray([0, 0, 1, 0, 1, 0]))
+        elif action == 59:
+            self.game.take_token(TokenArray([0, 0, 0, 1, 1, 0]))
+        elif action == 60:
+            self.game.take_token(TokenArray([2, 0, 0, 0, 0, 0]))
+        elif action == 61:
+            self.game.take_token(TokenArray([0, 2, 0, 0, 0, 0]))
+        elif action == 62:
+            self.game.take_token(TokenArray([0, 0, 2, 0, 0, 0]))
+        elif action == 63:
+            self.game.take_token(TokenArray([0, 0, 0, 2, 0, 0]))
+        elif action == 64:
+            self.game.take_token(TokenArray([0, 0, 0, 0, 2, 0]))
+        elif action == 65:
             self.game.pass_turn()
 
     def render(self):

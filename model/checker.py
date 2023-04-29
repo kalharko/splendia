@@ -161,15 +161,99 @@ class Checker:
         """
         # count none values of player_reserved cards
 
-        mask = numpy.zeros(46)
+        mask = numpy.zeros(66)
         mask[0:10] = Checker.possible_token_to_take_3(player_token, bank_token)
         mask[10:15] = Checker.possible_token_to_take_2(player_token, bank_token)
         mask[15:27] = Checker.possible_card_to_buy(player_token, shop_cards, player_hand, player)
         mask[27:30] = Checker.possible_card_to_buy_in_reserve(player_token, player_reserved_cards, player_hand,player)
         mask[30:42] = Checker.possible_card_to_reserve_in_shop(player_reserved_number, shop_cards)
         mask[42:45] = Checker.possible_card_to_reserve_top_deck(player_reserved_number, tier1, tier2, tier3)
+        mask[45:50] = Checker.possible_token_to_take_1_and_reject(player_token, bank_token)
+        mask[50:60] = Checker.possible_token_to_take_2_different_and_reject(player_token, bank_token)
+        mask[60:65] = Checker.possible_token_to_take_2_same_and_reject(player_token, bank_token)
         #
         # check if mask is full of 0
         if numpy.all(mask == 0):
+
             mask[-1] = 1
+        #print(mask)
+        return mask
+
+    @staticmethod
+    def possible_token_to_take_1_and_reject( player_token : TokenArray, bank_token : TokenArray):
+        # check if there is at least three colors none empty in the bank that are not gold
+        non_empty_pile = 0
+        for color in range(5):
+            if bank_token.get_tokens()[color] > 0:
+                non_empty_pile += 1
+        if non_empty_pile < 3 or player_token.nb_of_tokens() != 9:
+            return numpy.zeros(5)
+        mask = numpy.zeros(5)
+        for color in range(5):
+            if bank_token.get_tokens()[color] > 0:
+                mask[color] = 1
+
+        return mask
+
+    @staticmethod
+    def possible_token_to_take_2_different_and_reject(player_token: TokenArray, bank_token: TokenArray):
+        # check if there is at least three colors none empty in the bank that are not gold
+        non_empty_pile = 0
+        for color in range(5):
+            if bank_token.get_tokens()[color] > 0:
+                non_empty_pile += 1
+        if non_empty_pile < 3 or player_token.nb_of_tokens() != 8:
+            return numpy.zeros(10)
+        mask = numpy.zeros(10)
+        """ possible combinations : 
+        1,2 -> [1,1,0,0,0,0,0,0,0,0]
+        1,3 -> [1,0,1,0,0,0,0,0,0,0]
+        1,4 -> [1,0,0,1,0,0,0,0,0,0]
+        1,5 -> [1,0,0,0,1,0,0,0,0,0]
+        2,3 -> [0,1,1,0,0,0,0,0,0,0]
+        2,4 -> [0,1,0,1,0,0,0,0,0,0]
+        2,5 -> [0,1,0,0,1,0,0,0,0,0]
+        3,4 -> [0,0,1,1,0,0,0,0,0,0] 
+        3,5 -> [0,0,1,0,1,0,0,0,0,0]
+        4,5 -> [0,0,0,1,1,0,0,0,0,0]
+        """
+
+        combination_dict = {
+            1: numpy.array([1, 1, 0, 0, 0, 0]),
+            2: numpy.array([1, 0, 1, 0, 0, 0]),
+            3: numpy.array([1, 0, 0, 1, 0, 0]),
+            4:  numpy.array([1, 0, 0, 0, 1, 0]),
+            5:  numpy.array([0, 1, 1, 0, 0, 0]),
+            6:  numpy.array([0, 1, 0, 1, 0, 0]),
+            7:  numpy.array([0, 1, 0, 0, 1, 0]),
+            8:  numpy.array([0, 0, 1, 1, 0, 0]),
+            9:  numpy.array([0, 0, 1, 0, 1, 0]),
+            10:  numpy.array([0, 0, 0, 1, 1, 0])
+        }
+        mask_list = []
+        bank_token = numpy.array(bank_token.get_tokens())
+        bank_token[-1] = 1
+
+        # iterate over combination_dict
+        for key, value in combination_dict.items():
+            if numpy.all(bank_token >= value):
+                mask_list.append(1)
+            else:
+                mask_list.append(0)
+        return mask_list
+
+
+
+    @staticmethod
+    def possible_token_to_take_2_same_and_reject(player_token: TokenArray, bank_token: TokenArray):
+        # check if there is at least three colors none empty in the bank that are not gold
+        non_empty_pile = 0
+        for color in range(5):
+            if bank_token.get_tokens()[color] > 0:
+                non_empty_pile += 1
+        if non_empty_pile < 3 or player_token.nb_of_tokens() != 8:
+            return numpy.zeros(5)
+        mask = Checker.possible_token_to_take_2(player_token, bank_token)
+
+
         return mask

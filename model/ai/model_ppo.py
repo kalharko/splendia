@@ -128,11 +128,10 @@ class ActorCritic(nn.Module):
             dist = MultivariateNormal(action_mean, cov_mat)
         else:
             action_probs = self.actor(state)
-
+            #print('action_probs',action_probs)
+            action_probs = action_probs * torch.from_numpy(get_mask(1)).to(device)
             dist = Categorical(action_probs)
-            dist.probs = dist.probs * torch.from_numpy(get_mask(1)).to(device)
-            dist.probs = dist.probs / dist.probs.sum()
-
+            #print('dist',dist.probs)
         action = dist.sample()
         action_logprob = dist.log_prob(action)
         state_val = self.critic(state)
@@ -153,9 +152,10 @@ class ActorCritic(nn.Module):
                 action = action.reshape(-1, self.action_dim)
         else:
             action_probs = self.actor(state)
+            action_probs = action_probs * torch.from_numpy(get_mask(1)).to(device)
+
             dist = Categorical(action_probs)
-            dist.probs = dist.probs * torch.tensor(get_mask(2)).to(device)
-            dist.probs = dist.probs / dist.probs.sum()
+
 
         action_logprobs = dist.log_prob(action)
         dist_entropy = dist.entropy()
@@ -221,9 +221,9 @@ class PPO:
             state = torch.FloatTensor(state).to(device)
 
             action_probs = self.policy.actor.forward(state)
+            action_probs = action_probs * torch.from_numpy(get_mask(2)).to(device)
+
             dist = Categorical(action_probs)
-            dist.probs = dist.probs * torch.from_numpy(get_mask(2)).to(device)
-            dist.probs = dist.probs / dist.probs.sum()
 
             action = dist.sample()
             return action.item()

@@ -48,8 +48,9 @@ def save_graph():
     num_runs = len(current_num_files)
 
     all_runs = []
-
+    print("num_runs : ", num_runs)
     for run_num in range(num_runs):
+
         log_f_name = log_dir + '/PPO_' + env_name + "_log_" + str(run_num) + ".csv"
         print("loading data from : " + log_f_name)
         data = pd.read_csv(log_f_name)
