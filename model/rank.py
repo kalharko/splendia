@@ -30,7 +30,7 @@ class Rank():
     def withdraw_card(self, cardId: int) -> Card:
         if isinstance((card := self.hand.pop_card(cardId)), Card):
             draw_card = self.deck.draw()
-            if  isinstance(card, Card):
+            if isinstance(card, Card):
                 self.hand.add_card(draw_card)
             return card
         return None

@@ -77,7 +77,7 @@ class Checker:
                 if card is None:
                     mask.append(0)
                 else:
-                    boolean , _ = player.can_pay_with_reduced_price(card.price)
+                    boolean, _ = player.can_pay_with_reduced_price(card.price)
                     if boolean:
                         mask.append(1)
                     else:
@@ -88,7 +88,7 @@ class Checker:
         return mask
 
     @staticmethod
-    def possible_card_to_buy_in_reserve(player_token: TokenArray, reserved_cards: list[Card], player_hand: list[Card],player):
+    def possible_card_to_buy_in_reserve(player_token: TokenArray, reserved_cards: list[Card], player_hand: list[Card], player):
 
         mask = []
         count_not_none = [card for card in player_hand if card is not None]
@@ -100,7 +100,7 @@ class Checker:
             if card is None:
                 mask.append(0)
             else:
-                boolean , _ = player.can_pay_with_reduced_price(card.price)
+                boolean, _ = player.can_pay_with_reduced_price(card.price)
                 if boolean:
                     mask.append(1)
                 else:
@@ -165,22 +165,22 @@ class Checker:
         mask[0:10] = Checker.possible_token_to_take_3(player_token, bank_token)
         mask[10:15] = Checker.possible_token_to_take_2(player_token, bank_token)
         mask[15:27] = Checker.possible_card_to_buy(player_token, shop_cards, player_hand, player)
-        mask[27:30] = Checker.possible_card_to_buy_in_reserve(player_token, player_reserved_cards, player_hand,player)
+        mask[27:30] = Checker.possible_card_to_buy_in_reserve(player_token, player_reserved_cards, player_hand, player)
         mask[30:42] = Checker.possible_card_to_reserve_in_shop(player_reserved_number, shop_cards)
         mask[42:45] = Checker.possible_card_to_reserve_top_deck(player_reserved_number, tier1, tier2, tier3)
         mask[45:50] = Checker.possible_token_to_take_1_and_reject(player_token, bank_token)
         mask[50:60] = Checker.possible_token_to_take_2_different_and_reject(player_token, bank_token)
         mask[60:65] = Checker.possible_token_to_take_2_same_and_reject(player_token, bank_token)
-        #
+
         # check if mask is full of 0
         if numpy.all(mask == 0):
 
             mask[-1] = 1
-        #print(mask)
+        # print(mask)
         return mask
 
     @staticmethod
-    def possible_token_to_take_1_and_reject( player_token : TokenArray, bank_token : TokenArray):
+    def possible_token_to_take_1_and_reject(player_token: TokenArray, bank_token: TokenArray):
         # check if there is at least three colors none empty in the bank that are not gold
         non_empty_pile = 0
         for color in range(5):
@@ -205,7 +205,7 @@ class Checker:
         if non_empty_pile < 3 or player_token.nb_of_tokens() != 8:
             return numpy.zeros(10)
         mask = numpy.zeros(10)
-        """ possible combinations : 
+        """ possible combinations :
         1,2 -> [1,1,0,0,0,0,0,0,0,0]
         1,3 -> [1,0,1,0,0,0,0,0,0,0]
         1,4 -> [1,0,0,1,0,0,0,0,0,0]
@@ -213,7 +213,7 @@ class Checker:
         2,3 -> [0,1,1,0,0,0,0,0,0,0]
         2,4 -> [0,1,0,1,0,0,0,0,0,0]
         2,5 -> [0,1,0,0,1,0,0,0,0,0]
-        3,4 -> [0,0,1,1,0,0,0,0,0,0] 
+        3,4 -> [0,0,1,1,0,0,0,0,0,0]
         3,5 -> [0,0,1,0,1,0,0,0,0,0]
         4,5 -> [0,0,0,1,1,0,0,0,0,0]
         """
@@ -242,8 +242,6 @@ class Checker:
                 mask_list.append(0)
         return mask_list
 
-
-
     @staticmethod
     def possible_token_to_take_2_same_and_reject(player_token: TokenArray, bank_token: TokenArray):
         # check if there is at least three colors none empty in the bank that are not gold
@@ -254,6 +252,5 @@ class Checker:
         if non_empty_pile < 3 or player_token.nb_of_tokens() != 8:
             return numpy.zeros(5)
         mask = Checker.possible_token_to_take_2(player_token, bank_token)
-
 
         return mask

@@ -9,6 +9,7 @@ from model.rank import Hand
 from model.card import Card
 from model.patron_controller import PatronController
 
+
 @dataclass
 class Player():
     player_id: int
@@ -35,7 +36,7 @@ class Player():
 
     def pay(self, price: TokenArray) -> int or PlayerCanNotPay:
         assert isinstance(price, TokenArray)
-        #tokens = self.tokens.get_tokens()
+        # tokens = self.tokens.get_tokens()
         can_pay, reduced_price = self.can_pay_with_reduced_price(price)
 
         if can_pay:
@@ -52,8 +53,7 @@ class Player():
         for i in range(len(reduced_price.get_tokens())):
             if reduced_price.get_tokens()[i] < 0:
                 reduced_price.get_tokens()[i] = 0
-        return self.tokens.can_pay(reduced_price) , reduced_price
-
+        return self.tokens.can_pay(reduced_price), reduced_price
 
     def withdraw_reserved_card(self, cardId: int) -> Card:
         return self.reserved.pop_card(cardId)
@@ -66,7 +66,7 @@ class Player():
         patron_get = self.notify_observers()
         if patron_get is not None:
             self.patrons.append(patron_get)
-            #self.victoryPoints.set_value(self.victoryPoints.get_value() + patron_get.victoryPoints.get_value())
+            # self.victoryPoints.set_value(self.victoryPoints.get_value() + patron_get.victoryPoints.get_value())
 
     def notify_observers(self) -> Patron:
         return self.observer.update(self.hand)
@@ -88,6 +88,6 @@ class Player():
             out += patron.victoryPoints.get_value()
         self.victoryPoints.set_value(out)
 
-    def take_randoms_tokens(self, bank_controller : TokenArray):
+    def take_randoms_tokens(self, bank_controller: TokenArray):
 
         pass

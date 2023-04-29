@@ -7,6 +7,7 @@ from model.player_controller import PlayerController
 from model.shop_controller import ShopController
 from model.token_array import TokenArray
 from model.utils.logger import Logger
+from model.player import Player
 
 
 @dataclass
@@ -20,10 +21,10 @@ class GameManager():
     firstPlayerId: int
     userId: int
 
-    def __init__(self,nbPlayer=2) -> None:
+    def __init__(self, nbPlayer=2) -> None:
         self.bankController = BankController(nbPlayer)
-        self.patronController = PatronController()
-        self.playerController = PlayerController()
+        self.patronController = PatronController(nbPlayer)
+        self.playerController = PlayerController(nbPlayer)
         self.shopController = ShopController()
         self.currentPlayer = 0
         self.nbPlayer = nbPlayer
@@ -31,44 +32,39 @@ class GameManager():
         self.firstPlayerId = 0
 
     def gather_ia_board_state(self, nb_players=2) -> None:
-        if nb_players==2:
-
-            dictionnary = {
-                'player1' : {
-                    'object' : self.playerController.players[0],
+        if nb_players == 2:
+            dictionary = {
+                'player1': {
+                    'object': self.playerController.players[0],
                     # pad with none to have 20 reserved cards
-                    'cards' : self.playerController.players[0].hand.cards + [None] * (20 - self.playerController.players[0].hand.get_size()),
-                    'tokens' : self.playerController.players[0].tokens.get_tokens(),
+                    'cards': self.playerController.players[0].hand.cards + [None] * (20 - self.playerController.players[0].hand.get_size()),
+                    'tokens': self.playerController.players[0].tokens.get_tokens(),
                     # pad with none to have 3 reserved cards
-                    'reserved' : self.playerController.players[0].reserved.cards + [None] * (3 - self.playerController.players[0].reserved.get_size()),
+                    'reserved': self.playerController.players[0].reserved.cards + [None] * (3 - self.playerController.players[0].reserved.get_size()),
 
-                    'nobles' : self.playerController.players[0].patrons
+                    'nobles': self.playerController.players[0].patrons
                 },
-                'player2' : {
-                    'object' : self.playerController.players[1],
+                'player2': {
+                    'object': self.playerController.players[1],
                     # pad with none to have 20 reserved cards
-                    'cards' : self.playerController.players[1].hand.cards + [None] * (20 - self.playerController.players[1].hand.get_size()),
-                    'tokens' : self.playerController.players[1].tokens.get_tokens(),
+                    'cards': self.playerController.players[1].hand.cards + [None] * (20 - self.playerController.players[1].hand.get_size()),
+                    'tokens': self.playerController.players[1].tokens.get_tokens(),
                     # pad with none to have 3 reserved cards
-                    'reserved' : self.playerController.players[1].reserved.cards + [None] * (3 - self.playerController.players[1].reserved.get_size()),
-                    'nobles' : self.playerController.players[1].patrons
+                    'reserved': self.playerController.players[1].reserved.cards + [None] * (3 - self.playerController.players[1].reserved.get_size()),
+                    'nobles': self.playerController.players[1].patrons
                 },
-                'shop' : {
-                    'rank1_cards' : self.shopController.ranks[0].hand.cards,
-                    'rank2_cards' : self.shopController.ranks[1].hand.cards,
-                    'rank3_cards' : self.shopController.ranks[2].hand.cards,
-                    'rank1_size'  : self.shopController.ranks[0].deck.get_size(),
-                    'rank2_size'  : self.shopController.ranks[1].deck.get_size(),
-                    'rank3_size'  : self.shopController.ranks[2].deck.get_size(),
-                    'nobles' : self.patronController.patrons,
-                    'tokens' : self.bankController.bank,
+                'shop': {
+                    'rank1_cards': self.shopController.ranks[0].hand.cards,
+                    'rank2_cards': self.shopController.ranks[1].hand.cards,
+                    'rank3_cards': self.shopController.ranks[2].hand.cards,
+                    'rank1_size': self.shopController.ranks[0].deck.get_size(),
+                    'rank2_size': self.shopController.ranks[1].deck.get_size(),
+                    'rank3_size': self.shopController.ranks[2].deck.get_size(),
+                    'nobles': self.patronController.patrons,
+                    'tokens': self.bankController.bank,
                 },
-
-
                 }
-            return dictionnary
-
-
+            return dictionary
 
     def gather_cli_board_state(self) -> dict:
         out = {}
@@ -116,7 +112,7 @@ class GameManager():
         self.shopController.load()
 
         self.nbPlayer = nbPlayer
-        #self.firstPlayerId = randint(0, nbPlayer-1)
+        # self.firstPlayerId = randint(0, nbPlayer-1)
         self.firstPlayerId = 0
         self.currentPlayer = self.firstPlayerId
         self.userId = 0
@@ -128,17 +124,17 @@ class GameManager():
             self.currentPlayer = 0
 
     def buy_card(self, cardId: int) -> None:
-        #print('bank token before', self.bankController.bank.get_tokens())
+        # print('bank token before', self.bankController.bank.get_tokens())
         if self.shopController.has_card(cardId):
             if err := self.playerController.buy_shop_card(self.currentPlayer, cardId):
                 Logger().log(0, err, 'GameManager buy_card')
                 return err
         elif err := self.playerController.buy_reserved_card(self.currentPlayer, cardId):
-                Logger().log(0, err, 'GameManager buy_card')
-                return err
-        #print('bank token after', self.bankController.bank.get_tokens())
+            Logger().log(0, err, 'GameManager buy_card')
+            return err
+        # print('bank token after', self.bankController.bank.get_tokens())
 
-        if err == None:
+        if err is None:
             self.next_player()
 
     def reserve_card(self, cardId: int) -> None:
@@ -146,7 +142,7 @@ class GameManager():
             Logger().log(0, err, 'GameManager reserve_card')
             return err
 
-        if err == None:
+        if err is None:
             self.next_player()
 
     def reserve_pile_card(self, pile_level: int) -> None:
@@ -154,7 +150,7 @@ class GameManager():
             Logger().log(0, err, 'GameManager reserve_pile_card')
             return err
 
-        if err == None:
+        if err is None:
             self.next_player()
 
     def take_token(self, tokens: TokenArray) -> None:
@@ -163,10 +159,12 @@ class GameManager():
             Logger().log(0, err, 'GameManager take_token')
             return err
 
-        if err == None:
+        if err is None:
             self.next_player()
-    def pass_turn(self) -> None:
+
+    def pass_turn(self):
         self.next_player()
+
     def is_last_turn(self) -> bool:
         finished = False
         for player in self.playerController.players:
@@ -178,3 +176,6 @@ class GameManager():
     def cpu_turn(self) -> None:
         # TODO: call ai
         pass
+
+    def get_current_player(self) -> Player:
+        return self.playerController.players[self.currentPlayer]

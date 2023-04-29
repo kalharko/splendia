@@ -85,7 +85,7 @@ class TokenArray():
                 self._tokens[-1] += self._tokens[i]
                 self._tokens[i] = 0
         after = self.get_tokens()
-        to_deposit= [x - y for x, y in zip(before, after)]
+        to_deposit = [x - y for x, y in zip(before, after)]
 
         return TokenArray(to_deposit)
 
