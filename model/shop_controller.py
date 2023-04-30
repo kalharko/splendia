@@ -4,12 +4,11 @@ from typing import List
 from model.rank import Card, Rank
 from model.token_array import TokenArray
 from model.utils.parsing import retrieve_and_parse_cards
-from model.utils.singleton import SingletonMeta
 from model.utils.exception import CardIdNotFound
 
 
 @dataclass
-class ShopController(metaclass=SingletonMeta):
+class ShopController():
     ranks: List[Rank]
 
     def __init__(self):

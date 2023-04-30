@@ -1,9 +1,8 @@
 from dataclasses import dataclass
 from logging import raiseExceptions
 from logging import log
-from model.utils.exception import NotEnoughTokens, TooMuchBankTokens, InvalidTakeTokenAction
-from model.utils.singleton import SingletonMeta
-from model.token_array import TokenArray, Color
+from model.utils.exception import TooMuchBankTokens, InvalidTakeTokenAction
+from model.token_array import TokenArray
 from model.utils.logger import Logger
 
 
@@ -13,13 +12,13 @@ class BankController():
     maxInBank: TokenArray = None
 
     def __init__(self, nb_player=4):
-        if nbPlayer == 2:
+        if nb_player == 2:
             self.bank = TokenArray([4, 4, 4, 4, 4, 5])
             self.maxInBank = TokenArray([4, 4, 4, 4, 4, 5])
-        elif nbPlayer == 3:
+        elif nb_player == 3:
             self.bank = TokenArray([5, 5, 5, 5, 5, 5])
             self.maxInBank = TokenArray([5, 5, 5, 5, 5, 5])
-        elif nbPlayer == 4:
+        elif nb_player == 4:
             self.bank = TokenArray([7, 7, 7, 7, 7, 5])
             self.maxInBank = TokenArray([7, 7, 7, 7, 7, 5])
         else:

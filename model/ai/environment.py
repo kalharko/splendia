@@ -42,7 +42,7 @@ class SplendorEnv(gym.Env):
              91, 91, 91, 91, 91, 11, 11, 11, 11, 11, 92, 92, 92, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 11, 11,
              11, 11, 11, 40, 30, 20])
 
-        self.game = game
+        self.game : GameManager = game
 
         pass
 
@@ -282,15 +282,16 @@ class SplendorEnv(gym.Env):
         obs = self.from_board_states_to_obs_train()
         # reward = self.game.playerController.players[0].victoryPoints.value
         reward = -1
-        reward += self.game.playerController.players[0].victoryPoints.value
-        reward -= self.game.playerController.players[1].victoryPoints.value
+        player_0_vp = self.game.get_player_victory_point(0)
+        player_1_vp = self.game.get_player_victory_point(1)
+        reward +=  player_0_vp
+        reward -=  player_1_vp
 
         if self.game.is_last_turn():
             # if the file blocked_logs.csv does not exist, we create it
 
 
-            if self.game.playerController.players[0].victoryPoints.value > self.game.playerController.players[
-                1].victoryPoints.value:
+            if  player_0_vp > player_1_vp:
                 #reward = 100
                 # add a new line to the file
                 with open('Blocked_logs/blocked_logs.csv', 'a') as f:

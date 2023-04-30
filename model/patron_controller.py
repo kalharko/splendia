@@ -4,7 +4,6 @@ import random
 
 from model.rank import Hand
 from model.patron import Patron
-from model.utils.singleton import SingletonMeta
 from model.utils.parsing import retrieve_and_parse_patrons
 
 

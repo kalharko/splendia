@@ -58,15 +58,15 @@ class CliApp():
                 if not self.gm.take_token(tokens):
                     pass
             elif command == 'reserve':
-                cardId = self.gm.shopController.ranks[int(arguments[0])].hand.cards[int(arguments[1])].card_id
+                cardId = self.gm._shopController.ranks[int(arguments[0])].hand.cards[int(arguments[1])].card_id
                 if not self.gm.reserve_card(cardId):
                     pass
             elif command == 'buyshop':
-                cardId = self.gm.shopController.ranks[int(arguments[0])].hand.cards[int(arguments[1])].card_id
+                cardId = self.gm._shopController.ranks[int(arguments[0])].hand.cards[int(arguments[1])].card_id
                 if not self.gm.buy_card(cardId):
                     pass
             elif command == 'buyreserved':
-                cardId = self.gm.playerController.players[self.currentPlayer].reserved.cards[int(arguments[0])].card_id
+                cardId = self.gm._playerController.players[self.currentPlayer].reserved.cards[int(arguments[0])].card_id
                 if not self.gm.buy_card(cardId):
                     pass
             elif command == 'displayreserved':
