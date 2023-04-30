@@ -48,9 +48,8 @@ def save_graph():
     num_runs = len(current_num_files)
 
     all_runs = []
-    print("num_runs : ", num_runs)
-    for run_num in range(num_runs):
 
+    for run_num in range(num_runs):
         log_f_name = log_dir + '/PPO_' + env_name + "_log_" + str(run_num) + ".csv"
         print("loading data from : " + log_f_name)
         data = pd.read_csv(log_f_name)
@@ -131,6 +130,28 @@ def save_graph():
 
 if __name__ == '__main__':
     save_graph()
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
+    # Lecture du fichier CSV
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
+    # Lecture du fichier CSV
+    df = pd.read_csv('Blocked_logs/blocked_logs.csv', header=None, names=['valeur', 'blocked'])
+
+    # Transformation de la colonne 'blocked'
+    df['blocked'] = df['blocked'].apply(lambda x: 0 if x == 'blocked' else 1)
+
+    # Lissage de la courbe
+    df['blocked_smooth'] = df['blocked'].rolling(window=300).mean()
+
+    # Tracé de la courbe lissée
+    plt.plot(df['valeur'], df['blocked_smooth'])
+    plt.xlabel('Valeur')
+    plt.ylabel('Blocked')
+    plt.show()
+
 
 
 

@@ -21,7 +21,7 @@ def train():
     game = GameManager(nbPlayer=2)
     has_continuous_action_space = False  # continuous action space; else discrete
 
-    max_ep_len = 400  # max timesteps in one episode
+    max_ep_len = 2000  # max timesteps in one episode
     max_training_timesteps = int(3e6)  # break training loop if timeteps > max_training_timesteps
 
     print_freq = max_ep_len * 10  # print avg reward in the interval (in num timesteps)
@@ -38,13 +38,13 @@ def train():
 
     ################ PPO hyperparameters ################
     update_timestep = max_ep_len * 10  # update policy every n timesteps
-    K_epochs = 80  # update policy for K epochs in one PPO update
+    K_epochs = 20  # update policy for K epochs in one PPO update
 
     eps_clip = 0.2  # clip parameter for PPO
-    gamma = 0.98  # discount factor
+    gamma = 0.99  # discount factor
 
-    lr_actor = 0.0003  # learning rate for actor network
-    lr_critic = 0.0001  # learning rate for critic network
+    lr_actor = 0.00005 # learning rate for actor network
+    lr_critic = 0.0002  # learning rate for critic network
 
     random_seed = 0  # set random seed if required (0 = no random seed)
     #####################################################
@@ -144,12 +144,12 @@ def train():
     # initialize a PPO agent
     ppo_agent = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip, has_continuous_action_space,
                     action_std)
-    """directory = "PPO_preTrained" + '/' + env_name + '/'
+    directory = "PPO_preTrained" + '/' + env_name + '/'
     checkpoint_path = directory + "PPO_{}_{}_{}.pth".format(env_name, random_seed, run_num_pretrained)
     print("loading network from : " + checkpoint_path)
 
     ppo_agent.load(checkpoint_path)
-    """
+
     # track total training time
     start_time = datetime.now().replace(microsecond=0)
     print("Started training at (GMT) : ", start_time)
