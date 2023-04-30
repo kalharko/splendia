@@ -9,9 +9,10 @@ class CardStack():
     cards: List[Card]
 
     def add_card(self, card: Card) -> None:
-        assert isinstance(card, Card)
+        # assert isinstance(card, Card)
+        if isinstance(card, Card):
 
-        self.cards.append(card)
+            self.cards.append(card)
 
     def pop_card(self, cardId: int) -> Card:
         assert isinstance(cardId, int)
@@ -22,7 +23,7 @@ class CardStack():
                 return self.cards.pop(i)
         return CardIdNotFound
 
-    def get_size(self): #deprecated
+    def get_size(self):  # deprecated
         return len(self.cards)
 
     def __len__(self):

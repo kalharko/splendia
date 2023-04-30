@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Tuple
 
 from model.utils.exception import PlayerCanNotPay
 from model.victory_point import VictoryPoint
@@ -9,11 +9,13 @@ from model.rank import Hand
 from model.card import Card
 from model.patron_controller import PatronController
 
+
 @dataclass
 class Player():
     player_id: int
     hand: Hand
     reserved: Hand
+    bonus_tokens: TokenArray
     tokens: TokenArray
     victoryPoints: VictoryPoint
     patrons: List[Patron]
@@ -24,6 +26,7 @@ class Player():
         self.hand = Hand([])
         self.reserved = Hand([])
         self.tokens = TokenArray()
+        self.bonus_tokens = TokenArray()
         self.victoryPoints = VictoryPoint(0)
         self.patrons = []
         self.observer = observer
@@ -31,22 +34,39 @@ class Player():
     def get_card_price(self, cardId: int) -> TokenArray:
         return self.reserved.get_card_price(cardId)
 
-    def pay(self, price: TokenArray) -> None:
+    def pay(self, price: TokenArray) -> int or PlayerCanNotPay:
         assert isinstance(price, TokenArray)
+        # tokens = self.tokens.get_tokens()
+        can_pay, reduced_price = self.can_pay_with_reduced_price(price)
 
-        if self.tokens.can_pay(price):
-            self.tokens -= price
+        if can_pay:
+            to_deposit = self.tokens.pay(reduced_price)
+
+            return to_deposit, None
+
         else:
             return PlayerCanNotPay()
+
+    def can_pay_with_reduced_price(self, price: TokenArray) -> tuple[bool, TokenArray]:
+        assert isinstance(price, TokenArray)
+        reduced_price = price - self.bonus_tokens
+        for i in range(len(reduced_price.get_tokens())):
+            if reduced_price.get_tokens()[i] < 0:
+                reduced_price.get_tokens()[i] = 0
+        return self.tokens.can_pay(reduced_price), reduced_price
 
     def withdraw_reserved_card(self, cardId: int) -> Card:
         return self.reserved.pop_card(cardId)
 
     def deposit_card(self, card: Card) -> None:
         self.hand.add_card(card)
+        self.victoryPoints.set_value(self.victoryPoints.get_value() + card.victoryPoint.value)
+        self.bonus_tokens.deposit_tokens(card.bonus)
+
         patron_get = self.notify_observers()
         if patron_get is not None:
             self.patrons.append(patron_get)
+            # self.victoryPoints.set_value(self.victoryPoints.get_value() + patron_get.victoryPoints.get_value())
 
     def notify_observers(self) -> Patron:
         return self.observer.update(self.hand)
@@ -67,3 +87,7 @@ class Player():
         for patron in self.patrons:
             out += patron.victoryPoints.get_value()
         self.victoryPoints.set_value(out)
+
+    def take_randoms_tokens(self, bank_controller: TokenArray):
+
+        pass

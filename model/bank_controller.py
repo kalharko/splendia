@@ -1,30 +1,24 @@
 from dataclasses import dataclass
-
-from model.utils.exception import NotEnoughTokens, TooMuchBankTokens,InvalidTakeTokenAction
-from model.utils.singleton import SingletonMeta
-from model.token_array import TokenArray, Color
+from logging import raiseExceptions
+from logging import log
+from model.utils.exception import TooMuchBankTokens, InvalidTakeTokenAction
+from model.token_array import TokenArray
 from model.utils.logger import Logger
 
 
 @dataclass
-class BankController(metaclass=SingletonMeta):
+class BankController():
     bank: TokenArray = None
     maxInBank: TokenArray = None
 
-    def __init__(self):
-        if not self.bank:
-            Logger().log(1, self, 'BankController not loaded')
-            self.load(4)
-
-    def load(self, nbPlayer: int) -> None:
-        # number of tokens depends on the number of players
-        if nbPlayer == 2:
+    def __init__(self, nb_player=4):
+        if nb_player == 2:
             self.bank = TokenArray([4, 4, 4, 4, 4, 5])
             self.maxInBank = TokenArray([4, 4, 4, 4, 4, 5])
-        elif nbPlayer == 3:
+        elif nb_player == 3:
             self.bank = TokenArray([5, 5, 5, 5, 5, 5])
             self.maxInBank = TokenArray([5, 5, 5, 5, 5, 5])
-        elif nbPlayer == 4:
+        elif nb_player == 4:
             self.bank = TokenArray([7, 7, 7, 7, 7, 5])
             self.maxInBank = TokenArray([7, 7, 7, 7, 7, 5])
         else:
@@ -38,20 +32,24 @@ class BankController(metaclass=SingletonMeta):
 
     def withdraw(self, tokens: TokenArray) -> None:
         if tokens.nb_of_tokens() == 1:
-            if tokens.get_tokens()[Color.GOLD.value] != 1:
-                Logger().log(2, None, '1')
-                return InvalidTakeTokenAction()
+            # if tokens.get_tokens()[Color.GOLD.value] != 1:
+                # Logger().log(2, None, '1')
+                # return InvalidTakeTokenAction()
+            pass
         elif tokens.nb_of_tokens() == 2:
             if sum([1 if x == 2 else 0 for x in tokens.get_tokens()]) != 1:
-                Logger().log(2, None, '2')
-                return InvalidTakeTokenAction()
+                """Logger().log(2, None, '2')
+                return InvalidTakeTokenAction()"""
+                pass
             elif self.bank.get_tokens()[tokens.get_tokens().index(2)] < 4:
-                Logger().log(2, None, '3')
-                return InvalidTakeTokenAction()
+                """Logger().log(2, None, '3')
+                return InvalidTakeTokenAction()"""
+                pass
         elif tokens.nb_of_tokens() == 3:
             if sum([1 if x == 1 else 0 for x in tokens.get_tokens()]) != 3:
-                Logger().log(2, None, '4')
-                return InvalidTakeTokenAction()
+                """Logger().log(2, None, '4')
+                return InvalidTakeTokenAction()"""
+                pass
         else:
             return InvalidTakeTokenAction()
 

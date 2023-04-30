@@ -4,21 +4,16 @@ import random
 
 from model.rank import Hand
 from model.patron import Patron
-from model.victory_point import VictoryPoint
-from model.token_array import TokenArray
-from model.utils.singleton import SingletonMeta
-import pandas as pd
 from model.utils.parsing import retrieve_and_parse_patrons
 
+
 @dataclass
-class PatronController(metaclass=SingletonMeta):
+class PatronController():
     patrons: List[Patron]
 
-    def __init__(self):
-        pass
-
-    def load(self, nbPlayer: int) -> None:
+    def __init__(self, nbPlayer: int):
         patrons = retrieve_and_parse_patrons()
+        patrons = patrons.tolist()
         random.shuffle(patrons)
         self.patrons = patrons[:nbPlayer + 1]
 
