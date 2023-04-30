@@ -9,7 +9,13 @@ import pickle
 
 
 class SplendorEnv(gym.Env):
-    def __init__(self, game, nb_player=2):
+    def __init__(self, game : GameManager, nb_player : int = 2):
+        """
+        :param game: GameManager
+        :param nb_player: int
+        This class is the environment for the AI to play in.
+        :return: None
+        """
         self.action_space = gym.spaces.Discrete(66)
         """
         Player 1 state:
