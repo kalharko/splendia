@@ -1,24 +1,18 @@
 from dataclasses import dataclass
 from logging import raiseExceptions
 from logging import log
-from model.utils.exception import NotEnoughTokens, TooMuchBankTokens,InvalidTakeTokenAction
+from model.utils.exception import NotEnoughTokens, TooMuchBankTokens, InvalidTakeTokenAction
 from model.utils.singleton import SingletonMeta
 from model.token_array import TokenArray, Color
 from model.utils.logger import Logger
 
 
 @dataclass
-class BankController(metaclass=SingletonMeta):
+class BankController():
     bank: TokenArray = None
     maxInBank: TokenArray = None
 
-    def __init__(self,nb_player=4):
-        if not self.bank:
-            Logger().log(1, self, 'BankController not loaded')
-            self.load(nb_player)
-
-    def load(self, nbPlayer: int) -> None:
-        # number of tokens depends on the number of players
+    def __init__(self, nb_player=4):
         if nbPlayer == 2:
             self.bank = TokenArray([4, 4, 4, 4, 4, 5])
             self.maxInBank = TokenArray([4, 4, 4, 4, 4, 5])
@@ -32,7 +26,6 @@ class BankController(metaclass=SingletonMeta):
             raiseExceptions("Number of players unsupported")
 
     def deposit(self, tokens: TokenArray) -> None:
-
         if self.bank + tokens <= self.maxInBank:
             self.bank += tokens
         else:
@@ -40,9 +33,9 @@ class BankController(metaclass=SingletonMeta):
 
     def withdraw(self, tokens: TokenArray) -> None:
         if tokens.nb_of_tokens() == 1:
-            #if tokens.get_tokens()[Color.GOLD.value] != 1:
-                #Logger().log(2, None, '1')
-                #return InvalidTakeTokenAction()
+            # if tokens.get_tokens()[Color.GOLD.value] != 1:
+                # Logger().log(2, None, '1')
+                # return InvalidTakeTokenAction()
             pass
         elif tokens.nb_of_tokens() == 2:
             if sum([1 if x == 2 else 0 for x in tokens.get_tokens()]) != 1:

@@ -13,9 +13,6 @@ class ShopController(metaclass=SingletonMeta):
     ranks: List[Rank]
 
     def __init__(self):
-        pass
-
-    def load(self) -> None:
         self.ranks = []
         all_cards = retrieve_and_parse_cards()
         self.ranks.append(Rank([x for x in all_cards if x.card_id < 40], 1))
