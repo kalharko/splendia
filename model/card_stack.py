@@ -6,6 +6,12 @@ from model.utils.exception import CardIdNotFound
 
 @dataclass
 class CardStack():
+    """This class represents a stack of cards. It contains the cards of the stack and the methods to interact with them.
+
+    Attributes:
+        cards (List[Card]): The cards of the stack.
+        """
+
     cards: List[Card]
 
     def add_card(self, card: Card) -> None:
@@ -14,7 +20,16 @@ class CardStack():
 
             self.cards.append(card)
 
-    def pop_card(self, cardId: int) -> Card:
+    def pop_card(self, cardId: int) -> Card or CardIdNotFound:
+        """This method pops a card from the stack.
+
+        Args:
+            cardId (int): The id of the card to pop.
+
+        Returns:
+            Card or CardIdNotFound: The card popped from the stack, CardIdNotFound if the card is not in the stack.
+
+            """
         assert isinstance(cardId, int)
         assert 0 <= cardId < 90
 

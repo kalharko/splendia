@@ -12,6 +12,20 @@ from model.player import Player
 
 @dataclass
 class GameManager():
+    """This class is used to manage the game.
+    It contains the controllers of the game and methods to interact with them.
+
+    Attributes:
+        _bankController (BankController): The bank controller.
+        _patronController (PatronController): The patron controller.
+        _playerController (PlayerController): The player controller.
+        _shopController (ShopController): The shop controller.
+        nbPlayer (int): The number of players.
+        currentPlayer (int): The id of the current player.
+        firstPlayerId (int): The id of the first player.
+        userId (int): The id of the user.
+        """
+
     _bankController: BankController
     _patronController: PatronController
     _playerController: PlayerController
@@ -22,16 +36,30 @@ class GameManager():
     userId: int
 
     def __init__(self, nbPlayer=2) -> None:
+        """This method initializes the game manager. It creates the controllers of the game.
+
+        Args:
+            nbPlayer (int): The number of players.
+            """
         self._bankController = BankController(nbPlayer)
         self._patronController = PatronController(nbPlayer)
-        self._playerController = PlayerController(nbPlayer, observer=self._patronController)
+        self._playerController = PlayerController(
+            nbPlayer, observer=self._patronController)
         self._shopController = ShopController()
         self.currentPlayer = 0
         self.nbPlayer = nbPlayer
         self.userId = 0
         self.firstPlayerId = 0
 
-    def gather_ia_board_state(self, nb_players=2) -> None:
+    def gather_ia_board_state(self, nb_players=2) -> dict:
+        """This method gathers the board state for the IA.
+
+        Args:
+            nb_players (int): The number of players.
+
+        Returns:
+            dict: The board state.
+            """
         if nb_players == 2:
             dictionary = {
                 'player1': {
@@ -63,10 +91,16 @@ class GameManager():
                     'nobles': self._patronController.patrons,
                     'tokens': self._bankController.bank,
                 },
-                }
+            }
             return dictionary
 
     def gather_cli_board_state(self) -> dict:
+        """This method gathers the board state for the CLI.
+
+        Returns:
+            dict: The board state.
+            """
+
         out = {}
         out['cpu1-vp'] = self._playerController.players[0].victoryPoints.value
         out['cpu1-bonus'] = self._playerController.players[0].hand.compute_hand_bonuses()
@@ -106,7 +140,11 @@ class GameManager():
         return out
 
     def launch_game(self, nbPlayer: int) -> None:
+        """This method launches the game.
 
+        Args:
+            nbPlayer (int): The number of players.
+            """
 
         self.nbPlayer = nbPlayer
         # self.firstPlayerId = randint(0, nbPlayer-1)
@@ -115,12 +153,22 @@ class GameManager():
         self.userId = 0
 
     def next_player(self) -> None:
+        """This method changes the current player.
+
+        """
+
         self.currentPlayer += 1
 
         if self.currentPlayer >= self.nbPlayer:
             self.currentPlayer = 0
 
     def buy_card(self, cardId: int) -> None:
+        """This method buys a card.
+
+        Args:
+            cardId (int): The card id.
+            """
+
         # print('bank token before', self.bankController.bank.get_tokens())
         if self._shopController.has_card(cardId):
             if err := self._playerController.buy_shop_card(self.currentPlayer, cardId, self._shopController, self._bankController):
@@ -135,6 +183,12 @@ class GameManager():
             self.next_player()
 
     def reserve_card(self, cardId: int) -> None:
+        """This method reserves a card.
+
+        Args:
+            cardId (int): The card id.
+            """
+
         if err := self._playerController.reserve_card(self.currentPlayer, cardId, self._shopController, self._bankController):
             Logger().log(0, err, 'GameManager reserve_card')
             return err
@@ -143,7 +197,12 @@ class GameManager():
             self.next_player()
 
     def reserve_pile_card(self, pile_level: int) -> None:
-        if err := self._playerController.reserve_pile_card(self.currentPlayer, pile_level,self._shopController):
+        """This method reserves a card from the pile.
+
+        Args:
+            pile_level (int): The pile level.
+            """
+        if err := self._playerController.reserve_pile_card(self.currentPlayer, pile_level, self._shopController):
             Logger().log(0, err, 'GameManager reserve_pile_card')
             return err
 
@@ -151,6 +210,12 @@ class GameManager():
             self.next_player()
 
     def take_token(self, tokens: TokenArray) -> None:
+        """This method takes tokens.
+
+        Args:
+            tokens (TokenArray): The tokens.
+            """
+
         if err := self._playerController.take_tokens(self.currentPlayer, tokens, self._bankController):
 
             Logger().log(0, err, 'GameManager take_token')
@@ -160,21 +225,45 @@ class GameManager():
             self.next_player()
 
     def pass_turn(self):
+        """This method passes the turn.
+
+            """
         self.next_player()
 
     def is_last_turn(self) -> bool:
-        finished = False
+        """This method checks if it is the last turn.
+
+        Returns:
+            bool: True if it is the last turn, False otherwise.
+            """
         for player in self._playerController.players:
             if player.victoryPoints.value >= 15:
-                finished = True
-            return finished
-        return finished
+                return True
+        return False
 
     def cpu_turn(self) -> None:
+        """This method plays the turn for the cpu.
+
+        """
         # TODO: call ai
         pass
 
-    def get_player_victory_point(self, player_id : int) -> int:
+    def get_player_victory_point(self, player_id: int) -> int:
+        """This method returns the victory points of a player.
+
+        Args:
+            player_id (int): The player id.
+
+        Returns:
+            int: The victory points of the player.
+            """
         return self._playerController.players[player_id].victoryPoints.value
+
     def get_current_player(self) -> Player:
+        """This method returns the current player.
+
+        Returns:
+            Player: The current player.
+            """
+
         return self._playerController.players[self.currentPlayer]

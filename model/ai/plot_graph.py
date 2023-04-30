@@ -10,7 +10,7 @@ def save_graph():
     # env_name = 'BipedalWalker-v2'
     env_name = 'Splendor'
 
-    fig_num = 0  #### change this to prevent overwriting figures in same env_name folder
+    fig_num = 0  # change this to prevent overwriting figures in same env_name folder
     plot_avg = True  # plot average of all runs; else plot all runs separately
     fig_width = 10
     fig_height = 6
@@ -39,7 +39,8 @@ def save_graph():
     if not os.path.exists(figures_dir):
         os.makedirs(figures_dir)
 
-    fig_save_path = figures_dir + '/PPO_' + env_name + '_fig_' + str(fig_num) + '.png'
+    fig_save_path = figures_dir + '/PPO_' + \
+        env_name + '_fig_' + str(fig_num) + '.png'
 
     # get number of log files in directory
     log_dir = "PPO_logs" + '/' + env_name + '/'
@@ -50,7 +51,8 @@ def save_graph():
     all_runs = []
 
     for run_num in range(num_runs):
-        log_f_name = log_dir + '/PPO_' + env_name + "_log_" + str(run_num) + ".csv"
+        log_f_name = log_dir + '/PPO_' + env_name + \
+            "_log_" + str(run_num) + ".csv"
         print("loading data from : " + log_f_name)
         data = pd.read_csv(log_f_name)
         data = pd.DataFrame(data)
@@ -81,7 +83,8 @@ def save_graph():
 
         # keep only reward_smooth in the legend and rename it
         handles, labels = ax.get_legend_handles_labels()
-        ax.legend([handles[0]], ["reward_avg_" + str(len(all_runs)) + "_runs"], loc=2)
+        ax.legend([handles[0]], ["reward_avg_" +
+                  str(len(all_runs)) + "_runs"], loc=2)
 
     else:
         for i, run in enumerate(all_runs):
@@ -138,7 +141,8 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
 
     # Lecture du fichier CSV
-    df = pd.read_csv('Blocked_logs/blocked_logs.csv', header=None, names=['valeur', 'blocked'])
+    df = pd.read_csv('Blocked_logs/blocked_logs.csv',
+                     header=None, names=['valeur', 'blocked'])
 
     # Transformation de la colonne 'blocked'
     df['blocked'] = df['blocked'].apply(lambda x: 0 if x == 'blocked' else 1)
@@ -151,19 +155,3 @@ if __name__ == '__main__':
     plt.xlabel('Valeur')
     plt.ylabel('Blocked')
     plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

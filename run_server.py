@@ -50,7 +50,5 @@ def cpuTurn():
     return jsonify(gameManager.gather_ia_board_state())
 
 
-
-
 if __name__ == "__main__":
     app.run(debug=True)

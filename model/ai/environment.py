@@ -9,7 +9,7 @@ import pickle
 
 
 class SplendorEnv(gym.Env):
-    def __init__(self, game : GameManager, nb_player : int = 2):
+    def __init__(self, game: GameManager, nb_player: int = 2):
         """
         :param game: GameManager
         :param nb_player: int
@@ -48,7 +48,7 @@ class SplendorEnv(gym.Env):
              91, 91, 91, 91, 91, 11, 11, 11, 11, 11, 92, 92, 92, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 91, 11, 11,
              11, 11, 11, 40, 30, 20])
 
-        self.game : GameManager = game
+        self.game: GameManager = game
 
         pass
 
@@ -57,14 +57,16 @@ class SplendorEnv(gym.Env):
         obs = numpy.zeros(88)
         obs[0:6] = state['player1']['tokens']
         # if the length of the list smaller than 20, we padd with 90
-        list_of_cards = [card.card_id for card in state['player1']['cards'] if card is not None]
+        list_of_cards = [
+            card.card_id for card in state['player1']['cards'] if card is not None]
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
 
         obs[6:26] = list_of_cards
         # same for nobles, if the length of the list smaller than 5, we padd with 10
-        list_of_nobles = [patron.patron_id for patron in state['player1']['nobles']]
+        list_of_nobles = [
+            patron.patron_id for patron in state['player1']['nobles']]
         if len(list_of_nobles) < 5:
             for i in range(5 - len(list_of_nobles)):
                 list_of_nobles.append(10)
@@ -72,12 +74,14 @@ class SplendorEnv(gym.Env):
         obs[26:31] = list_of_nobles
         # we save the reserved cards in a list, if the card is None, we padd with 90
 
-        self.reserved_cards = [card.card_id for card in state['player1']['reserved'] if card is not None]
+        self.reserved_cards = [
+            card.card_id for card in state['player1']['reserved'] if card is not None]
         if len(self.reserved_cards) < 3:
             for i in range(3 - len(self.reserved_cards)):
                 self.reserved_cards.append(90)
         # same for reserved cards, if the length of the list smaller than 3, we padd with 90
-        list_of_reserved = [card.card_id for card in state['player1']['reserved'] if card is not None]
+        list_of_reserved = [
+            card.card_id for card in state['player1']['reserved'] if card is not None]
         if len(list_of_reserved) < 3:
             for i in range(3 - len(list_of_reserved)):
                 list_of_reserved.append(90)
@@ -85,18 +89,21 @@ class SplendorEnv(gym.Env):
 
         obs[34:40] = state['player2']['tokens']
         # same for player 2
-        list_of_cards = [card.card_id for card in state['player2']['cards'] if card is not None]
+        list_of_cards = [
+            card.card_id for card in state['player2']['cards'] if card is not None]
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
 
         obs[40:60] = list_of_cards
-        list_of_nobles = [patron.patron_id for patron in state['player2']['nobles']]
+        list_of_nobles = [
+            patron.patron_id for patron in state['player2']['nobles']]
         if len(list_of_nobles) < 5:
             for i in range(5 - len(list_of_nobles)):
                 list_of_nobles.append(10)
         obs[60:65] = list_of_nobles
-        list_of_reserved = [card.card_id for card in state['player2']['reserved'] if card is not None]
+        list_of_reserved = [
+            card.card_id for card in state['player2']['reserved'] if card is not None]
 
         if len(list_of_reserved) < 3:
             for i in range(3 - len(list_of_reserved)):
@@ -106,7 +113,8 @@ class SplendorEnv(gym.Env):
 
         # same for shop
         self.shop1_cards = state['shop']['rank1_cards']
-        list_of_cards_rank1 = [card.card_id for card in state['shop']['rank1_cards']]
+        list_of_cards_rank1 = [
+            card.card_id for card in state['shop']['rank1_cards']]
 
         if len(list_of_cards_rank1) < 4:
             for i in range(4 - len(list_of_cards_rank1)):
@@ -114,20 +122,23 @@ class SplendorEnv(gym.Env):
         obs[68:72] = list_of_cards_rank1
 
         self.shop2_cards = state['shop']['rank2_cards']
-        list_of_cards_rank2 = [card.card_id for card in state['shop']['rank2_cards']]
+        list_of_cards_rank2 = [
+            card.card_id for card in state['shop']['rank2_cards']]
         if len(list_of_cards_rank2) < 4:
             for i in range(4 - len(list_of_cards_rank2)):
                 list_of_cards_rank2.append(90)
         obs[72:76] = list_of_cards_rank2
 
         self.shop3_cards = state['shop']['rank3_cards']
-        list_of_cards_rank3 = [card.card_id for card in state['shop']['rank3_cards']]
+        list_of_cards_rank3 = [
+            card.card_id for card in state['shop']['rank3_cards']]
         if len(list_of_cards_rank3) < 4:
             for i in range(4 - len(list_of_cards_rank3)):
                 list_of_cards_rank3.append(90)
         obs[76:80] = list_of_cards_rank3
 
-        list_of_nobles = [patron.patron_id for patron in state['shop']['nobles']]
+        list_of_nobles = [
+            patron.patron_id for patron in state['shop']['nobles']]
         if len(list_of_nobles) < 5:
             for i in range(5 - len(list_of_nobles)):
                 list_of_nobles.append(10)
@@ -188,22 +199,26 @@ class SplendorEnv(gym.Env):
         obs = numpy.zeros(88)
         obs[0:6] = state['player2']['tokens']
         # if the length of the list smaller than 20, we padd with 90
-        list_of_cards = [card.card_id for card in state['player2']['cards'] if card is not None]
+        list_of_cards = [
+            card.card_id for card in state['player2']['cards'] if card is not None]
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
         obs[6:26] = list_of_cards
         # same for nobles, if the length of the list smaller than 5, we padd with 10
-        list_of_nobles = [patron.patron_id for patron in state['player2']['nobles'] if patron is not None]
+        list_of_nobles = [
+            patron.patron_id for patron in state['player2']['nobles'] if patron is not None]
         if len(list_of_nobles) < 5:
             for i in range(5 - len(list_of_nobles)):
                 list_of_nobles.append(10)
 
         obs[26:31] = list_of_nobles
 
-        self.reserved_cards = [card.card_id for card in state['player2']['reserved'] if card is not None]
+        self.reserved_cards = [
+            card.card_id for card in state['player2']['reserved'] if card is not None]
         # same for reserved cards, if the length of the list smaller than 3, we padd with 90
-        list_of_reserved = [card.card_id for card in state['player2']['reserved'] if card is not None]
+        list_of_reserved = [
+            card.card_id for card in state['player2']['reserved'] if card is not None]
         if len(list_of_reserved) < 3:
             for i in range(3 - len(list_of_reserved)):
                 list_of_reserved.append(90)
@@ -211,18 +226,21 @@ class SplendorEnv(gym.Env):
 
         obs[34:40] = state['player1']['tokens']
         # same for player 2
-        list_of_cards = [card.card_id for card in state['player1']['cards'] if card is not None]
+        list_of_cards = [
+            card.card_id for card in state['player1']['cards'] if card is not None]
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
 
         obs[40:60] = list_of_cards
-        list_of_nobles = [patron.patron_id for patron in state['player1']['nobles'] if patron is not None]
+        list_of_nobles = [
+            patron.patron_id for patron in state['player1']['nobles'] if patron is not None]
         if len(list_of_nobles) < 5:
             for i in range(5 - len(list_of_nobles)):
                 list_of_nobles.append(10)
         obs[60:65] = list_of_nobles
-        list_of_reserved = [card.card_id for card in state['player1']['reserved'] if card is not None]
+        list_of_reserved = [
+            card.card_id for card in state['player1']['reserved'] if card is not None]
         if len(list_of_reserved) < 3:
             for i in range(3 - len(list_of_reserved)):
                 list_of_reserved.append(90)
@@ -231,7 +249,8 @@ class SplendorEnv(gym.Env):
 
         # same for shop
         self.shop1_cards = state['shop']['rank1_cards']
-        list_of_cards_rank1 = [card.card_id for card in state['shop']['rank1_cards'] if card is not None]
+        list_of_cards_rank1 = [
+            card.card_id for card in state['shop']['rank1_cards'] if card is not None]
 
         if len(list_of_cards_rank1) < 4:
             for i in range(4 - len(list_of_cards_rank1)):
@@ -239,20 +258,23 @@ class SplendorEnv(gym.Env):
         obs[68:72] = list_of_cards_rank1
 
         self.shop2_cards = state['shop']['rank2_cards']
-        list_of_cards_rank2 = [card.card_id for card in state['shop']['rank2_cards'] if card is not None]
+        list_of_cards_rank2 = [
+            card.card_id for card in state['shop']['rank2_cards'] if card is not None]
         if len(list_of_cards_rank2) < 4:
             for i in range(4 - len(list_of_cards_rank2)):
                 list_of_cards_rank2.append(90)
         obs[72:76] = list_of_cards_rank2
 
         self.shop3_cards = state['shop']['rank3_cards']
-        list_of_cards_rank3 = [card.card_id for card in state['shop']['rank3_cards'] if card is not None]
+        list_of_cards_rank3 = [
+            card.card_id for card in state['shop']['rank3_cards'] if card is not None]
         if len(list_of_cards_rank3) < 4:
             for i in range(4 - len(list_of_cards_rank3)):
                 list_of_cards_rank3.append(90)
         obs[76:80] = list_of_cards_rank3
 
-        list_of_nobles = [patron.patron_id for patron in state['shop']['nobles'] if patron is not None]
+        list_of_nobles = [
+            patron.patron_id for patron in state['shop']['nobles'] if patron is not None]
         if len(list_of_nobles) < 5:
             for i in range(5 - len(list_of_nobles)):
                 list_of_nobles.append(10)
@@ -290,15 +312,14 @@ class SplendorEnv(gym.Env):
         reward = -1
         player_0_vp = self.game.get_player_victory_point(0)
         player_1_vp = self.game.get_player_victory_point(1)
-        reward +=  player_0_vp
-        reward -=  player_1_vp
+        reward += player_0_vp
+        reward -= player_1_vp
 
         if self.game.is_last_turn():
             # if the file blocked_logs.csv does not exist, we create it
 
-
-            if  player_0_vp > player_1_vp:
-                #reward = 100
+            if player_0_vp > player_1_vp:
+                # reward = 100
                 # add a new line to the file
                 with open('Blocked_logs/blocked_logs.csv', 'a') as f:
 
@@ -308,7 +329,7 @@ class SplendorEnv(gym.Env):
                 with open('Blocked_logs/blocked_logs.csv', 'a') as f:
 
                     f.write(str(self.game_id) + ',non_blocked\n')
-                #reward = -100
+                # reward = -100
                 print('loose')
             done = True
             print('last turn')

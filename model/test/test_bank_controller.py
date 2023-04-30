@@ -40,12 +40,14 @@ class Test_BankController(unittest.TestCase):
 
         bc.withdraw(TokenArray([1, 1, 1, 0, 0, 0]))
         bc.withdraw(TokenArray([1, 1, 1, 0, 0, 0]))
-        self.assertIsInstance(bc.withdraw(TokenArray([1, 1, 1, 0, 0, 0])), NotEnoughTokens)
+        self.assertIsInstance(bc.withdraw(
+            TokenArray([1, 1, 1, 0, 0, 0])), NotEnoughTokens)
 
     def test_deposit(self):
         bc = BankController()
         bc.load(2)
-        self.assertIsInstance(bc.deposit(TokenArray([1, 0, 0, 0, 0, 0])), TooMuchBankTokens)
+        self.assertIsInstance(bc.deposit(TokenArray(
+            [1, 0, 0, 0, 0, 0])), TooMuchBankTokens)
 
         bc.load(2)
         bc.withdraw(TokenArray([1, 1, 1, 0, 0, 0]))

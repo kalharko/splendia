@@ -34,7 +34,6 @@ class Test_PlayerController(unittest.TestCase):
         self.assertEqual(len(pc.players[0].reserved), 0)
         self.assertEqual(pc.players[0].hand.cards[0].card_id, cardId)
 
-
     def test_buy_shop_card(self):
         patronController = PatronController()
         patronController.load(4)
@@ -46,7 +45,8 @@ class Test_PlayerController(unittest.TestCase):
         price = shopController.ranks[0].hand.cards[0].price
         pc.players[0].tokens = TokenArray([7, 7, 7, 7, 7, 5])
         pc.buy_shop_card(0, cardId)
-        self.assertEqual(pc.players[0].tokens.get_tokens(), (TokenArray([7, 7, 7, 7, 7, 5]) - price).get_tokens())
+        self.assertEqual(pc.players[0].tokens.get_tokens(
+        ), (TokenArray([7, 7, 7, 7, 7, 5]) - price).get_tokens())
         self.assertEqual(pc.players[0].hand.cards[0].card_id, cardId)
 
     def test_reserve_card(self):
@@ -59,7 +59,8 @@ class Test_PlayerController(unittest.TestCase):
         cardId = shopController.ranks[0].hand.cards[0].card_id
         if err := pc.reserve_card(0, cardId):
             Logger().log(0, err, 'test_reserve_card')
-        self.assertEqual(pc.players[0].tokens.get_tokens()[Color.GOLD.value], 1)
+        self.assertEqual(pc.players[0].tokens.get_tokens()[
+                         Color.GOLD.value], 1)
         self.assertEqual(pc.players[0].reserved.cards[0].card_id, cardId)
 
     def test_take_tokens(self):
@@ -74,7 +75,6 @@ class Test_PlayerController(unittest.TestCase):
         self.assertEqual(pc.players[0].tokens.get_tokens(), [1, 1, 1, 0, 0, 0])
         pc.take_tokens(0, TokenArray([0, 0, 0, 2, 0, 0]))
         self.assertEqual(pc.players[0].tokens.get_tokens(), [1, 1, 1, 2, 0, 0])
-
 
 
 if __name__ == '__main__':

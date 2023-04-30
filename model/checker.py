@@ -2,12 +2,23 @@
 from model.token_array import TokenArray
 import numpy
 from model.card import Card
+from typing import List
 
 
 class Checker:
+    """This class is used to check if a player can take a card or a token."""
 
     @staticmethod
-    def possible_token_to_take_2(player_token: TokenArray, bank_token: TokenArray):
+    def possible_token_to_take_2(player_token: TokenArray, bank_token: TokenArray) -> List[int]:
+        """This method returns a list of 5 elements, each element is 1 if the player can take the token of the same index, 0 otherwise.
+        The player can take a token if the bank has at least 4 tokens of that type and the player has less than 8 tokens.
+        The list is ordered as the token array, so the first element is the number of white tokens, the second the number of blue tokens and so on.
+        Args:
+            player_token (TokenArray): The tokens of the player.
+            bank_token (TokenArray): The tokens of the bank.
+        Returns:
+            List[int]: The list of the tokens that the player can take.
+            """
         token_list = [0, 0, 0, 0, 0]
         higher_than_8 = []
         iterator = 0
@@ -27,7 +38,14 @@ class Checker:
         return token_list
 
     @staticmethod
-    def possible_token_to_take_3(player_token: TokenArray, bank_token: TokenArray):
+    def possible_token_to_take_3(player_token: TokenArray, bank_token: TokenArray) -> List[int]:
+        """This method returns a list of 10 elements, each element is 1 if the player can take the token of the same index, 0 otherwise.
+        Args:
+            player_token (TokenArray): The tokens of the player.
+            bank_token (TokenArray): The tokens of the bank.
+        Returns:
+            List[int]: The list of the tokens that the player can take.
+            """
         """ combinations :
         1,2,3 -> [1,1,1,0,0,0]
         1,2,4 -> [1,1,0,1,0,0]
@@ -67,7 +85,16 @@ class Checker:
         return mask_list
 
     @staticmethod
-    def possible_card_to_buy(player_token: TokenArray, shop_cards: list[Card], player_hand: list[Card], player):
+    def possible_card_to_buy(shop_cards: list[Card], player_hand: list[Card], player) -> List[int]:
+        """This method returns a list of 12 elements, each element is 1 if the player can buy the card of the same index, 0 otherwise.
+        Args:
+            shop_cards (list[Card]): The cards in the shop.
+            player_hand (list[Card]): The cards in the player hand.
+            player (Player): The player.
+        Returns:
+            List[int]: The list of the cards that the player can buy.
+            """
+
         mask = []
         count_not_none = [card for card in player_hand if card is not None]
         if len(count_not_none) == 20:
@@ -88,7 +115,16 @@ class Checker:
         return mask
 
     @staticmethod
-    def possible_card_to_buy_in_reserve(player_token: TokenArray, reserved_cards: list[Card], player_hand: list[Card], player):
+    def possible_card_to_buy_in_reserve(reserved_cards: list[Card], player_hand: list[Card], player) -> List[int]:
+        """This method returns a list of 3 elements, each element is 1 if the player can buy the card of the same index, 0 otherwise.
+
+        Args:
+            reserved_cards (list[Card]): The cards in the reserve.
+            player_hand (list[Card]): The cards in the player hand.
+            player (Player): The player.
+        Returns:
+            List[int]: The list of the cards that the player can buy.
+            """
 
         mask = []
         count_not_none = [card for card in player_hand if card is not None]
@@ -108,7 +144,15 @@ class Checker:
         return mask
 
     @staticmethod
-    def possible_card_to_reserve_in_shop(player_reserved_cards: int, shop_cards: list[Card]):
+    def possible_card_to_reserve_in_shop(player_reserved_cards: int, shop_cards: list[Card]) -> List[int]:
+        """This method returns a list of 12 elements, each element is 1 if the player can reserve the card of the same index, 0 otherwise.
+
+        Args:
+            player_reserved_cards (int): The number of cards reserved by the player.
+            shop_cards (list[Card]): The cards in the shop.
+        Returns:
+            List[int]: The list of the cards that the player can reserve.
+            """
         mask = []
         if player_reserved_cards == 3:
             return [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -125,7 +169,17 @@ class Checker:
         return mask
 
     @staticmethod
-    def possible_card_to_reserve_top_deck(player_reserved_number: int, tier1: int, tier2: int, tier3: int):
+    def possible_card_to_reserve_top_deck(player_reserved_number: int, tier1: int, tier2: int, tier3: int) -> List[int]:
+        """This method returns a list of 3 elements, each element is 1 if the player can reserve the card of the same index, 0 otherwise.
+
+        Args:
+            player_reserved_number (int): The number of cards reserved by the player.
+            tier1 (int): The number of tier 1 cards.
+            tier2 (int): The number of tier 2 cards.
+            tier3 (int): The number of tier 3 cards.
+        Returns:
+            List[int]: The list of the cards that the player can reserve.
+            """
         mask = []
 
         if (player_reserved_number) == 3:
@@ -149,7 +203,23 @@ class Checker:
     @staticmethod
     def get_mask(player_hand: list[Card], shop_cards: list[Card], tier1: int, tier2: int, tier3: int,
                  player_reserved_number: int, player_token: TokenArray, bank_token: TokenArray,
-                 player_reserved_cards: list[Card], player):
+                 player_reserved_cards: list[Card], player) -> numpy.ndarray:
+        """This method returns a mask of 66 elements, each element is 1 if the player can do the action of the same index, 0 otherwise.
+
+        Args:
+            player_hand (list[Card]): The cards in the player hand.
+            shop_cards (list[Card]): The cards in the shop.
+            tier1 (int): The number of tier 1 cards.
+            tier2 (int): The number of tier 2 cards.
+            tier3 (int): The number of tier 3 cards.
+            player_reserved_number (int): The number of cards reserved by the player.
+            player_token (TokenArray): The tokens of the player.
+            bank_token (TokenArray): The tokens of the bank.
+            player_reserved_cards (list[Card]): The cards in the reserve.
+            player (Player): The player.
+        Returns:
+            numpy.ndarray: The mask.
+        """
         """
         the mask :
         10 bites for 10 possible combination of 3 tokens to take
@@ -163,14 +233,22 @@ class Checker:
 
         mask = numpy.zeros(66)
         mask[0:10] = Checker.possible_token_to_take_3(player_token, bank_token)
-        mask[10:15] = Checker.possible_token_to_take_2(player_token, bank_token)
-        mask[15:27] = Checker.possible_card_to_buy(player_token, shop_cards, player_hand, player)
-        mask[27:30] = Checker.possible_card_to_buy_in_reserve(player_token, player_reserved_cards, player_hand, player)
-        mask[30:42] = Checker.possible_card_to_reserve_in_shop(player_reserved_number, shop_cards)
-        mask[42:45] = Checker.possible_card_to_reserve_top_deck(player_reserved_number, tier1, tier2, tier3)
-        mask[45:50] = Checker.possible_token_to_take_1_and_reject(player_token, bank_token)
-        mask[50:60] = Checker.possible_token_to_take_2_different_and_reject(player_token, bank_token)
-        mask[60:65] = Checker.possible_token_to_take_2_same_and_reject(player_token, bank_token)
+        mask[10:15] = Checker.possible_token_to_take_2(
+            player_token, bank_token)
+        mask[15:27] = Checker.possible_card_to_buy(
+            shop_cards, player_hand, player)
+        mask[27:30] = Checker.possible_card_to_buy_in_reserve(
+            player_reserved_cards, player_hand, player)
+        mask[30:42] = Checker.possible_card_to_reserve_in_shop(
+            player_reserved_number, shop_cards)
+        mask[42:45] = Checker.possible_card_to_reserve_top_deck(
+            player_reserved_number, tier1, tier2, tier3)
+        mask[45:50] = Checker.possible_token_to_take_1_and_reject(
+            player_token, bank_token)
+        mask[50:60] = Checker.possible_token_to_take_2_different_and_reject(
+            player_token, bank_token)
+        mask[60:65] = Checker.possible_token_to_take_2_same_and_reject(
+            player_token, bank_token)
 
         # check if mask is full of 0
         if numpy.all(mask == 0):
@@ -180,7 +258,15 @@ class Checker:
         return mask
 
     @staticmethod
-    def possible_token_to_take_1_and_reject(player_token: TokenArray, bank_token: TokenArray):
+    def possible_token_to_take_1_and_reject(player_token: TokenArray, bank_token: TokenArray) -> numpy.ndarray:
+        """This method returns a list of 5 elements, each element is 1 if the player can take the token of the same index, 0 otherwise.
+
+        Args:
+            player_token (TokenArray): The tokens of the player.
+            bank_token (TokenArray): The tokens of the bank.
+        Returns:
+            numpy.ndarray: The list of the tokens that the player can take.
+        """
         # check if there is at least three colors none empty in the bank that are not gold
         non_empty_pile = 0
         for color in range(5):
@@ -196,7 +282,16 @@ class Checker:
         return mask
 
     @staticmethod
-    def possible_token_to_take_2_different_and_reject(player_token: TokenArray, bank_token: TokenArray):
+    def possible_token_to_take_2_different_and_reject(player_token: TokenArray, bank_token: TokenArray) -> numpy.ndarray:
+        """This method returns a list of 10 elements, each element is 1 if the player can take the tokens of the same index, 0 otherwise.
+
+        Args:
+            player_token (TokenArray): The tokens of the player.
+            bank_token (TokenArray): The tokens of the bank.
+        Returns:
+            numpy.ndarray: The list of the tokens that the player can take.
+        """
+
         # check if there is at least three colors none empty in the bank that are not gold
         non_empty_pile = 0
         for color in range(5):
@@ -243,7 +338,16 @@ class Checker:
         return mask_list
 
     @staticmethod
-    def possible_token_to_take_2_same_and_reject(player_token: TokenArray, bank_token: TokenArray):
+    def possible_token_to_take_2_same_and_reject(player_token: TokenArray, bank_token: TokenArray) -> numpy.ndarray:
+        """This method returns a list of 5 elements, each element is 1 if the player can take the tokens of the same index, 0 otherwise.
+
+        Args:
+            player_token (TokenArray): The tokens of the player.
+            bank_token (TokenArray): The tokens of the bank.
+        Returns:
+            numpy.ndarray: The list of the tokens that the player can take.
+            """
+
         # check if there is at least three colors none empty in the bank that are not gold
         non_empty_pile = 0
         for color in range(5):
@@ -252,5 +356,7 @@ class Checker:
         if non_empty_pile < 3 or player_token.nb_of_tokens() != 8:
             return numpy.zeros(5)
         mask = Checker.possible_token_to_take_2(player_token, bank_token)
+        # convert the mask to a np array
+        mask = numpy.array(mask)
 
         return mask

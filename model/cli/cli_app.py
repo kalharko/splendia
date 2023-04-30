@@ -34,7 +34,7 @@ class CliApp():
         self.display(boardState)
         user_input = ''
 
-        while not user_input in self.ESCAPE :
+        while not user_input in self.ESCAPE:
             user_input = self.get_input()
             command = user_input.split(' ')[0]
             arguments = user_input.split(' ')[1:]
@@ -46,27 +46,32 @@ class CliApp():
                 self.print_help()
                 continue
             if command == 'token3':
-                tokens = [1 if x in arguments else 0 for x in ['white', 'blue', 'green', 'red', 'black']] + [0]
+                tokens = [1 if x in arguments else 0 for x in [
+                    'white', 'blue', 'green', 'red', 'black']] + [0]
                 if err := self.gm.take_token(TokenArray(tokens)):
                     print(err)
                     break
                 else:
                     self.nextPlayer()
             elif command == 'token2':
-                tokens = [2 if x in arguments else 0 for x in ['white', 'blue', 'green', 'red', 'black']] + [0]
+                tokens = [2 if x in arguments else 0 for x in [
+                    'white', 'blue', 'green', 'red', 'black']] + [0]
                 tokens = TokenArray(tokens)
                 if not self.gm.take_token(tokens):
                     pass
             elif command == 'reserve':
-                cardId = self.gm._shopController.ranks[int(arguments[0])].hand.cards[int(arguments[1])].card_id
+                cardId = self.gm._shopController.ranks[int(
+                    arguments[0])].hand.cards[int(arguments[1])].card_id
                 if not self.gm.reserve_card(cardId):
                     pass
             elif command == 'buyshop':
-                cardId = self.gm._shopController.ranks[int(arguments[0])].hand.cards[int(arguments[1])].card_id
+                cardId = self.gm._shopController.ranks[int(
+                    arguments[0])].hand.cards[int(arguments[1])].card_id
                 if not self.gm.buy_card(cardId):
                     pass
             elif command == 'buyreserved':
-                cardId = self.gm._playerController.players[self.currentPlayer].reserved.cards[int(arguments[0])].card_id
+                cardId = self.gm._playerController.players[self.currentPlayer].reserved.cards[int(
+                    arguments[0])].card_id
                 if not self.gm.buy_card(cardId):
                     pass
             elif command == 'displayreserved':
@@ -105,21 +110,29 @@ class CliApp():
         print("| PATRONS |              BANK                | CPU#1        VP:", end='')
         print(str(bs['cpu1-vp']) + (3 - len(str(bs['cpu1-vp']))) * ' ' + '|')
 
-        print("|         |  white blue  green  red  black   | " + self.str_token_array(bs['cpu1-tokens']) + " |")
+        print("|         |  white blue  green  red  black   | " +
+              self.str_token_array(bs['cpu1-tokens']) + " |")
 
-        print(f"|[- 3PV -]|   ({bs['bank'][0]})   ({bs['bank'][1]})   ({bs['bank'][2]})   ({bs['bank'][3]})   ({bs['bank'][4]})    |", end="")
-        print(" " + self.str_bonus_array(bs['cpu1-bonus']) + f" [{bs['cpu1-nbReserved']}]|")
+        print(
+            f"|[- 3PV -]|   ({bs['bank'][0]})   ({bs['bank'][1]})   ({bs['bank'][2]})   ({bs['bank'][3]})   ({bs['bank'][4]})    |", end="")
+        print(
+            " " + self.str_bonus_array(bs['cpu1-bonus']) + f" [{bs['cpu1-nbReserved']}]|")
 
-        print(f"|{self.str_patron_price(bs['patrons'][0])}|                                  +--------------------+")
+        print(
+            f"|{self.str_patron_price(bs['patrons'][0])}|                                  +--------------------+")
 
         print("|         |              SHOP                | CPU#1        VP:", end='')
         print(str(bs['cpu2-vp']) + (3 - len(str(bs['cpu2-vp']))) * ' ' + '|')
 
         print("|[- 3PV -]|   ", end="")
-        print(f"{bs['shop00-pv']}  {self.str_card_bonus(bs['shop00-bonus'])}   ", end="")
-        print(f"{bs['shop10-pv']}  {self.str_card_bonus(bs['shop10-bonus'])}   ", end="")
-        print(f"{bs['shop20-pv']}  {self.str_card_bonus(bs['shop20-bonus'])}   ", end="")
-        print(f"{bs['shop30-pv']}  {self.str_card_bonus(bs['shop30-bonus'])}  ", end="")
+        print(
+            f"{bs['shop00-pv']}  {self.str_card_bonus(bs['shop00-bonus'])}   ", end="")
+        print(
+            f"{bs['shop10-pv']}  {self.str_card_bonus(bs['shop10-bonus'])}   ", end="")
+        print(
+            f"{bs['shop20-pv']}  {self.str_card_bonus(bs['shop20-bonus'])}   ", end="")
+        print(
+            f"{bs['shop30-pv']}  {self.str_card_bonus(bs['shop30-bonus'])}  ", end="")
         print(f"| {self.str_token_array(bs['cpu2-tokens'])} |")
 
         print(f"|{self.str_patron_price(bs['patrons'][1])}|  ", end="")
@@ -127,7 +140,8 @@ class CliApp():
         print(f"{self.str_first_card_price(bs['shop10-price'])}  ", end="")
         print(f"{self.str_first_card_price(bs['shop20-price'])}  ", end="")
         print(f"{self.str_first_card_price(bs['shop30-price'])}  ", end="")
-        print(f"| {self.str_bonus_array(bs['cpu2-bonus'])} [{bs['cpu2-nbReserved']}]|")
+        print(
+            f"| {self.str_bonus_array(bs['cpu2-bonus'])} [{bs['cpu2-nbReserved']}]|")
 
         print("|         |  ", end="")
         print(f"{self.str_scnd_card_price(bs['shop00-price'])}  ", end="")
@@ -140,10 +154,14 @@ class CliApp():
         print(str(bs['cpu3-vp']) + (3 - len(str(bs['cpu3-vp']))) * ' ' + '|')
 
         print(f"|{self.str_patron_price(bs['patrons'][2])}|   ", end="")
-        print(f"{bs['shop01-pv']}  {self.str_card_bonus(bs['shop01-bonus'])}   ", end="")
-        print(f"{bs['shop11-pv']}  {self.str_card_bonus(bs['shop11-bonus'])}   ", end="")
-        print(f"{bs['shop21-pv']}  {self.str_card_bonus(bs['shop21-bonus'])}   ", end="")
-        print(f"{bs['shop31-pv']}  {self.str_card_bonus(bs['shop31-bonus'])}  ", end="")
+        print(
+            f"{bs['shop01-pv']}  {self.str_card_bonus(bs['shop01-bonus'])}   ", end="")
+        print(
+            f"{bs['shop11-pv']}  {self.str_card_bonus(bs['shop11-bonus'])}   ", end="")
+        print(
+            f"{bs['shop21-pv']}  {self.str_card_bonus(bs['shop21-bonus'])}   ", end="")
+        print(
+            f"{bs['shop31-pv']}  {self.str_card_bonus(bs['shop31-bonus'])}  ", end="")
         print(f"| {self.str_token_array(bs['cpu3-tokens'])} |")
 
         print("|         |  ", end="")
@@ -151,7 +169,8 @@ class CliApp():
         print(f"{self.str_first_card_price(bs['shop11-price'])}  ", end="")
         print(f"{self.str_first_card_price(bs['shop21-price'])}  ", end="")
         print(f"{self.str_first_card_price(bs['shop31-price'])}  ", end="")
-        print(f"| {self.str_bonus_array(bs['cpu3-bonus'])} [{bs['cpu3-nbReserved']}]|")
+        print(
+            f"| {self.str_bonus_array(bs['cpu3-bonus'])} [{bs['cpu3-nbReserved']}]|")
 
         print("|[- 3PV -]|  ", end="")
         print(f"{self.str_scnd_card_price(bs['shop01-price'])}  ", end="")
@@ -160,15 +179,21 @@ class CliApp():
         print(f"{self.str_scnd_card_price(bs['shop31-price'])}  ", end="")
         print("+--------------------+")
 
-        print(f"|{self.str_patron_price(bs['patrons'][3])}|                                  |                    |")
+        print(
+            f"|{self.str_patron_price(bs['patrons'][3])}|                                  |                    |")
 
         print("|         |   ", end="")
-        print(f"{bs['shop02-pv']}  {self.str_card_bonus(bs['shop02-bonus'])}   ", end="")
-        print(f"{bs['shop12-pv']}  {self.str_card_bonus(bs['shop12-bonus'])}   ", end="")
-        print(f"{bs['shop22-pv']}  {self.str_card_bonus(bs['shop22-bonus'])}   ", end="")
-        print(f"{bs['shop32-pv']}  {self.str_card_bonus(bs['shop32-bonus'])}  ", end="")
+        print(
+            f"{bs['shop02-pv']}  {self.str_card_bonus(bs['shop02-bonus'])}   ", end="")
+        print(
+            f"{bs['shop12-pv']}  {self.str_card_bonus(bs['shop12-bonus'])}   ", end="")
+        print(
+            f"{bs['shop22-pv']}  {self.str_card_bonus(bs['shop22-bonus'])}   ", end="")
+        print(
+            f"{bs['shop32-pv']}  {self.str_card_bonus(bs['shop32-bonus'])}  ", end="")
         print("| PLAYER       VP:", end='')
-        print(str(bs['player-vp']) + (3 - len(str(bs['player-vp']))) * ' ' + '|')
+        print(str(bs['player-vp']) +
+              (3 - len(str(bs['player-vp']))) * ' ' + '|')
 
         print("|[- 3PV -]|  ", end="")
         print(f"{self.str_first_card_price(bs['shop02-price'])}  ", end="")
@@ -182,7 +207,8 @@ class CliApp():
         print(f"{self.str_scnd_card_price(bs['shop12-price'])}  ", end="")
         print(f"{self.str_scnd_card_price(bs['shop22-price'])}  ", end="")
         print(f"{self.str_scnd_card_price(bs['shop32-price'])}  ", end="")
-        print(f"| {self.str_bonus_array(bs['player-bonus'])} [{bs['player-nbReserved']}]|")
+        print(
+            f"| {self.str_bonus_array(bs['player-bonus'])} [{bs['player-nbReserved']}]|")
 
         print("|         |                                  |                    |")
         print("+---------+----------------------------------+--------------------+")
