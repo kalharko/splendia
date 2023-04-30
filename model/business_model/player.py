@@ -1,13 +1,13 @@
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List
 
 from model.utils.exception import PlayerCanNotPay
-from model.victory_point import VictoryPoint
-from model.token_array import TokenArray
-from model.patron import Patron
-from model.rank import Hand
-from model.card import Card
-from model.patron_controller import PatronController
+from model.business_model.victory_point import VictoryPoint
+from model.business_model.token_array import TokenArray
+from model.business_model.patron import Patron
+from model.business_model.rank import Hand
+from model.business_model.card import Card
+from model.business_model.patron_controller import PatronController
 
 
 @dataclass

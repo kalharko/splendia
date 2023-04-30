@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, jsonify
-import json
-import requests
 
-from model.game_manager import GameManager
+from model.business_model.game_manager import GameManager
 
 app = Flask(__name__)
 gameManager: GameManager = GameManager(4)

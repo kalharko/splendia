@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from typing import List
 from model.utils.exception import TooMuchReservedCards
-from model.patron_controller import PatronController
-from model.bank_controller import BankController
-from model.shop_controller import ShopController
-from model.token_array import TokenArray
-from model.player import Player
-from model.card import Card
+from model.business_model.patron_controller import PatronController
+from model.business_model.bank_controller import BankController
+from model.business_model.shop_controller import ShopController
+from model.business_model.token_array import TokenArray
+from model.business_model.player import Player
+from model.business_model.card import Card
 
 
 @dataclass

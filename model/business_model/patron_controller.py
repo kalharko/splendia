@@ -2,8 +2,8 @@ from dataclasses import dataclass
 from typing import List
 import random
 
-from model.rank import Hand
-from model.patron import Patron
+from model.business_model.rank import Hand
+from model.business_model.patron import Patron
 from model.utils.parsing import retrieve_and_parse_patrons
 
 

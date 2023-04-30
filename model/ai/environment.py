@@ -1,10 +1,7 @@
-import os
-
 import gymnasium as gym
-from model.game_manager import GameManager
+from model.business_model.game_manager import GameManager
 import numpy as numpy
-from model.checker import Checker
-from model.token_array import TokenArray
+from model.business_model.token_array import TokenArray
 import pickle
 
 

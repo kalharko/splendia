@@ -1,13 +1,9 @@
 import os
-import glob
-import time
 from datetime import datetime
 from model.ai.environment import SplendorEnv
 import torch
 import numpy as np
-from model.game_manager import GameManager
-import gymnasium as gym
-
+from model.business_model.game_manager import GameManager
 
 from model_ppo import PPO
 

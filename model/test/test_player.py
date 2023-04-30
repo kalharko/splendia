@@ -1,12 +1,11 @@
 import unittest
 from typing import List
 
-from model.player import Player
-from model.patron_controller import PatronController
-from model.utils.exception import CardIdNotFound
-from model.hand import Hand
-from model.token_array import TokenArray
-from model.victory_point import VictoryPoint
+from model.business_model.player import Player
+from model.business_model.patron_controller import PatronController
+from model.business_model.hand import Hand
+from model import TokenArray
+from model.business_model.victory_point import VictoryPoint
 
 
 class Test_PlayerController(unittest.TestCase):

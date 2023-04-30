@@ -1,9 +1,9 @@
 import pandas as pd
 
-from model.token_array import TokenArray
-from model.victory_point import VictoryPoint
-from model.card import Card
-from model.patron import Patron
+from model.business_model.token_array import TokenArray
+from model.business_model.victory_point import VictoryPoint
+from model.business_model.card import Card
+from model.business_model.patron import Patron
 
 
 def bonus_color_to_enum_array(bonus_color: str) -> TokenArray:
