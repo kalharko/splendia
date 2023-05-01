@@ -2,7 +2,7 @@
 
 import unittest
 from model.business_model.checker import Checker
-from model import TokenArray
+from model.business_model.token_array import TokenArray
 
 
 class TestChecker(unittest.TestCase):

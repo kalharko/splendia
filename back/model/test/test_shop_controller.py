@@ -1,7 +1,7 @@
 import unittest
 
 from model.business_model.shop_controller import ShopController
-from model import Rank
+from model.business_model.rank import Rank
 from model.business_model.hand import Hand
 from model.business_model.deck import Deck
 

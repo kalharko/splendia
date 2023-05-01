@@ -4,7 +4,7 @@ from typing import List
 from model.business_model.player import Player
 from model.business_model.patron_controller import PatronController
 from model.business_model.hand import Hand
-from model import TokenArray
+from model.business_model.token_array import TokenArray
 from model.business_model.victory_point import VictoryPoint
 
 

@@ -39,6 +39,6 @@ pip install gymnasium
 ```
 3) Run the training script:
 ```
-python traina_i.py
+python train_ai.py
 ```
 

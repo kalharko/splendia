@@ -1,8 +1,8 @@
 import unittest
 
 from model.business_model.bank_controller import BankController
-from model import TokenArray
-from model import NotEnoughTokens, TooMuchBankTokens
+from model.business_model.token_array import TokenArray
+from model.utils.exception import NotEnoughTokens, TooMuchBankTokens
 
 
 class Test_BankController(unittest.TestCase):
