@@ -81,3 +81,6 @@ class Rank():
             Card: The card withdrawn.
             """
         return self.deck.draw()
+
+    def get_number_of_cards_deck(self) -> int:
+         return self.hand.get_number_of_cards()

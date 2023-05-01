@@ -53,3 +53,6 @@ class Hand(CardStack):
         for card in self.cards:
             out += card.victoryPoint
         return out
+
+    def get_cards(self) -> list: 
+        return self.cards

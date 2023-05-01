@@ -137,6 +137,25 @@ class GameManager():
                 out[f'shop{x}{y}-price'] = self._shopController.ranks[yy].hand.cards[x].price
 
         return out
+    
+    def gather_api_board_state(self) -> dict:
+        """Returns the board state in a dictionnary that is in the following format:
+        - shop: it corresponds to a list of "rank" objets. A rank contains visible cards and the number of cards in the deck associated to the rank
+        - humainPlayer: it contains a token list, a bonus list, the victory points of the player and the reserved cards of the player
+        - CPUS: it corresponds to a list of "CPU" objets. A CPU contains a token list, a bonus list, the victory points of the CPU and the number of reserved cards of the player
+        - bank: it corresponds to a token list
+        - patrons: it corresponds to a list of patrons
+        - gameState: it contains a boolean stating if the player has to reject tokens and a list containing the number of the players who won (the list is empty if no one has won)
+        This function is used for the responses of the API
+        
+        Returns:
+            dict: board state used for the responses of the API
+        """
+        
+        dict = {}
+        dict['shop'] = self._shopController.gather_shop_information_api_board_state()
+        
+        return dict
 
     def launch_game(self, nbPlayer: int) -> None:
         """This method launches the game.

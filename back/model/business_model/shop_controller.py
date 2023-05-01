@@ -96,3 +96,15 @@ class ShopController():
         assert isinstance(pileLevel, int)
         assert 0 <= pileLevel <= 3
         return self.ranks[pileLevel].withdraw_pile_card()
+    
+    def gather_shop_information_api_board_state(self) -> list:
+        info = []
+        for i in range(len(self.ranks)):
+            info.append({
+                'rank': {
+                    'numberCardsDeck': self.ranks[i].get_number_of_cards_deck(),
+                    'visibleCards': self.hand.get_cards()
+                }
+            })
+        
+        return info

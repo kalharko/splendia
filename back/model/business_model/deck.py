@@ -41,3 +41,7 @@ class Deck(CardStack):
         if len(self.cards) == 0:
             return EmptyDeck()
         return self.cards.pop(randrange(0, len(self.cards)))
+
+    def get_number_of_cards(self) -> int:
+        return len(self.cards)
+

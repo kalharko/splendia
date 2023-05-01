@@ -15,7 +15,7 @@ def index():
 @app.route('/api/launchGame/<nbPlayer>')
 def launchGame(nbPlayer=4):
     gameManager = GameManager(nbPlayer)
-    return jsonify(gameManager.gather_cli_board_state())
+    return jsonify(gameManager.gather_api_board_state())
 
 
 @app.route('/api/buyCard/<cardId>')
