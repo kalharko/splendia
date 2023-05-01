@@ -54,10 +54,10 @@ class Hand(CardStack):
             out += card.victoryPoint
         return out
 
-    def get_cards(self) -> list: 
+    def get_cards(self) -> list[Card]: 
         """Get the cards of the hand
 
         Returns:
-            list: the cards of the hand
+            list[Card]: the cards of the hand
         """
         return self.cards

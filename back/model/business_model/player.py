@@ -183,3 +183,22 @@ class Player():
     def take_randoms_tokens(self, bank_controller: TokenArray):
 
         pass
+
+    def gather_human_player_information_api_board_state(self) -> dict:
+        """Gather the human player information needed for the api board state in a dictionnary.
+        The dictionnary contains:
+        - the tokens of the player
+        - the bonuses of the player in the form of a list of tokens
+        - the victory points of the player
+        - the reserved cards of the player
+
+        Returns:
+            dict: shop information for the api board state
+        """
+        
+        return {
+            'tokenList': self.tokens.get_tokens(),
+            'bonusList': self.bonus_tokens.get_tokens(),
+            'victoryPoints': self.victoryPoints.get_value(),
+            'reservedCards': [card.gather_card_information_api_board_state() for card in self.reserved.get_cards()]
+        }

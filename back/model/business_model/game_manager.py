@@ -151,6 +151,7 @@ class GameManager():
         
         dict = {}
         dict['shop'] = self._shopController.gather_shop_information_api_board_state()
+        dict['humanPlayer'] = self._playerController.gather_human_player_information_api_board_state()
         
         return dict
 

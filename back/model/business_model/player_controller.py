@@ -152,3 +152,21 @@ class PlayerController():
                 """
         bank_controller.cheat_withdraw(tokens)
         self.players[playerId].deposit_tokens(tokens)
+
+    def get_human_player(self) -> Player:
+        """Get the human player
+
+        Returns:
+            Player: the human player
+        """
+        return self.players[self.idHumanPlayer]
+    
+    def gather_human_player_information_api_board_state(self) -> dict:
+        """Gather the human player information needed for the api board state in a dictionnary.
+
+        Returns:
+            dict: human player information for the api board state
+        """
+        return self.get_human_player().gather_human_player_information_api_board_state()
+        
+        

@@ -90,10 +90,10 @@ class Rank():
         """
         return self.deck.get_number_of_cards()
     
-    def get_cards_hand(self) -> list:
+    def get_cards_hand(self) -> list[Card]:
         """Get the cards of the hand of the rank
 
         Returns:
-            list: the cards of the hand
+            list[Card]: the cards of the hand
         """
         return self.hand.get_cards()

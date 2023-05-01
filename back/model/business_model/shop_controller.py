@@ -111,7 +111,7 @@ class ShopController():
             info.append({
                 'rank': {
                     'numberCardsDeck': self.ranks[i].get_number_of_cards_deck(),
-                    'visibleCards': self.ranks[i].get_cards_hand()
+                    'visibleCards': [card.gather_card_information_api_board_state() for card in self.ranks[i].get_cards_hand()]
                 }
             })
         
