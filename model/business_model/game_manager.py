@@ -50,7 +50,7 @@ class GameManager():
         self.userId = 0
         self.firstPlayerId = 0
 
-    def gather_ia_board_state(self, nb_players=2) -> dict:
+    def gather_ia_board_state(self, nb_players=2) -> dict or None:
         """This method gathers the board state for the IA.
 
         Args:
@@ -92,6 +92,8 @@ class GameManager():
                 },
             }
             return dictionary
+        else:
+            return None
 
     def gather_cli_board_state(self) -> dict:
         """This method gathers the board state for the CLI.
