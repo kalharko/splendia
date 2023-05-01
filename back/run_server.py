@@ -11,9 +11,9 @@ gameManager: GameManager = GameManager(4)
 def index():
     return render_template('front/splendia/src/index.html')
 
-
-@app.route('/api/launchGame/<nbPlayer>')
-def launchGame(nbPlayer=4):
+@app.route('/api/launchGame', defaults={'nbPlayer': 4})
+@app.route('/api/launchGame/<int:nbPlayer>')
+def launchGame(nbPlayer):
     gameManager = GameManager(nbPlayer)
     return jsonify(gameManager.gather_api_board_state())
 
