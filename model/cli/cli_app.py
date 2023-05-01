@@ -1,8 +1,6 @@
 import unicurses as curses
-from logging import raiseExceptions
 
-from model.game_manager import GameManager
-from model.token_array import TokenArray
+from model.business_model.game_manager import GameManager
 from model.cli.objects_win import PatronWin, CardWin, PlayerWin, InputWin
 
 
@@ -107,24 +105,24 @@ class CliApp():
         curses.mvwaddch(self.stdscr, bottom, right, curses.ACS_LRCORNER)
 
         # patron windows
-        self.patronWins = [PatronWin(patron, y, 0) for patron, y in zip(self.gm.patronController.patrons, (3, 8, 13, 18, 23))]
+        self.patronWins = [PatronWin(patron, y, 0) for patron, y in zip(self.gm.get_patron_controller().patrons, (3, 8, 13, 18, 23))]
         for patronWin in self.patronWins:
             patronWin.display()
 
         # card windows
         self.cardWins = []
-        for i, rank in enumerate(self.gm.shopController.ranks):
+        for i, rank in enumerate(self.gm.get_shop_controller().ranks):
             for j, card in enumerate(rank.hand.cards):
                 self.cardWins.append(CardWin(card, 16 - 6 * i, 12 + j * 8))
                 self.cardWins[-1].display()
 
-        for i, card in enumerate(self.gm.playerController.players[self.gm.userId].reserved.cards):
+        for i, card in enumerate(self.gm.get_player_controller().players[self.gm.userId].reserved.cards):
             self.cardWins.append(CardWin(card, 10 + 6 * i, 47))
             self.cardWins[-1].display()
 
         # player windows
         self.playerWin = []
-        for i, player in enumerate(self.gm.playerController.players):
+        for i, player in enumerate(self.gm.get_player_controller().players):
             if player.player_id == self.gm.userId:
                 name = 'Player'
             else:

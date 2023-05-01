@@ -268,3 +268,27 @@ class GameManager():
             """
 
         return self._playerController.players[self.currentPlayer]
+
+    def get_patron_controller(self) -> PatronController:
+        """Getter for the game manager's patron controller
+
+        Returns:
+            patronController: The game manager's patron controller
+            """
+        return self._patronController
+
+    def get_player_controller(self) -> PlayerController:
+        """Getter for the game manager's player controller
+
+        Returns:
+            playerController: The game manager's player controller
+            """
+        return self._playerController
+
+    def get_shop_controller(self) -> ShopController:
+        """Getter for the game manager's shop controller
+
+        Returns:
+            shopController: The game manager's shop controller
+            """
+        return self._shopController

@@ -1,7 +1,7 @@
 import unicurses as curses
-from model.patron import Patron
-from model.card import Card
-from model.player import Player
+from model.business_model.patron import Patron
+from model.business_model.card import Card
+from model.business_model.player import Player
 
 
 class MyWin():
