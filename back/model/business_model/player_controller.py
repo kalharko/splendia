@@ -16,8 +16,10 @@ class PlayerController():
 
     Attributes:
         players (List[Player]): The list of players.
+        idHumanPlayer: id of the humain player
         """
     players: List[Player]
+    idHumanPlayer: int
 
     def __init__(self, nbPlayer: int, observer: PatronController):
         """This method initializes the player controller. It creates the list of players.
@@ -27,6 +29,7 @@ class PlayerController():
             observer (PatronController): The patron controller.
             """
         self.players = [Player(i, observer) for i in range(nbPlayer)]
+        self.idHumanPlayer = 0
 
     def buy_reserved_card(self, playerId: int, cardId: int, bank_controller: BankController) -> TokenArray or None:
         """This method buys a reserved card from a player.

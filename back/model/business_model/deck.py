@@ -43,5 +43,10 @@ class Deck(CardStack):
         return self.cards.pop(randrange(0, len(self.cards)))
 
     def get_number_of_cards(self) -> int:
+        """Get the number of cards contained in the deck
+
+        Returns:
+            int: the number of cards of the deck
+        """
         return len(self.cards)
 

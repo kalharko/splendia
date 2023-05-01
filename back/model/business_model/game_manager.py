@@ -22,7 +22,6 @@ class GameManager():
         nbPlayer (int): The number of players.
         currentPlayer (int): The id of the current player.
         firstPlayerId (int): The id of the first player.
-        userId (int): The id of the user.
         """
 
     _bankController: BankController
@@ -32,7 +31,6 @@ class GameManager():
     nbPlayer: int
     currentPlayer: int
     firstPlayerId: int
-    userId: int
 
     def __init__(self, nbPlayer=2) -> None:
         """This method initializes the game manager. It creates the controllers of the game.
@@ -47,7 +45,6 @@ class GameManager():
         self._shopController = ShopController()
         self.currentPlayer = 0
         self.nbPlayer = nbPlayer
-        self.userId = 0
         self.firstPlayerId = 0
 
     def gather_ia_board_state(self, nb_players=2) -> dict:
@@ -168,7 +165,6 @@ class GameManager():
         # self.firstPlayerId = randint(0, nbPlayer-1)
         self.firstPlayerId = 0
         self.currentPlayer = self.firstPlayerId
-        self.userId = 0
 
     def next_player(self) -> None:
         """This method changes the current player.

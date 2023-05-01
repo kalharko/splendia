@@ -55,4 +55,9 @@ class Hand(CardStack):
         return out
 
     def get_cards(self) -> list: 
+        """Get the cards of the hand
+
+        Returns:
+            list: the cards of the hand
+        """
         return self.cards

@@ -83,7 +83,17 @@ class Rank():
         return self.deck.draw()
 
     def get_number_of_cards_deck(self) -> int:
-         return self.deck.get_number_of_cards()
+        """Get the number of cards in the deck of the rank
+
+        Returns:
+            int: the number of cards in the deck
+        """
+        return self.deck.get_number_of_cards()
     
-    def get_cards_hand(self) -> int:
-         return self.hand.get_cards()
+    def get_cards_hand(self) -> list:
+        """Get the cards of the hand of the rank
+
+        Returns:
+            list: the cards of the hand
+        """
+        return self.hand.get_cards()
