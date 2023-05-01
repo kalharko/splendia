@@ -6,6 +6,12 @@ from model.cli.objects_win import PatronWin, CardWin, PlayerWin, InputWin
 
 class CliApp():
     def __init__(self, nbPlayer: int) -> None:
+        # color tests
+        if (curses.has_colors() is False):
+            print("Your terminal does not support color!")
+        curses.start_color()
+        curses.noecho()
+
         # game
         self.gm = GameManager(nbPlayer)
         self.gm.launch_game(nbPlayer)
@@ -14,6 +20,14 @@ class CliApp():
         self.ESCAPE = ['q']
         self.SCREEN_HEIGHT = 47
         self.MIN_SIZE = (23, 67)
+
+        # colors
+        curses.init_pair(0, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
+        curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)
+        curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_BLACK)
+        curses.init_pair(5, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 
         self.COMMANDS = {
             'take': self.take_tokens,
@@ -60,7 +74,7 @@ class CliApp():
         self.inputWin.display(message)
 
         out = ''
-        newchar = curses.wget_wch(self.inputWin.win)
+        newchar = curses.wgetch(self.inputWin.win)
         pos_cursor = 0
         while newchar != '\n':
             if type(newchar) == int:
@@ -68,13 +82,13 @@ class CliApp():
                     if len(out) > 0 and pos_cursor > 0:
                         out = out[:pos_cursor - 1] + out[pos_cursor:]
                         pos_cursor -= 1
-                elif newchar == 260:  # left arrow
+                elif newchar == curses.KEY_LEFT:  # left arrow
                     pos_cursor = pos_cursor - 1 if pos_cursor > 0 else 0
-                elif newchar == 261:  # right arrow
+                elif newchar == curses.KEY_RIGHT:  # right arrow
                     pos_cursor = pos_cursor + 1 if pos_cursor < len(out) else pos_cursor
-                elif newchar == 258:  # down arrow
+                elif newchar == curses.KEY_DOWN:  # down arrow
                     pos_cursor = len(out)
-                elif newchar == 259:  # up arrow
+                elif newchar == curses.KEY_UP:  # up arrow
                     pos_cursor = 0
                 else:
                     with open('log.txt', 'a') as file:
@@ -84,7 +98,7 @@ class CliApp():
                 pos_cursor += 1
 
             self.inputWin.display(out[:pos_cursor] + '_' + out[pos_cursor:])
-            newchar = curses.wget_wch(self.inputWin.win)
+            newchar = curses.wgetch(self.inputWin.win)
 
         self.inputWin.display('')
         return out

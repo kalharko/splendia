@@ -9,6 +9,8 @@ class MyWin():
 
     def draw_border(self):
         bottom, right = curses.getmaxyx(self.win)
+        bottom -= 1
+        right -= 1
         curses.mvwhline(self.win, 0, 0, curses.ACS_HLINE, right)
         curses.mvwhline(self.win, bottom, 0, curses.ACS_HLINE, right)
         curses.mvwvline(self.win, 0, 0, curses.ACS_VLINE, bottom)
@@ -16,7 +18,7 @@ class MyWin():
         curses.mvwaddch(self.win, 0, 0, curses.ACS_ULCORNER)
         curses.mvwaddch(self.win, 0, right, curses.ACS_URCORNER)
         curses.mvwaddch(self.win, bottom, 0, curses.ACS_LLCORNER)
-        curses.mvwaddch(self.win, 0, right, curses.ACS_LRCORNER)
+        curses.mvwaddch(self.win, bottom, right, curses.ACS_LRCORNER)
 
 
 class PatronWin(MyWin):
@@ -31,17 +33,19 @@ class PatronWin(MyWin):
         curses.mvwaddstr(self.win, 1, 1, ' - 3PV - ')
 
         requirements = self.patron.requirements.get_tokens()
-        if sum(requirements) == 2:
+        if sum(requirements) == 8:
             x = 2
             for i in range(6):
                 if requirements[i] == 4:
-                    curses.mvwaddstr(self.win, 1, x, '[4]', self.colors[i])
-                    x += 6
+                    curses.attron(i)
+                    curses.mvwaddstr(self.win, 2, x, '[4]')
+                    curses.attroff(i)
+                    x += 4
         else:
             x = 1
             for i in range(6):
                 if requirements[i] == 3:
-                    curses.mvwaddstr(self.win, 1, x, '[3]', self.colors[i])
+                    curses.mvwaddstr(self.win, 2, x, '[3]', self.colors[i])
                     x += 3
         curses.wrefresh(self.win)
 
@@ -49,7 +53,7 @@ class PatronWin(MyWin):
 class CardWin(MyWin):
     def __init__(self, card: Card, y, x) -> None:
         self.card = card
-        self.win = curses.newwin(nlines=7, ncols=7, begin_y=y, begin_x=x)
+        self.win = curses.newwin(nlines=6, ncols=8, begin_y=y, begin_x=x)
 
     def display(self) -> None:
         curses.werase(self.win)
@@ -59,9 +63,9 @@ class CardWin(MyWin):
         curses.mvwaddstr(self.win, 1, 4, '[]', self.colors[self.card.bonus.get_tokens().index(1)])
 
         if len(str(self.card.card_id)) == 1:
-            curses.mvwaddstr(self.win, 2, 1, f'__{self.card.card_id}__')
+            curses.mvwaddstr(self.win, 2, 1, f'__{self.card.card_id}___')
         else:
-            curses.mvwaddstr(self.win, 2, 1, f'_{self.card.card_id}__')
+            curses.mvwaddstr(self.win, 2, 1, f'__{self.card.card_id}__')
 
         x = 1
         y = 3
@@ -89,16 +93,16 @@ class PlayerWin(MyWin):
         curses.mvwaddstr(self.win, 1, 15, f'VP:{self.player.victoryPoints.value}')
 
         for i, v in enumerate(self.player.tokens.get_tokens()):
-            curses.mvwaddstr(self.win, 2, 2 + i, f'({v})', self.colors[i])
+            curses.mvwaddstr(self.win, 2, 2 + i * 3, f'({v})', self.colors[i])
 
-        for i, v in enumerate(self.player.hand.compute_hand_bonuses().get_tokens()):
-            curses.mvwaddstr(self.win, 3, 2 + i, f'[{v}]', self.colors[i])
+        for i, v in enumerate(self.player.hand.compute_hand_bonuses().get_tokens()[:-1]):
+            curses.mvwaddstr(self.win, 3, 2 + i * 3, f'[{v}]', self.colors[i])
         curses.wrefresh(self.win)
 
 
 class InputWin(MyWin):
     def __init__(self) -> None:
-        self.win = curses.newwin(3, 67, 20, 0)
+        self.win = curses.newwin(3, 67, 22, 0)
 
     def display(self, message=''):
         curses.werase(self.win)
