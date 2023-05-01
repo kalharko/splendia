@@ -1,8 +1,8 @@
 from unittest import TestCase
 from typing import List
 
-from model.token_array import TokenArray, Color
-from model.utils.exception import NotEnoughTokens
+from model import TokenArray, Color
+from model import NotEnoughTokens
 
 
 class Test_TokenArray(TestCase):
@@ -16,13 +16,15 @@ class Test_TokenArray(TestCase):
         ta = TokenArray([2, 2, 2, 2, 2, 2])
         ta.withdraw_token(Color.WHITE, 1)
         self.assertEqual(ta.get_tokens(), [1, 2, 2, 2, 2, 2])
-        self.assertIsInstance(ta.withdraw_token(Color.WHITE, 2), NotEnoughTokens)
+        self.assertIsInstance(ta.withdraw_token(
+            Color.WHITE, 2), NotEnoughTokens)
 
     def test_withdraw_tokens(self):
         ta = TokenArray([2, 2, 2, 2, 2, 2])
         ta.withdraw_tokens(TokenArray([1, 1, 1, 1, 0, 0]))
         self.assertEqual(ta.get_tokens(), [1, 1, 1, 1, 2, 2])
-        self.assertIsInstance(ta.withdraw_tokens(TokenArray([1, 1, 1, 1, 3, 0])), NotEnoughTokens)
+        self.assertIsInstance(ta.withdraw_tokens(
+            TokenArray([1, 1, 1, 1, 3, 0])), NotEnoughTokens)
 
     def test_deposit_token(self):
         ta = TokenArray([2, 2, 2, 2, 2, 2])

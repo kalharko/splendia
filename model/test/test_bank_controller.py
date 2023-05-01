@@ -1,8 +1,8 @@
 import unittest
 
-from model.bank_controller import BankController
-from model.token_array import TokenArray
-from model.utils.exception import NotEnoughTokens, TooMuchBankTokens, InvalidTakeTokenAction
+from model.business_model.bank_controller import BankController
+from model import TokenArray
+from model import NotEnoughTokens, TooMuchBankTokens
 
 
 class Test_BankController(unittest.TestCase):
@@ -40,12 +40,14 @@ class Test_BankController(unittest.TestCase):
 
         bc.withdraw(TokenArray([1, 1, 1, 0, 0, 0]))
         bc.withdraw(TokenArray([1, 1, 1, 0, 0, 0]))
-        self.assertIsInstance(bc.withdraw(TokenArray([1, 1, 1, 0, 0, 0])), NotEnoughTokens)
+        self.assertIsInstance(bc.withdraw(
+            TokenArray([1, 1, 1, 0, 0, 0])), NotEnoughTokens)
 
     def test_deposit(self):
         bc = BankController()
         bc.load(2)
-        self.assertIsInstance(bc.deposit(TokenArray([1, 0, 0, 0, 0, 0])), TooMuchBankTokens)
+        self.assertIsInstance(bc.deposit(TokenArray(
+            [1, 0, 0, 0, 0, 0])), TooMuchBankTokens)
 
         bc.load(2)
         bc.withdraw(TokenArray([1, 1, 1, 0, 0, 0]))

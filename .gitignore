@@ -137,3 +137,6 @@ out
 
 # log
 log.txt
+
+# documentation doxygen
+Documentation/html/
