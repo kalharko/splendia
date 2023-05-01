@@ -1,25 +1,10 @@
-# splendia
-Web interface to play Splendor, solo game against différent kind of AIs.
+# Splendia
 
+Splendia is decomposed into 2 parts: 
+- a web interface (i.e., the front-end of the project) found in the "front" repository
+- a server containing the model and the AIs of the game (i.e., the back-end of the project) found in the "back" repository
 
-To create the correct python virtual environnement :
-```
-python -m venv env
-```
-To enter the virtual environnement :
-```
-source env/bin/activate
-```
-To install the necessary dependancies :
-```
-pip install requirements.txt
-```
-To quit the virtual environnement :
-```
-deactivate
-```
-
-To run tests on the model :
-```
-python -m unittest -v
-```
+To run Splendia, you need to run both the back-end and the front-end.
+You can find more information on how to run:
+- the back-end in the README file of the "back" repository
+- the front-end in the README file of the "front" repository
