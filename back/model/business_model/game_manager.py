@@ -153,6 +153,7 @@ class GameManager():
         dict['shop'] = self._shopController.gather_shop_information_api_board_state()
         dict['humanPlayer'] = self._playerController.gather_human_player_information_api_board_state()
         dict['CPUS'] = self._playerController.gather_cpu_players_information_api_board_state()
+        dict['bank'] = self._bankController.gather_bank_information_api_board_state()
         
         return dict
 

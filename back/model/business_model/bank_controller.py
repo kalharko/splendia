@@ -107,3 +107,12 @@ class BankController():
             """
 
         return self.bank.can_withdraw(tokens)
+    
+    def gather_bank_information_api_board_state(self) -> list[int]:
+        """Gather the bank information needed for the api board state. 
+        This information is the list of tokens of the bank.
+
+        Returns:
+            list[int]: tokens of the bank
+        """
+        return self.bank.get_tokens()
