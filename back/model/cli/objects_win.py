@@ -72,6 +72,7 @@ class PlayerWin(MyWin):
     def __init__(self, player: Player, name: str, y, x) -> None:
         self.player = player
         self.name = name
+        self.currentPlayer = False
         self.win = curses.newwin(5, 22, y, x)
         self.win.refresh()
 
@@ -79,6 +80,8 @@ class PlayerWin(MyWin):
         self.win.erase()
         self.win.border()
 
+        if self.currentPlayer:
+            self.win.addstr(1, 1, '>')
         self.win.addstr(1, 2, self.name)
         self.win.addstr(1, 15, f'VP:{self.player.victoryPoints.value}')
 
@@ -97,6 +100,7 @@ class InputWin(MyWin):
 
     def display(self, message=''):
         self.win.erase()
+        self.win.clear()
         self.win.border()
         self.win.addstr(1, 2, message)
         self.win.refresh()

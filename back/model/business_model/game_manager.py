@@ -273,7 +273,7 @@ class GameManager():
         """Getter for the game manager's patron controller
 
         Returns:
-            patronController: The game manager's patron controller
+            PatronController: The game manager's patron controller
             """
         return self._patronController
 
@@ -281,7 +281,7 @@ class GameManager():
         """Getter for the game manager's player controller
 
         Returns:
-            playerController: The game manager's player controller
+            PlayerController: The game manager's player controller
             """
         return self._playerController
 
@@ -289,6 +289,14 @@ class GameManager():
         """Getter for the game manager's shop controller
 
         Returns:
-            shopController: The game manager's shop controller
+            ShopController: The game manager's shop controller
             """
         return self._shopController
+
+    def get_bank_controller(self) -> BankController:
+        """Getter for the game manager's bank controller
+
+        Returns:
+            BankController: The game manager's bank controller
+            """
+        return self._bankController

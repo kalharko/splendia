@@ -45,6 +45,7 @@ class CliApp():
             'buy': self.buy,
             'h': self.help,
             'help': self.help,
+            'restart': self.restart
         }
 
         # screen
@@ -66,14 +67,14 @@ class CliApp():
         while True:
             self.display()
             user_input = self.get_input('')
-            if user_input in self.ESCAPE:
+            if user_input[0] in self.ESCAPE:
                 break
             elif user_input[0] in self.COMMANDS.keys():
                 err = self.COMMANDS[user_input[0]](user_input)
                 if err is not None:
                     Logger().log(2, err)
             else:
-                pass
+                Logger().log(2, self.get_input, str(user_input))
 
     def get_input(self, message="") -> list[str]:
         self.inputWin.display(message)
@@ -96,8 +97,11 @@ class CliApp():
                 elif newchar == curses.KEY_UP:  # up arrow
                     pos_cursor = 0
                 else:
-                    with open('log.txt', 'a') as file:
-                        file.write(str(type(newchar)) + '     ' + str(newchar) + '\n')
+                    Logger().log(2, self.screen.get_wch, str(newchar))
+            elif newchar == '\x08':
+                if len(out) > 0 and pos_cursor > 0:
+                    out = out[:pos_cursor - 1] + out[pos_cursor:]
+                    pos_cursor -= 1
             else:
                 out = out[:pos_cursor] + newchar + out[pos_cursor:]
                 pos_cursor += 1
@@ -106,12 +110,18 @@ class CliApp():
             newchar = self.screen.get_wch()
 
         self.inputWin.display('')
-        return out
+        return out.split(' ')
 
     def display(self) -> None:
         self.screen.erase()
         self.screen.border()
         self.screen.refresh()
+
+        # bank
+        tokens = self.gm.get_bank_controller().bank.get_tokens()
+        self.screen.addstr(1, 13, 'white blue green red black gold')
+        for i in range(6):
+            self.screen.addstr(2, 14 + i * 5, f'({tokens[i]})', curses.color_pair(i + 1))
 
         # patron windows
         self.patronWins = [PatronWin(patron, y, 0) for patron, y in zip(self.gm.get_patron_controller().patrons, (3, 8, 13, 18, 23))]
@@ -137,6 +147,8 @@ class CliApp():
             else:
                 name = f'CPU#{player.player_id}'
             self.playerWin.append(PlayerWin(player, name, i * 6, 45))
+            if self.gm.currentPlayer == player.player_id:
+                self.playerWin[-1].currentPlayer = True
             self.playerWin[-1].display()
 
         # input window
@@ -211,3 +223,6 @@ class CliApp():
 
     def help(self, user_input: list[str]) -> None:
         pass
+
+    def restart(self, user_input: list[str]) -> None:
+        self.gm = GameManager(2)
