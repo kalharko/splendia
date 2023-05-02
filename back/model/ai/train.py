@@ -1,9 +1,9 @@
 import os
 from datetime import datetime
-from model.ai.environment import SplendorEnv
+from back.model.ai.environment import SplendorEnv
 import torch
 import numpy as np
-from model.business_model.game_manager import GameManager
+from back.model.business_model.game_manager import GameManager
 
 from model_ppo import PPO
 
@@ -17,7 +17,7 @@ def train():
     game = GameManager(nbPlayer=2)
     has_continuous_action_space = False  # continuous action space; else discrete
 
-    max_ep_len = 2000  # max timesteps in one episode
+    max_ep_len = 500  # max timesteps in one episode
     # break training loop if timeteps > max_training_timesteps
     max_training_timesteps = int(3e6)
 
@@ -40,8 +40,8 @@ def train():
     # Note : print/log frequencies should be > than max_ep_len
 
     ################ PPO hyperparameters ################
-    update_timestep = max_ep_len * 10  # update policy every n timesteps
-    K_epochs = 20  # update policy for K epochs in one PPO update
+    update_timestep = max_ep_len * 5  # update policy every n timesteps
+    K_epochs = 80  # update policy for K epochs in one PPO update
 
     eps_clip = 0.2  # clip parameter for PPO
     gamma = 0.99  # discount factor
@@ -155,7 +155,7 @@ def train():
         "PPO_{}_{}_{}.pth".format(env_name, random_seed, run_num_pretrained)
     print("loading network from : " + checkpoint_path)
 
-    ppo_agent.load(checkpoint_path)
+    #ppo_agent.load(checkpoint_path)
 
     # track total training time
     start_time = datetime.now().replace(microsecond=0)
@@ -245,6 +245,7 @@ def train():
 
             # break; if the episode is over
             if done:
+                print
                 break
 
         print_running_reward += current_ep_reward

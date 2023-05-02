@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List
-from model.business_model.card import Card
-from model.utils.exception import CardIdNotFound
+from back.model.business_model.card import Card
+from back.model.utils.exception import CardIdNotFound
 
 
 @dataclass

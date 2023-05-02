@@ -1,7 +1,7 @@
 import unittest
 
-from model.business_model.patron_controller import PatronController
-from model.business_model.player_controller import PlayerController
+from back.model.business_model.patron_controller import PatronController
+from back.model.business_model.player_controller import PlayerController
 
 
 class Test_PatronController(unittest.TestCase):

@@ -1,8 +1,8 @@
 # test for checker.py
 
 import unittest
-from model.business_model.checker import Checker
-from model.business_model.token_array import TokenArray
+from back.model.business_model.checker import Checker
+from back.model import TokenArray
 
 
 class TestChecker(unittest.TestCase):
