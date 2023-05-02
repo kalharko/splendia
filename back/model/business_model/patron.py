@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from model.business_model.token_array import TokenArray
 from model.business_model.victory_point import VictoryPoint
-import json
 
 
 @dataclass
