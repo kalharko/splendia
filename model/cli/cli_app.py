@@ -1,16 +1,16 @@
-import unicurses as curses
+import curses
+import locale
 
 from model.business_model.game_manager import GameManager
 from model.cli.objects_win import PatronWin, CardWin, PlayerWin, InputWin
 
 
 class CliApp():
-    def __init__(self, nbPlayer: int) -> None:
-        # color tests
-        if (curses.has_colors() is False):
-            print("Your terminal does not support color!")
-        curses.start_color()
-        curses.noecho()
+    def __init__(self, nbPlayer: int, stdscr) -> None:
+        # encoding
+        # locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
+        # self.code = locale.getpreferredencoding()
+        # curses.curs_set(0)
 
         # game
         self.gm = GameManager(nbPlayer)
@@ -22,12 +22,12 @@ class CliApp():
         self.MIN_SIZE = (23, 67)
 
         # colors
-        curses.init_pair(0, curses.COLOR_WHITE, curses.COLOR_BLACK)
-        curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)
-        curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
-        curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)
-        curses.init_pair(4, curses.COLOR_BLACK, curses.COLOR_BLACK)
-        curses.init_pair(5, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+        curses.init_pair(1, 232, 1)  # white
+        curses.init_pair(2, 22, 1)  # blue
+        curses.init_pair(3, 41, 1)  # green
+        curses.init_pair(4, 197, 1)  # red
+        curses.init_pair(5, 9, 1)  # black
+        curses.init_pair(6, 221, 1)  # yellow
 
         self.COMMANDS = {
             'take': self.take_tokens,
@@ -45,8 +45,8 @@ class CliApp():
         }
 
         # screen
-        self.stdscr = curses.initscr()
-        self.screenH, self.screenW = curses.getmaxyx(self.stdscr)
+        self.screen = stdscr
+        self.screenH, self.screenW = self.screen.getmaxyx()
         if self.screenH < self.MIN_SIZE[0] or self.screenW < self.MIN_SIZE[1]:
             print('console too small' + str((self.screenH, self.screenW)))
             quit()
@@ -56,13 +56,14 @@ class CliApp():
         self.main_loop()
 
         # exit
-        curses.werase(self.stdscr)
-        curses.refresh()
+        self.screen.erase()
+        self.screen.refresh()
 
     def main_loop(self) -> None:
         while True:
             self.display()
-            user_input = self.get_input()
+            self.display()
+            user_input = self.get_input('=>')
             if user_input in self.ESCAPE:
                 break
             elif user_input[0] in self.COMMANDS.keys():
@@ -74,7 +75,7 @@ class CliApp():
         self.inputWin.display(message)
 
         out = ''
-        newchar = curses.wgetch(self.inputWin.win)
+        newchar = self.screen.get_wch()
         pos_cursor = 0
         while newchar != '\n':
             if type(newchar) == int:
@@ -98,51 +99,40 @@ class CliApp():
                 pos_cursor += 1
 
             self.inputWin.display(out[:pos_cursor] + '_' + out[pos_cursor:])
-            newchar = curses.wgetch(self.inputWin.win)
+            newchar = self.screen.get_wch()
 
         self.inputWin.display('')
         return out
 
     def display(self) -> None:
-        curses.werase(self.stdscr)
+        self.screen.erase()
+        self.screen.border()
 
-        # border
-        right = 67
-        bottom = 21
-        curses.mvwhline(self.stdscr, 0, 0, curses.ACS_HLINE, right)
-        curses.mvwhline(self.stdscr, bottom, 0, curses.ACS_HLINE, right)
-        curses.mvwvline(self.stdscr, 0, 0, curses.ACS_VLINE, bottom)
-        curses.mvwvline(self.stdscr, 0, right, curses.ACS_VLINE, bottom)
-        curses.mvwaddch(self.stdscr, 0, 0, curses.ACS_ULCORNER)
-        curses.mvwaddch(self.stdscr, 0, right, curses.ACS_URCORNER)
-        curses.mvwaddch(self.stdscr, bottom, 0, curses.ACS_LLCORNER)
-        curses.mvwaddch(self.stdscr, bottom, right, curses.ACS_LRCORNER)
+        # # patron windows
+        # self.patronWins = [PatronWin(patron, y, 0) for patron, y in zip(self.gm.get_patron_controller().patrons, (3, 8, 13, 18, 23))]
+        # for patronWin in self.patronWins:
+        #     patronWin.display()
 
-        # patron windows
-        self.patronWins = [PatronWin(patron, y, 0) for patron, y in zip(self.gm.get_patron_controller().patrons, (3, 8, 13, 18, 23))]
-        for patronWin in self.patronWins:
-            patronWin.display()
+        # # card windows
+        # self.cardWins = []
+        # for i, rank in enumerate(self.gm.get_shop_controller().ranks):
+        #     for j, card in enumerate(rank.hand.cards):
+        #         self.cardWins.append(CardWin(card, 16 - 6 * i, 12 + j * 8))
+        #         self.cardWins[-1].display()
 
-        # card windows
-        self.cardWins = []
-        for i, rank in enumerate(self.gm.get_shop_controller().ranks):
-            for j, card in enumerate(rank.hand.cards):
-                self.cardWins.append(CardWin(card, 16 - 6 * i, 12 + j * 8))
-                self.cardWins[-1].display()
+        # for i, card in enumerate(self.gm.get_player_controller().players[self.gm.userId].reserved.cards):
+        #     self.cardWins.append(CardWin(card, 10 + 6 * i, 47))
+        #     self.cardWins[-1].display()
 
-        for i, card in enumerate(self.gm.get_player_controller().players[self.gm.userId].reserved.cards):
-            self.cardWins.append(CardWin(card, 10 + 6 * i, 47))
-            self.cardWins[-1].display()
-
-        # player windows
-        self.playerWin = []
-        for i, player in enumerate(self.gm.get_player_controller().players):
-            if player.player_id == self.gm.userId:
-                name = 'Player'
-            else:
-                name = f'CPU#{player.player_id}'
-            self.playerWin.append(PlayerWin(player, name, i * 6, 45))
-            self.playerWin[-1].display()
+        # # player windows
+        # self.playerWin = []
+        # for i, player in enumerate(self.gm.get_player_controller().players):
+        #     if player.player_id == self.gm.userId:
+        #         name = 'Player'
+        #     else:
+        #         name = f'CPU#{player.player_id}'
+        #     self.playerWin.append(PlayerWin(player, name, i * 6, 45))
+        #     self.playerWin[-1].display()
 
         # input window
         self.inputWin.display()
