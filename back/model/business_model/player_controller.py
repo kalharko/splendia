@@ -161,6 +161,15 @@ class PlayerController():
         """
         return self.players[self.idHumanPlayer]
     
+    def get_cpu_players(self) -> list[Player]:
+        """Get the CPU players
+
+        Returns:
+            list[Player]: list of the CPU players
+        """
+        human_player = self.get_human_player()
+        return filter(lambda player: player != human_player, self.players)
+    
     def gather_human_player_information_api_board_state(self) -> dict:
         """Gather the human player information needed for the api board state in a dictionnary.
 
@@ -168,5 +177,13 @@ class PlayerController():
             dict: human player information for the api board state
         """
         return self.get_human_player().gather_human_player_information_api_board_state()
+    
+    def gather_cpu_players_information_api_board_state(self) -> list:  
+        """Gather the information for the CPU players needed for the api board state in a list
+
+        Returns:
+            list: contains information of each CPU player for the api board state
+        """
+        return [cpu_player.gather_cpu_player_information_api_board_state() for cpu_player in self.get_cpu_players()]
         
         

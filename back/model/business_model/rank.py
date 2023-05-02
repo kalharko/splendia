@@ -90,10 +90,10 @@ class Rank():
         """
         return self.deck.get_number_of_cards()
     
-    def get_cards_hand(self) -> list[Card]:
-        """Get the cards of the hand of the rank
+    def gather_visible_cards_information_api_board_state(self) -> list:
+        """Gather the information of the visible cards of the rank needed for the api board state in a list
 
         Returns:
-            list[Card]: the cards of the hand
+            list: information about the visible cards of the rank for the api board state 
         """
-        return self.hand.get_cards()
+        return self.hand.gather_cards_information_api_board_state()
