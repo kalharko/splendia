@@ -1,11 +1,11 @@
 import unittest
 from typing import List
 
-from model.business_model.player import Player
-from model.business_model.patron_controller import PatronController
-from model.business_model.hand import Hand
-from model import TokenArray
-from model.business_model.victory_point import VictoryPoint
+from back.model.business_model.player import Player
+from back.model.business_model.patron_controller import PatronController
+from back.model.business_model.hand import Hand
+from back.model import TokenArray
+from back.model.business_model.victory_point import VictoryPoint
 
 
 class Test_PlayerController(unittest.TestCase):

@@ -3,8 +3,8 @@ import torch.nn as nn
 from torch.distributions import MultivariateNormal
 from torch.distributions import Categorical
 import numpy
-from model.business_model.checker import Checker
-from model.business_model.token_array import TokenArray
+from back.model.business_model.checker import Checker
+from back.model.business_model.token_array import TokenArray
 import pickle
 ################################## set device ##################################
 print("============================================================================================")
@@ -236,6 +236,12 @@ class PPO:
             return action.item()
 
     def select_action(self, state):
+        """Select an appropriate action from the agent policy.
+
+        Arguments:
+            state {torch tensor} -- Current state of the environment.
+            """
+
 
         if self.has_continuous_action_space:
             with torch.no_grad():
@@ -261,6 +267,10 @@ class PPO:
             return action.item()
 
     def update(self):
+        """--------------------------------------------------------------------------------------------
+        Update actor and critic for K epochs on sampled batch:
+
+        """
         # Monte Carlo estimate of returns
         rewards = []
         discounted_reward = 0
@@ -320,9 +330,19 @@ class PPO:
         self.buffer.clear()
 
     def save(self, checkpoint_path):
+        """Save model parameters to checkpoint
+
+        Arguments:
+            checkpoint_path {str} -- checkpoint path
+        """
         torch.save(self.policy_old.state_dict(), checkpoint_path)
 
     def load(self, checkpoint_path):
+        """Load model parameters from checkpoint
+
+        Arguments:
+            checkpoint_path {str} -- checkpoint path
+        """
         self.policy_old.load_state_dict(torch.load(
             checkpoint_path, map_location=lambda storage, loc: storage))
         self.policy.load_state_dict(torch.load(

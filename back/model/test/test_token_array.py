@@ -1,8 +1,8 @@
 from unittest import TestCase
 from typing import List
 
-from model import TokenArray, Color
-from model import NotEnoughTokens
+from back.model import TokenArray, Color
+from back.model import NotEnoughTokens
 
 
 class Test_TokenArray(TestCase):

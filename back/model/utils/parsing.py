@@ -39,7 +39,7 @@ def retrieve_and_parse_cards() -> list[Card]:
         list[Card]: The list of cards.
         """
     df = pd.read_csv(
-        'model/data/card.csv')
+        '/Users/maximeszymanski/PycharmProjects/splendia/model/data/card.csv')
     df.set_index('Id', inplace=True)
 
     card_list = df.apply(
@@ -61,7 +61,7 @@ def retrieve_and_parse_patrons() -> list[Patron]:
         """
 
     df = pd.read_csv(
-        'model/data/patrons.csv')
+        '/Users/maximeszymanski/PycharmProjects/splendia/model/data/patrons.csv')
     df.set_index('id', inplace=True)
 
     patron_list = df.apply(

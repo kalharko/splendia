@@ -1,7 +1,7 @@
 import gymnasium as gym
-from model.business_model.game_manager import GameManager
+from back.model.business_model.game_manager import GameManager
 import numpy as numpy
-from model.business_model.token_array import TokenArray
+from back.model.business_model.token_array import TokenArray
 import pickle
 
 
@@ -151,46 +151,6 @@ class SplendorEnv(gym.Env):
         self.obs = obs
         return obs
 
-    def normalize_obs(self, obs):
-        """
-                Player 1 state:
-                5 tokens: 0-4
-                1 gold token: 5
-                20 player cards: 6-25
-                5 noble cards: 26-30
-                3 reserved cards: 31-33
-
-                Player 2 state:
-                5 tokens: 34-38
-                1 gold token: 39
-                20 player cards: 40-59
-                5 noble cards: 60-64
-                3 reserved cards: 65-67
-
-                Shop state:
-                12 cards: 68-79
-                5 noble cards: 80-84
-                1 tier 1 number of cards: 85
-                1 tier 2 number of cards: 86
-                1 tier 3 number of cards: 87
-
-                """
-        obs[0:6] = obs[0:6] / 10
-        obs[6:26] = obs[6:26] / 90
-        obs[26:31] = obs[26:31] / 10
-        obs[31:34] = obs[31:34] / 90
-
-        obs[34:40] = obs[34:40] / 10
-        obs[40:60] = obs[40:60] / 90
-        obs[60:65] = obs[60:65] / 10
-        obs[65:68] = obs[65:68] / 90
-
-        obs[68:80] = obs[68:80] / 90
-        obs[80:85] = obs[80:85] / 10
-        obs[85:88] = obs[85:88] / 30
-
-        return obs
-
     def from_board_states_to_obs_test(self):
         state = self.game.gather_ia_board_state()
         obs = numpy.zeros(88)
@@ -287,7 +247,47 @@ class SplendorEnv(gym.Env):
         self.obs = obs
         return obs
 
+    def normalize_obs(self, obs):
+        """
+                Player 1 state:
+                5 tokens: 0-4
+                1 gold token: 5
+                20 player cards: 6-25
+                5 noble cards: 26-30
+                3 reserved cards: 31-33
+
+                Player 2 state:
+                5 tokens: 34-38
+                1 gold token: 39
+                20 player cards: 40-59
+                5 noble cards: 60-64
+                3 reserved cards: 65-67
+
+                Shop state:
+                12 cards: 68-79
+                5 noble cards: 80-84
+                1 tier 1 number of cards: 85
+                1 tier 2 number of cards: 86
+                1 tier 3 number of cards: 87
+
+                """
+        obs[0:6] = obs[0:6] / 10
+        obs[6:26] = obs[6:26] / 90
+        obs[26:31] = obs[26:31] / 10
+        obs[31:34] = obs[31:34] / 90
+
+        obs[34:40] = obs[34:40] / 10
+        obs[40:60] = obs[40:60] / 90
+        obs[60:65] = obs[60:65] / 10
+        obs[65:68] = obs[65:68] / 90
+
+        obs[68:80] = obs[68:80] / 90
+        obs[80:85] = obs[80:85] / 10
+        obs[85:88] = obs[85:88] / 30
+
+        return obs
     def reset(self):
+        self.number_turn = 0
         self.game_id += 1
         self.game.launch_game(2)
         return self.from_board_states_to_obs_train()
@@ -297,7 +297,7 @@ class SplendorEnv(gym.Env):
 
     def step(self, action, model):
         self.apply_action(action)
-
+        self.number_turn +=1
         # the ai has played
         obs = self.from_board_states_to_obs_test()
 
@@ -318,21 +318,27 @@ class SplendorEnv(gym.Env):
             if player_0_vp > player_1_vp:
                 # reward = 100
                 # add a new line to the file
-                with open('Blocked_logs/blocked_logs.csv', 'a') as f:
+                with open('Blocked_logs/blocked_logs.csv', 'a+') as f:
 
                     f.write(str(self.game_id) + ',non_blocked\n')
+                with open('Number_turn/number_turn.csv', 'a+') as f:
+
+                    f.write(str(self.number_turn) + '\n')
                 print('win')
             else:
-                with open('Blocked_logs/blocked_logs.csv', 'a') as f:
+                with open('Blocked_logs/blocked_logs.csv', 'a+') as f:
 
                     f.write(str(self.game_id) + ',non_blocked\n')
+                with open('Number_turn/number_turn.csv', 'a+') as f:
+
+                    f.write(str(self.number_turn) + '\n')
                 # reward = -100
                 print('loose')
             done = True
             print('last turn')
         else:
             done = False
-        if action and action_two == 65:
+        if action and action_two == 65 and done == False:
             done = True
             reward = -1000
             with open('Blocked_logs/blocked_logs.csv', 'a') as f:

@@ -1,5 +1,5 @@
 from unittest import TestCase
-import model as parsing
+from back import model as parsing
 
 
 class Test(TestCase):

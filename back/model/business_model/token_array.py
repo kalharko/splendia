@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import List
 from enum import Enum
 
-from model.utils.exception import NotEnoughTokens
+from back.model.utils.exception import NotEnoughTokens
 
 
 class Color(Enum):
