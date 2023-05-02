@@ -3,8 +3,8 @@ import torch.nn as nn
 from torch.distributions import MultivariateNormal
 from torch.distributions import Categorical
 import numpy
-from back.model.business_model.checker import Checker
-from back.model.business_model.token_array import TokenArray
+from model.business_model.checker import Checker
+from model.business_model.token_array import TokenArray
 import pickle
 ################################## set device ##################################
 print("============================================================================================")

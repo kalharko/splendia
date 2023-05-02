@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from back.model.business_model.token_array import TokenArray
-from back.model.business_model.victory_point import VictoryPoint
+from model.business_model.token_array import TokenArray
+from model.business_model.victory_point import VictoryPoint
 
 
 @dataclass
@@ -35,3 +35,21 @@ class Card():
         self.bonus = bonus
         self.victoryPoint = victoryPoint
         self.card_id = card_id
+
+    def gather_card_information_api_board_state(self) -> dict:
+        """Gather the card information needed for the api board state in a dictionnary.
+        The dictionnary contains!
+        - the id of the card
+        - the price of the card
+        - the bonus of the card
+        - the victory points of the card 
+
+        Returns:
+            dict: _description_
+        """
+        return {
+            "card_id": self.card_id,
+            "price": self.price.get_tokens(),
+            "bonus": self.bonus.get_tokens(),
+            "victoryPoints": self.victoryPoint.get_value()
+        }

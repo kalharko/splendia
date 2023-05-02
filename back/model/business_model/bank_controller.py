@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from logging import raiseExceptions
-from back.model.utils.exception import TooMuchBankTokens, InvalidTakeTokenAction
-from back.model.business_model.token_array import TokenArray
+from model.utils.exception import TooMuchBankTokens, InvalidTakeTokenAction
+from model.business_model.token_array import TokenArray
 
 
 @dataclass
@@ -107,3 +107,12 @@ class BankController():
             """
 
         return self.bank.can_withdraw(tokens)
+    
+    def gather_bank_information_api_board_state(self) -> list[int]:
+        """Gather the bank information needed for the api board state. 
+        This information is the list of tokens of the bank.
+
+        Returns:
+            list[int]: tokens of the bank
+        """
+        return self.bank.get_tokens()

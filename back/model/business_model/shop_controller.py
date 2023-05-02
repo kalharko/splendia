@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import List
 
-from back.model.business_model.rank import Card, Rank
-from back.model.business_model.token_array import TokenArray
-from back.model.utils.parsing import retrieve_and_parse_cards
-from back.model.utils.exception import CardIdNotFound
+from model.business_model.rank import Card, Rank
+from model.business_model.token_array import TokenArray
+from model.utils.parsing import retrieve_and_parse_cards
+from model.utils.exception import CardIdNotFound
 
 
 @dataclass
@@ -96,3 +96,23 @@ class ShopController():
         assert isinstance(pileLevel, int)
         assert 0 <= pileLevel <= 3
         return self.ranks[pileLevel].withdraw_pile_card()
+    
+    def gather_shop_information_api_board_state(self) -> list:
+        """Gather the shop information needed for the api board state in a list that contains "rank" objects. 
+        A rank object contains:
+        - the number of cards in the deck associated to that rank
+        - the visible cards associated to the rank (i.e., the hand of the rank)
+
+        Returns:
+            list: shop information for the api board state
+        """
+        info = []
+        for i in range(len(self.ranks)):
+            info.append({
+                'rank': {
+                    'numberCardsDeck': self.ranks[i].get_number_of_cards_deck(),
+                    'visibleCards': self.ranks[i].gather_visible_cards_information_api_board_state()
+                }
+            })
+        
+        return info

@@ -1,9 +1,9 @@
 import pandas as pd
 
-from back.model.business_model.token_array import TokenArray
-from back.model.business_model.victory_point import VictoryPoint
-from back.model.business_model.card import Card
-from back.model.business_model.patron import Patron
+from model.business_model.token_array import TokenArray
+from model.business_model.victory_point import VictoryPoint
+from model.business_model.card import Card
+from model.business_model.patron import Patron
 
 
 def bonus_color_to_enum_array(bonus_color: str) -> TokenArray:
@@ -39,7 +39,7 @@ def retrieve_and_parse_cards() -> list[Card]:
         list[Card]: The list of cards.
         """
     df = pd.read_csv(
-        '/Users/maximeszymanski/PycharmProjects/splendia/back/model/data/card.csv')
+        'model/data/card.csv')
     df.set_index('Id', inplace=True)
 
     card_list = df.apply(
@@ -61,13 +61,13 @@ def retrieve_and_parse_patrons() -> list[Patron]:
         """
 
     df = pd.read_csv(
-        '/Users/maximeszymanski/PycharmProjects/splendia/back/model/data/patrons.csv')
+        'model/data/patrons.csv')
     df.set_index('id', inplace=True)
 
     patron_list = df.apply(
         lambda patron: Patron(
             requirements=TokenArray(
-                [patron['blanc'], patron['bleu'], patron['vert'], patron['rouge'], patron['noir'], 0]),
+                [int(patron['blanc']), int(patron['bleu']), int(patron['vert']), int(patron['rouge']), int(patron['noir']), 0]),
             victoryPoints=VictoryPoint(3),
             patron_id=patron.name),
         axis=1)

@@ -1,9 +1,9 @@
 import os
 from datetime import datetime
-from back.model.ai.environment import SplendorEnv
+from model.ai.environment import SplendorEnv
 import torch
 import numpy as np
-from back.model.business_model.game_manager import GameManager
+from model.business_model.game_manager import GameManager
 
 from model_ppo import PPO
 

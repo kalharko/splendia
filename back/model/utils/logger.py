@@ -1,6 +1,6 @@
 import traceback
 
-from back.model.utils.singleton import SingletonMeta
+from model.utils.singleton import SingletonMeta
 from os import path
 from datetime import datetime
 

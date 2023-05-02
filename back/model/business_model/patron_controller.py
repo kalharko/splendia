@@ -2,9 +2,9 @@ from dataclasses import dataclass
 from typing import List
 import random
 
-from back.model.business_model.rank import Hand
-from back.model.business_model.patron import Patron
-from back.model.utils.parsing import retrieve_and_parse_patrons
+from model.business_model.rank import Hand
+from model.business_model.patron import Patron
+from model.utils.parsing import retrieve_and_parse_patrons
 
 
 @dataclass
@@ -59,3 +59,11 @@ class PatronController():
                 self.patrons.remove(patron)
                 return patron_temp
         return None
+
+    def gather_patrons_information_api_board_state(self) -> list:
+        """Gather the information of the CPU players needed for the api board state in a list
+
+        Returns:
+            list: contains information of patron for the api board state
+        """
+        return [patron.gather_patron_information_api_board_state() for patron in self.patrons]

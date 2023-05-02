@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from back.model.business_model.card_stack import CardStack
-from back.model.business_model.token_array import TokenArray
-from back.model.utils.exception import CardIdNotFound
-from back.model.business_model.card import Card
+from model.business_model.card_stack import CardStack
+from model.business_model.token_array import TokenArray
+from model.utils.exception import CardIdNotFound
+from model.business_model.card import Card
 from typing import List
 
 
@@ -53,3 +53,19 @@ class Hand(CardStack):
         for card in self.cards:
             out += card.victoryPoint
         return out
+    
+    def get_number_cards(self) -> int:
+        """Get the number of the cards the hand has
+
+        Returns:
+            int: number of cards of the hand
+        """
+        return len(self.cards)
+    
+    def gather_cards_information_api_board_state(self) -> list:
+        """Gather the information of the cards of the hand needed for the api board state in a list
+
+        Returns:
+            list: information about the cards of the hand for the api board state 
+        """
+        return [card.gather_card_information_api_board_state() for card in self.cards]

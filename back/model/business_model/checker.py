@@ -1,7 +1,7 @@
 # checker class
-from back.model.business_model.token_array import TokenArray
+from model.business_model.token_array import TokenArray
 import numpy
-from back.model.business_model.card import Card
+from model.business_model.card import Card
 from typing import List
 
 

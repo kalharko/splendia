@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from typing import List
-from back.model.utils.exception import TooMuchReservedCards
-from back.model.business_model.patron_controller import PatronController
-from back.model.business_model.bank_controller import BankController
-from back.model.business_model.shop_controller import ShopController
-from back.model.business_model.token_array import TokenArray
-from back.model.business_model.player import Player
-from back.model.business_model.card import Card
+from model.utils.exception import TooMuchReservedCards
+from model.business_model.patron_controller import PatronController
+from model.business_model.bank_controller import BankController
+from model.business_model.shop_controller import ShopController
+from model.business_model.token_array import TokenArray
+from model.business_model.player import Player
+from model.business_model.card import Card
 
 
 @dataclass
@@ -16,8 +16,10 @@ class PlayerController():
 
     Attributes:
         players (List[Player]): The list of players.
+        idHumanPlayer: id of the humain player
         """
     players: List[Player]
+    idHumanPlayer: int
 
     def __init__(self, nbPlayer: int, observer: PatronController):
         """This method initializes the player controller. It creates the list of players.
@@ -27,6 +29,7 @@ class PlayerController():
             observer (PatronController): The patron controller.
             """
         self.players = [Player(i, observer) for i in range(nbPlayer)]
+        self.idHumanPlayer = 0
 
     def buy_reserved_card(self, playerId: int, cardId: int, bank_controller: BankController) -> TokenArray or None:
         """This method buys a reserved card from a player.
@@ -149,3 +152,76 @@ class PlayerController():
                 """
         bank_controller.cheat_withdraw(tokens)
         self.players[playerId].deposit_tokens(tokens)
+
+    def get_human_player(self) -> Player:
+        """Get the human player
+
+        Returns:
+            Player: the human player
+        """
+        return self.players[self.idHumanPlayer]
+    
+    def get_cpu_players(self) -> list[Player]:
+        """Get the CPU players
+
+        Returns:
+            list[Player]: list of the CPU players
+        """
+        human_player = self.get_human_player()
+        return filter(lambda player: player != human_player, self.players)
+    
+    def gather_human_player_information_api_board_state(self) -> dict:
+        """Gather the human player information needed for the api board state in a dictionnary.
+
+        Returns:
+            dict: human player information for the api board state
+        """
+        return self.get_human_player().gather_human_player_information_api_board_state()
+    
+    def gather_cpu_players_information_api_board_state(self) -> list:  
+        """Gather the information of the CPU players needed for the api board state in a list
+
+        Returns:
+            list: contains information of each CPU player for the api board state
+        """
+        return [cpu_player.gather_cpu_player_information_api_board_state() for cpu_player in self.get_cpu_players()]
+    
+    def check_human_player_too_many_tokens(self) -> bool:
+        """Check if the human player has too many tokens
+
+        Returns:
+            bool: true if the human player has too many tokens
+        """
+        return self.get_human_player().check_too_many_tokens()
+    
+    def get_winners(self) -> list[Player]:
+        """Get the winners of the game
+
+        Returns:
+            list[Player]: winners of the game. The list can be empty if there are no winners
+        """
+        # Find the maximum amount of points of the players
+        maxPoints = 0
+        for player in self.players:
+            playerVictoryPoints = player.get_victory_points().get_value()
+            if(playerVictoryPoints > maxPoints):
+                maxPoints = playerVictoryPoints
+        
+        # if the maximum amount of points is less than 15, then there are no winners
+        if(maxPoints < 15):
+            return []
+        
+        # return the players who's points are equal to the maximum amount of points found
+        return [player for player in self.players if player.get_victory_points().get_value() == maxPoints]
+    
+    def gather_winner_information_api_board_state(self) -> list[int]:
+        """Gather the ids of the winners for the api board state
+
+        Returns:
+            list[int]: ids of the winners. The list is empty if there are no winners
+        """
+        return [winner.get_id() for winner in self.get_winners()]
+
+    
+        
+        

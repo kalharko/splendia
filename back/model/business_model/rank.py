@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import List
 
-from back.model.business_model.card import Card
-from back.model.business_model.token_array import TokenArray
-from back.model.business_model.deck import Deck
-from back.model.business_model.hand import Hand
+from model.business_model.card import Card
+from model.business_model.token_array import TokenArray
+from model.business_model.deck import Deck
+from model.business_model.hand import Hand
 
 
 @dataclass
@@ -81,3 +81,19 @@ class Rank():
             Card: The card withdrawn.
             """
         return self.deck.draw()
+
+    def get_number_of_cards_deck(self) -> int:
+        """Get the number of cards in the deck of the rank
+
+        Returns:
+            int: the number of cards in the deck
+        """
+        return self.deck.get_number_of_cards()
+    
+    def gather_visible_cards_information_api_board_state(self) -> list:
+        """Gather the information of the visible cards of the rank needed for the api board state in a list
+
+        Returns:
+            list: information about the visible cards of the rank for the api board state 
+        """
+        return self.hand.gather_cards_information_api_board_state()

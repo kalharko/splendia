@@ -3,11 +3,11 @@
 To run the server you need to:
 1) Create a python virtual environnement :
 ```
-python -m venv env
+python -m venv .venv
 ```
 2) Enter the virtual environnement:
 ```
-source env/bin/activate
+source .venv/bin/activate
 ```
 3) Install the necessary dependancies:
 ```
@@ -39,6 +39,6 @@ pip install gymnasium
 ```
 3) Run the training script:
 ```
-python traina_i.py
+python train_ai.py
 ```
 

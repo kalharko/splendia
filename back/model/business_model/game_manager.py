@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 
-from back.model.business_model.bank_controller import BankController
-from back.model.business_model.patron_controller import PatronController
-from back.model.business_model.player_controller import PlayerController
-from back.model.business_model.shop_controller import ShopController
-from back.model.business_model.token_array import TokenArray
-from back.model.utils.logger import Logger
-from back.model.business_model.player import Player
+from model.business_model.bank_controller import BankController
+from model.business_model.patron_controller import PatronController
+from model.business_model.player_controller import PlayerController
+from model.business_model.shop_controller import ShopController
+from model.business_model.token_array import TokenArray
+from model.utils.logger import Logger
+from model.business_model.player import Player
 
 
 @dataclass
@@ -22,7 +22,6 @@ class GameManager():
         nbPlayer (int): The number of players.
         currentPlayer (int): The id of the current player.
         firstPlayerId (int): The id of the first player.
-        userId (int): The id of the user.
         """
 
     _bankController: BankController
@@ -32,7 +31,6 @@ class GameManager():
     nbPlayer: int
     currentPlayer: int
     firstPlayerId: int
-    userId: int
 
     def __init__(self, nbPlayer=2) -> None:
         """This method initializes the game manager. It creates the controllers of the game.
@@ -47,7 +45,6 @@ class GameManager():
         self._shopController = ShopController()
         self.currentPlayer = 0
         self.nbPlayer = nbPlayer
-        self.userId = 0
         self.firstPlayerId = 0
 
     def gather_ia_board_state(self, nb_players=2) -> dict or None:
@@ -139,6 +136,33 @@ class GameManager():
                 out[f'shop{x}{y}-price'] = self._shopController.ranks[yy].hand.cards[x].price
 
         return out
+    
+    def gather_api_board_state(self) -> dict:
+        """Returns the board state in a dictionnary that is in the following format:
+        - shop: it corresponds to a list of "rank" objets. A rank contains visible cards and the number of cards in the deck associated to the rank
+        - humainPlayer: it contains a token list, a bonus list, the victory points of the player and the reserved cards of the player
+        - CPUS: it corresponds to a list of "CPU" objets. A CPU contains a token list, a bonus list, the victory points of the CPU and the number of reserved cards of the player
+        - bank: it corresponds to a token list
+        - patrons: it corresponds to a list of patrons
+        - gameState: it contains a boolean stating if the player has to reject tokens and a list containing the id of the players who won (the list is empty if no one has won)
+        This function is used for the responses of the API
+        
+        Returns:
+            dict: board state used for the responses of the API
+        """
+        
+        board_state = {}
+        board_state['shop'] = self._shopController.gather_shop_information_api_board_state()
+        board_state['humanPlayer'] = self._playerController.gather_human_player_information_api_board_state()
+        board_state['CPUS'] = self._playerController.gather_cpu_players_information_api_board_state()
+        board_state['bank'] = self._bankController.gather_bank_information_api_board_state()
+        board_state['patrons'] = self._patronController.gather_patrons_information_api_board_state()
+        board_state['gameState'] = {
+            'humanPlayerTooManyTokens': self._playerController.check_human_player_too_many_tokens(),
+            'winners': self._playerController.gather_winner_information_api_board_state()
+        }
+        
+        return board_state
 
     def launch_game(self, nbPlayer: int) -> None:
         """This method launches the game.
@@ -151,7 +175,6 @@ class GameManager():
         # self.firstPlayerId = randint(0, nbPlayer-1)
         self.firstPlayerId = 0
         self.currentPlayer = self.firstPlayerId
-        self.userId = 0
 
     def next_player(self) -> None:
         """This method changes the current player.

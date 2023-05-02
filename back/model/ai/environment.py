@@ -1,7 +1,7 @@
 import gymnasium as gym
-from back.model.business_model.game_manager import GameManager
+from model.business_model.game_manager import GameManager
 import numpy as numpy
-from back.model.business_model.token_array import TokenArray
+from model.business_model.token_array import TokenArray
 import pickle
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, jsonify
 
-from back.model.business_model import GameManager
+from model.business_model.game_manager import GameManager
 
 app = Flask(__name__)
 gameManager: GameManager = GameManager(4)
@@ -11,11 +11,11 @@ gameManager: GameManager = GameManager(4)
 def index():
     return render_template('front/splendia/src/index.html')
 
-
-@app.route('/api/launchGame/<nbPlayer>')
-def launchGame(nbPlayer=4):
+@app.route('/api/launchGame', defaults={'nbPlayer': 4})
+@app.route('/api/launchGame/<int:nbPlayer>')
+def launchGame(nbPlayer):
     gameManager = GameManager(nbPlayer)
-    return jsonify(gameManager.gather_cli_board_state())
+    return jsonify(gameManager.gather_api_board_state())
 
 
 @app.route('/api/buyCard/<cardId>')

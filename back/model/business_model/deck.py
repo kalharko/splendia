@@ -2,9 +2,9 @@ from dataclasses import dataclass
 from typing import List
 from random import randrange
 
-from back.model.business_model.card_stack import CardStack
-from back.model.business_model.card import Card
-from back.model.utils.exception import EmptyDeck
+from model.business_model.card_stack import CardStack
+from model.business_model.card import Card
+from model.utils.exception import EmptyDeck
 
 
 @dataclass
@@ -41,3 +41,12 @@ class Deck(CardStack):
         if len(self.cards) == 0:
             return EmptyDeck()
         return self.cards.pop(randrange(0, len(self.cards)))
+
+    def get_number_of_cards(self) -> int:
+        """Get the number of cards contained in the deck
+
+        Returns:
+            int: the number of cards of the deck
+        """
+        return len(self.cards)
+
