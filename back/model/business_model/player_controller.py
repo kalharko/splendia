@@ -179,7 +179,7 @@ class PlayerController():
         return self.get_human_player().gather_human_player_information_api_board_state()
     
     def gather_cpu_players_information_api_board_state(self) -> list:  
-        """Gather the information for the CPU players needed for the api board state in a list
+        """Gather the information of the CPU players needed for the api board state in a list
 
         Returns:
             list: contains information of each CPU player for the api board state
