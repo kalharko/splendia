@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import List
 
-from back.model.business_model.card import Card
-from back.model.business_model.token_array import TokenArray
-from back.model.business_model.deck import Deck
-from back.model.business_model.hand import Hand
+from model.business_model.card import Card
+from model.business_model.token_array import TokenArray
+from model.business_model.deck import Deck
+from model.business_model.hand import Hand
 
 
 @dataclass

@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import List
 
-from back.model.business_model.rank import Card, Rank
-from back.model.business_model.token_array import TokenArray
-from back.model.utils.parsing import retrieve_and_parse_cards
-from back.model.utils.exception import CardIdNotFound
+from model.business_model.rank import Card, Rank
+from model.business_model.token_array import TokenArray
+from model.utils.parsing import retrieve_and_parse_cards
+from model.utils.exception import CardIdNotFound
 
 
 @dataclass

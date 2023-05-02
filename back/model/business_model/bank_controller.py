@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from logging import raiseExceptions
-from back.model.utils.exception import TooMuchBankTokens, InvalidTakeTokenAction
-from back.model.business_model.token_array import TokenArray
+from model.utils.exception import TooMuchBankTokens, InvalidTakeTokenAction
+from model.business_model.token_array import TokenArray
 
 
 @dataclass

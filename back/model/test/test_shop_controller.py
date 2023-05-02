@@ -1,9 +1,9 @@
 import unittest
 
-from back.model.business_model.shop_controller import ShopController
-from back.model import Rank
-from back.model.business_model.hand import Hand
-from back.model.business_model.deck import Deck
+from model.business_model.shop_controller import ShopController
+from model import Rank
+from model.business_model.hand import Hand
+from model.business_model.deck import Deck
 
 
 class Test_ShopController(unittest.TestCase):

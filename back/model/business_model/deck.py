@@ -2,9 +2,9 @@ from dataclasses import dataclass
 from typing import List
 from random import randrange
 
-from back.model.business_model.card_stack import CardStack
-from back.model.business_model.card import Card
-from back.model.utils.exception import EmptyDeck
+from model.business_model.card_stack import CardStack
+from model.business_model.card import Card
+from model.utils.exception import EmptyDeck
 
 
 @dataclass

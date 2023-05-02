@@ -1,7 +1,7 @@
 from termcolor import colored as c
 
-from back.model.business_model.game_manager import GameManager
-from back.model import TokenArray
+from model.business_model.game_manager import GameManager
+from model import TokenArray
 
 
 class CliApp():

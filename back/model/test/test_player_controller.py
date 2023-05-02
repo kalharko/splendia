@@ -1,12 +1,12 @@
 import unittest
 
-from back.model.business_model.player_controller import PlayerController
-from back.model.business_model.patron_controller import PatronController
-from back.model.business_model.bank_controller import BankController
-from back.model.business_model.shop_controller import ShopController
-from back.model import TokenArray, Color
-from back.model import Logger
-from back.model.business_model.player import Player
+from model.business_model.player_controller import PlayerController
+from model.business_model.patron_controller import PatronController
+from model.business_model.bank_controller import BankController
+from model.business_model.shop_controller import ShopController
+from model import TokenArray, Color
+from model import Logger
+from model.business_model.player import Player
 
 
 class Test_PlayerController(unittest.TestCase):

@@ -3,19 +3,19 @@
 To run the server you need to:
 1) Create a python virtual environnement :
 ```
-python -m venv env
+python -m venv back/.venv
 ```
 2) Enter the virtual environnement:
 ```
-source env/bin/activate
+source back/.venv/bin/activate
 ```
 3) Install the necessary dependancies:
 ```
-pip install -r requirements.txt
+pip install -r back/requirements.txt
 ```
 4) Run the server:
 ```
-python run_server.py
+python back.run_server.py
 ```
 \
 To quit the virtual environnement:
