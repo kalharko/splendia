@@ -144,7 +144,7 @@ class GameManager():
         - CPUS: it corresponds to a list of "CPU" objets. A CPU contains a token list, a bonus list, the victory points of the CPU and the number of reserved cards of the player
         - bank: it corresponds to a token list
         - patrons: it corresponds to a list of patrons
-        - gameState: it contains a boolean stating if the player has to reject tokens and a list containing the number of the players who won (the list is empty if no one has won)
+        - gameState: it contains a boolean stating if the player has to reject tokens and a list containing the id of the players who won (the list is empty if no one has won)
         This function is used for the responses of the API
         
         Returns:
@@ -157,6 +157,10 @@ class GameManager():
         dict['CPUS'] = self._playerController.gather_cpu_players_information_api_board_state()
         dict['bank'] = self._bankController.gather_bank_information_api_board_state()
         dict['patrons'] = self._patronController.gather_patrons_information_api_board_state()
+        dict['gameState'] = {
+            'humanPlayerTooManyTokens': self._playerController.check_human_player_too_many_tokens(),
+            'winners': self._playerController.gather_winner_information_api_board_state()
+        }
         
         return dict
 

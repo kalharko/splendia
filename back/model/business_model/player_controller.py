@@ -185,5 +185,43 @@ class PlayerController():
             list: contains information of each CPU player for the api board state
         """
         return [cpu_player.gather_cpu_player_information_api_board_state() for cpu_player in self.get_cpu_players()]
+    
+    def check_human_player_too_many_tokens(self) -> bool:
+        """Check if the human player has too many tokens
+
+        Returns:
+            bool: true if the human player has too many tokens
+        """
+        return self.get_human_player().check_too_many_tokens()
+    
+    def get_winners(self) -> list[Player]:
+        """Get the winners of the game
+
+        Returns:
+            list[Player]: winners of the game. The list can be empty if there are no winners
+        """
+        # Find the maximum amount of points of the players
+        maxPoints = 0
+        for player in self.players:
+            playerVictoryPoints = player.get_victory_points().get_value()
+            if(playerVictoryPoints > maxPoints):
+                maxPoints = playerVictoryPoints
+        
+        # if the maximum amount of points is less than 15, then there are no winners
+        if(maxPoints < 15):
+            return []
+        
+        # return the players who's points are equal to the maximum amount of points found
+        return [player for player in self.players if player.get_victory_points().get_value() == maxPoints]
+    
+    def gather_winner_information_api_board_state(self) -> list[int]:
+        """Gather the ids of the winners for the api board state
+
+        Returns:
+            list[int]: ids of the winners. The list is empty if there are no winners
+        """
+        return [winner.get_id() for winner in self.get_winners()]
+
+    
         
         

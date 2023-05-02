@@ -221,3 +221,28 @@ class Player():
             'victoryPoints': self.victoryPoints.get_value(),
             'numberReservedCards': self.reserved.get_number_cards()
         }
+        
+    def check_too_many_tokens(self) -> bool:
+        """Check if the player has too many tokens.
+        The maximum of tokens a player can keep is 10
+
+        Returns:
+            bool: true if the player has too many tokens
+        """
+        return sum(self.tokens.get_tokens()) > 10
+    
+    def get_id(self) -> int:
+        """Get the id of the player
+
+        Returns:
+            int: player id
+        """
+        return self.get_id
+    
+    def get_victory_points(self) -> VictoryPoint:
+        """Get the victory points of the player
+
+        Returns:
+            VictoryPoint: victory points of the player
+        """
+        return self.victoryPoints
