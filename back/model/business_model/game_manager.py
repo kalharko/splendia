@@ -151,18 +151,18 @@ class GameManager():
             dict: board state used for the responses of the API
         """
         
-        dict = {}
-        dict['shop'] = self._shopController.gather_shop_information_api_board_state()
-        dict['humanPlayer'] = self._playerController.gather_human_player_information_api_board_state()
-        dict['CPUS'] = self._playerController.gather_cpu_players_information_api_board_state()
-        dict['bank'] = self._bankController.gather_bank_information_api_board_state()
-        dict['patrons'] = self._patronController.gather_patrons_information_api_board_state()
-        dict['gameState'] = {
+        board_state = {}
+        board_state['shop'] = self._shopController.gather_shop_information_api_board_state()
+        board_state['humanPlayer'] = self._playerController.gather_human_player_information_api_board_state()
+        board_state['CPUS'] = self._playerController.gather_cpu_players_information_api_board_state()
+        board_state['bank'] = self._bankController.gather_bank_information_api_board_state()
+        board_state['patrons'] = self._patronController.gather_patrons_information_api_board_state()
+        board_state['gameState'] = {
             'humanPlayerTooManyTokens': self._playerController.check_human_player_too_many_tokens(),
             'winners': self._playerController.gather_winner_information_api_board_state()
         }
         
-        return dict
+        return board_state
 
     def launch_game(self, nbPlayer: int) -> None:
         """This method launches the game.

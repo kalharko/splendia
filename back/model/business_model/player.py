@@ -237,7 +237,7 @@ class Player():
         Returns:
             int: player id
         """
-        return self.get_id
+        return self.player_id
     
     def get_victory_points(self) -> VictoryPoint:
         """Get the victory points of the player
