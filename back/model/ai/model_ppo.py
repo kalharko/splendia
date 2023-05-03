@@ -6,17 +6,19 @@ import numpy
 from model.business_model.checker import Checker
 from model.business_model.token_array import TokenArray
 import pickle
-################################## set device ##################################
-print("============================================================================================")
-# set device to cpu or cuda
-device = torch.device('cpu')
-if (torch.cuda.is_available()):
-    device = torch.device('cuda:0')
-    torch.cuda.empty_cache()
-    print("Device set to : " + str(torch.cuda.get_device_name(device)))
-else:
-    print("Device set to : cpu")
-print("============================================================================================")
+if __name__ == '__main__':
+
+    ################################## set device ##################################
+    print("============================================================================================")
+    # set device to cpu or cuda
+    device = torch.device('cpu')
+    if (torch.cuda.is_available()):
+        device = torch.device('cuda:0')
+        torch.cuda.empty_cache()
+        print("Device set to : " + str(torch.cuda.get_device_name(device)))
+    else:
+         print("Device set to : cpu")
+    print("============================================================================================")
 
 
 ################################## PPO Policy ##################################
@@ -72,9 +74,9 @@ def get_mask(player_ID):
 
 
 class ActorCritic(nn.Module):
-    def __init__(self, state_dim, action_dim, has_continuous_action_space, action_std_init):
+    def __init__(self, state_dim, action_dim, has_continuous_action_space, action_std_init,device):
         super(ActorCritic, self).__init__()
-
+        self.device = device
         self.has_continuous_action_space = has_continuous_action_space
 
         if has_continuous_action_space:
@@ -128,8 +130,9 @@ class ActorCritic(nn.Module):
             action_probs = self.actor(state)
             # print('action_probs',action_probs)
             action_probs = action_probs * \
-                torch.from_numpy(get_mask(1)).to(device)
+                torch.from_numpy(get_mask(1)).to(self.device)
             dist = Categorical(action_probs)
+
             # print('dist',dist.probs)
         action = dist.sample()
         action_logprob = dist.log_prob(action)
@@ -143,7 +146,7 @@ class ActorCritic(nn.Module):
             action_mean = self.actor(state)
 
             action_var = self.action_var.expand_as(action_mean)
-            cov_mat = torch.diag_embed(action_var).to(device)
+            cov_mat = torch.diag_embed(action_var).to(self.device)
             dist = MultivariateNormal(action_mean, cov_mat)
 
             # For Single Action Environments.
@@ -152,7 +155,7 @@ class ActorCritic(nn.Module):
         else:
             action_probs = self.actor(state)
             action_probs = action_probs * \
-                torch.from_numpy(get_mask(1)).to(device)
+                torch.from_numpy(get_mask(1)).to(self.device)
 
             dist = Categorical(action_probs)
 
@@ -168,7 +171,14 @@ class PPO:
                  has_continuous_action_space, action_std_init=0.6):
 
         self.has_continuous_action_space = has_continuous_action_space
-
+        device = torch.device('cpu')
+        if (torch.cuda.is_available()):
+            device = torch.device('cuda:0')
+            torch.cuda.empty_cache()
+            print("Device set to : " + str(torch.cuda.get_device_name(device)))
+        else:
+            print("Device set to : cpu")
+        self.device = device
         if has_continuous_action_space:
             self.action_std = action_std_init
 
@@ -179,14 +189,14 @@ class PPO:
         self.buffer = RolloutBuffer()
 
         self.policy = ActorCritic(
-            state_dim, action_dim, has_continuous_action_space, action_std_init).to(device)
+            state_dim, action_dim, has_continuous_action_space, action_std_init,self.device).to(self.device)
         self.optimizer = torch.optim.Adam([
             {'params': self.policy.actor.parameters(), 'lr': lr_actor},
             {'params': self.policy.critic.parameters(), 'lr': lr_critic}
         ])
 
         self.policy_old = ActorCritic(
-            state_dim, action_dim, has_continuous_action_space, action_std_init).to(device)
+            state_dim, action_dim, has_continuous_action_space, action_std_init,self.device).to(self.device)
         self.policy_old.load_state_dict(self.policy.state_dict())
 
         self.MseLoss = nn.MSELoss()
@@ -224,11 +234,11 @@ class PPO:
 
     def select_dummy_action(self, state):
         with torch.no_grad():
-            state = torch.FloatTensor(state).to(device)
+            state = torch.FloatTensor(state).to(self.device)
 
             action_probs = self.policy.actor.forward(state)
             action_probs = action_probs * \
-                torch.from_numpy(get_mask(2)).to(device)
+                torch.from_numpy(get_mask(2)).to(self.device)
 
             dist = Categorical(action_probs)
 
@@ -245,7 +255,7 @@ class PPO:
 
         if self.has_continuous_action_space:
             with torch.no_grad():
-                state = torch.FloatTensor(state).to(device)
+                state = torch.FloatTensor(state).to(self.device)
                 action, action_logprob, state_val = self.policy_old.act(state)
 
             self.buffer.states.append(state)
@@ -256,7 +266,7 @@ class PPO:
             return action.detach().cpu().numpy().flatten()
         else:
             with torch.no_grad():
-                state = torch.FloatTensor(state).to(device)
+                state = torch.FloatTensor(state).to(self.device)
                 action, action_logprob, state_val = self.policy_old.act(state)
 
             self.buffer.states.append(state)
@@ -281,18 +291,18 @@ class PPO:
             rewards.insert(0, discounted_reward)
 
         # Normalizing the rewards
-        rewards = torch.tensor(rewards, dtype=torch.float32).to(device)
+        rewards = torch.tensor(rewards, dtype=torch.float32).to(self.device)
         rewards = (rewards - rewards.mean()) / (rewards.std() + 1e-7)
 
         # convert list to tensor
         old_states = torch.squeeze(torch.stack(
-            self.buffer.states, dim=0)).detach().to(device)
+            self.buffer.states, dim=0)).detach().to(self.device)
         old_actions = torch.squeeze(torch.stack(
-            self.buffer.actions, dim=0)).detach().to(device)
+            self.buffer.actions, dim=0)).detach().to(self.device)
         old_logprobs = torch.squeeze(torch.stack(
-            self.buffer.logprobs, dim=0)).detach().to(device)
+            self.buffer.logprobs, dim=0)).detach().to(self.device)
         old_state_values = torch.squeeze(torch.stack(
-            self.buffer.state_values, dim=0)).detach().to(device)
+            self.buffer.state_values, dim=0)).detach().to(self.device)
 
         # calculate advantages
         advantages = rewards.detach() - old_state_values.detach()

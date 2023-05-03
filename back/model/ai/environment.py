@@ -3,7 +3,7 @@ from model.business_model.game_manager import GameManager
 import numpy as numpy
 from model.business_model.token_array import TokenArray
 import pickle
-
+from back.model.mtcs.splendia_mtcs_node import SplendiaMtcsNode, monte_carlo
 
 class SplendorEnv(gym.Env):
     def __init__(self, game: GameManager, nb_player: int = 2):
@@ -289,64 +289,84 @@ class SplendorEnv(gym.Env):
     def reset(self):
         self.number_turn = 0
         self.game_id += 1
+
         self.game.launch_game(2)
+        print('game id : ', self.game_id)
         return self.from_board_states_to_obs_train()
 
     def is_last_turn(self):
         return self.game.is_last_turn()
 
     def step(self, action, model):
+        player_0_vp = self.game.get_player_victory_point(0)
+        player_1_vp = self.game.get_player_victory_point(1)
+        if self.game.is_last_turn():
+
+                # if the file blocked_logs.csv does not exist, we create it
+
+                if  player_0_vp > player_1_vp:
+                    reward = 100
+                    # add a new line to the file
+                    with open('Blocked_logs/blocked_logs.csv', 'a+') as f:
+
+                        f.write(str(self.game_id) + ',non_blocked\n')
+                    with open('Number_turn/number_turn.csv', 'a+') as f:
+
+                        f.write(str(self.number_turn) + '\n')
+                    print('win')
+                elif player_0_vp == player_1_vp:
+                    with open('Blocked_logs/blocked_logs.csv', 'a+') as f:
+
+                        f.write(str(self.game_id) + ',non_blocked\n')
+                    with open('Number_turn/number_turn.csv', 'a+') as f:
+
+                        f.write(str(self.number_turn) + '\n')
+                    reward = 25
+                    print('egality')
+                else:
+                    reward = -100
+                    print('loose')
+
+                done = True
+                print('last turn')
+        else:
+                done = False
         self.apply_action(action)
+        has_finish = self.game.is_last_turn()
         self.number_turn +=1
         # the ai has played
         obs = self.from_board_states_to_obs_test()
 
-        action_two = model.select_dummy_action(obs)
+        #action_two = model.select_dummy_action(obs)
+        has_pass = True if action == 65 else False
+        node = SplendiaMtcsNode(self.game,self.game.currentPlayer,10,has_pass,30)
+        #print('monte carlo for a number of iteration : ', 10)
+        #print('number of children : ', (len(node.child)))
+        action_two = monte_carlo(node,1,self.game.currentPlayer)
+        print('action two',action_two)
         self.apply_action(action_two)
 
+        del node
         obs = self.from_board_states_to_obs_train()
         # reward = self.game.playerController.players[0].victoryPoints.value
         reward = -1
-        player_0_vp = self.game.get_player_victory_point(0)
-        player_1_vp = self.game.get_player_victory_point(1)
+
+
+
         reward += player_0_vp
         reward -= player_1_vp
 
-        if self.game.is_last_turn():
-            # if the file blocked_logs.csv does not exist, we create it
-
-            if player_0_vp > player_1_vp:
-                # reward = 100
-                # add a new line to the file
-                with open('Blocked_logs/blocked_logs.csv', 'a+') as f:
-
-                    f.write(str(self.game_id) + ',non_blocked\n')
-                with open('Number_turn/number_turn.csv', 'a+') as f:
-
-                    f.write(str(self.number_turn) + '\n')
-                print('win')
-            else:
-                with open('Blocked_logs/blocked_logs.csv', 'a+') as f:
-
-                    f.write(str(self.game_id) + ',non_blocked\n')
-                with open('Number_turn/number_turn.csv', 'a+') as f:
-
-                    f.write(str(self.number_turn) + '\n')
-                # reward = -100
-                print('loose')
-            done = True
-            print('last turn')
-        else:
-            done = False
         if action and action_two == 65 and done == False:
             done = True
-            reward = -1000
+            reward -= -10
             with open('Blocked_logs/blocked_logs.csv', 'a') as f:
                 # write game ID and that it is blocked
                 f.write(str(self.game_id) + ',blocked\n')
             print('blocked')
 
+
         info = {}
+        print('done : ', done)
         return obs, reward, done, info
 
     def apply_action(self, action):

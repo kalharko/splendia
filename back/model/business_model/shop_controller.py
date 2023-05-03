@@ -64,10 +64,12 @@ class ShopController():
         Returns:
             Card or CardIdNotFound: The card if the shop has it, CardIdNotFound otherwise.
             """
-
+        # find the rank where the cards is :
         for rank in self.ranks:
-            if isinstance((card := rank.withdraw_card(cardId)), Card):
-                return card
+            if rank.has_card(cardId):
+                return rank.withdraw_card(cardId)
+
+
         return CardIdNotFound()
 
     def can_withdraw_pile_card(self, pileLevel: int) -> bool:

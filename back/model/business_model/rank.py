@@ -45,6 +45,9 @@ class Rank():
             """
 
         for card in self.hand.cards:
+            if card is None:
+                return 1000
+
             if card.card_id == cardId:
                 return card.price
         return None
@@ -64,7 +67,14 @@ class Rank():
                 self.hand.add_card(draw_card)
             return card
         return None
+    def has_card(self,card_id : int):
 
+        for card in self.hand.cards:
+            if card is  None :
+                continue
+            if  card.card_id == card_id:
+                return True
+        return False
     def can_draw(self) -> bool:
         """This method checks if the rank can draw a card.
 
