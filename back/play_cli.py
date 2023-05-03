@@ -1,6 +1,6 @@
 from curses import wrapper
 
-from model.cli.cli_app import CliApp
+from cli.cli_app import CliApp
 
 
 def main(stdscr):
