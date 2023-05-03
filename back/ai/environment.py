@@ -3,7 +3,7 @@ from model.game_manager import GameManager
 import numpy as numpy
 from model.token_array import TokenArray
 import pickle
-from back.model.mtcs.splendia_mtcs_node import SplendiaMtcsNode, monte_carlo
+from model.mtcs.splendia_mtcs_node import SplendiaMtcsNode, monte_carlo
 
 class SplendorEnv(gym.Env):
     def __init__(self, game: GameManager, nb_player: int = 2):

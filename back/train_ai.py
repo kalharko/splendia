@@ -1,3 +1,3 @@
-from model.ai.train import train 
+from ai.train import train
 
 train()

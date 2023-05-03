@@ -1,10 +1,10 @@
 from copy import copy, deepcopy
 import numpy
 import random
-from back.model.mtcs.monte_carlo_tree_search import Node
-from back.model.business_model.game_manager import GameManager
-from back.model.business_model.token_array import TokenArray
-from back.model.business_model.checker import Checker
+from model.mtcs.monte_carlo_tree_search import Node
+from model.game_manager import GameManager
+from model.token_array import TokenArray
+from model.checker import Checker
 from tqdm import tqdm
 import multiprocessing as mp
 import time
