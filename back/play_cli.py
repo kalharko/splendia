@@ -1,4 +1,12 @@
-from model import CliApp
+from curses import wrapper
 
-ca = CliApp(4)
-# ca.display(ca.gm.gather_cli_board_state())
+from cli.cli_app import CliApp
+
+
+def main(stdscr):
+    stdscr.clear()
+    stdscr.refresh()
+    app = CliApp(2, stdscr)
+
+
+wrapper(main)

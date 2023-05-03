@@ -47,42 +47,88 @@ CardStack "1" -l-* "0..40" Card : cards
 
 
 class GameManager {
-    +init(nbPlayer int) : void
-    +gather_board_state() : BoardState
+    -bankController: BankController
+    -patronController: PatronController
+    -playerController: PlayerController
+    -shopController: ShopController
+    -nbPlayer: int
+    -currentPlayer: int
+    -firstPlayerId: int
+    -userId: int
+    +init(nbPlayer: int) : void
+    +gather_ia_board_state(nbPlayer: int) : dict
+    +launch_game(nbPlayer: int) : None
+    +next_player() : void
+    +buy_card(cardId: int) : void
+    +reserve_card(cardId: int) : void
+    +reserve_pile_card(cardId: int) : void
+    +take_tokens(tokens: TokenArray): void
+    +pass_turn() : void
+    +is_last_turn() : bool
+    +cpu_turn() : void
+    +get_player_victory_point(playerId: int) : int
+    +get_current_player() : Player
+    +get_patron_controller() : PatronController
+    +get_player_controller() : PlayerController
+    +get_shop_controller() : ShopController
+    +get_bank_controller() : BankController
 }
 
 
 class BankController {
-    +init(nbPlayer : int) : void
-    +deposit(TokenArray) : void
-    +withdraw(TokenArray) : void
+    -bank: TokenArray
+    -maxInBank: TokenArray
+    +init(nbPlayer: int) : void
+    +can_deposit(tokens: TokenArray) : bool
+    +can_withdraw(tokens: TokenArray) : bool
+    +deposit(tokens: TokenArray) : void
+    +withdraw(tokens: TokenArray) : void
+    +cheat_withdraw(tokens: TokenArray)
 }
 
 class PatronController {
+    -patrons: list[Patron]
     +init(nbPlayer : int) : void
+    +update(hand: Hand) : Patron
     +withdraw(Hand) : Patron
 }
 
 class PlayerController {
-    +init(nbPlayer : int) : void
-    +buy_reserved_card(PlayerId : int, CardId : int) : void
-    +buy_shop_card(PlayerId : int, CardId : int) : void
-    +reserve_card(PlayerId : int, CardId : int) : void
-    +take_tokens(PlayerId : int, TokenArray) : void
+    -players: list[Player]
+    +init(nbPlayer : int, observer: PatronController) : void
+    +buy_reserved_card(PlayerId : int, CardId : int, bankController: BankController) : void
+    +buy_shop_card(PlayerId : int, CardId : int, bankController: BankController, shopController: ShopController) : void
+    +reserve_card(PlayerId : int, CardId : int, bankController: BankController, shopController: ShopController) : void
+    +reserve_pile_card(PlayerId: int, pileLeve: int, shopController: ShopController): void
+    +take_tokens(PlayerId : int, tokens: TokenArray, bankController: BankController) : void
+    +cheat_take_tokens(playerId: int, tokens: TokenArray, bankController: BankController) : void
 }
 
 class ShopController {
+    -ranks: list[Rank]
     +init() : void
+    +has_card(cardId: int) : bool
     +get_card_price(CardId : int) : TokenArray
     +withdraw_card(CardId : int) : Card
+    +can_withdraw_pile_card(pileLevel: int) : bool
+    +withdraw_pile_card(pileLevel) : Card
 }
 
 
 
 
 class Player {
+    -player_id: int
+    -hand: Hand
+    -reserved: Hand
+    -bonus_tokens: TokenArray
+    -tokens: TokenArray
+    -victoryPoints: VictoryPoint
+    -patrons: list[Patrons]
+    -observer: PatronController
     +get_card_price(CardId) : TokenArray
     +pay(TokenArray) : void
+    +can_pay(price: TokenArray): tuple[bool, TokenArray]
     +withdraw_reserved_card(CardId) : Card
     +deposit_card(Card) : void
     +deposit_reserved_card(Card) : void
@@ -142,5 +188,3 @@ enum Color {
 }
 
 @enduml
-
-
