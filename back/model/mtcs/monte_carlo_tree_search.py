@@ -13,12 +13,19 @@ class MCTS:
     "Monte Carlo tree searcher. First rollout the tree then choose a move."
 
     def __init__(self, exploration_weight=1):
+        """
+        MCTS: Monte Carlo Tree Search.
+        Args:
+            exploration_weight: a constant balancing between exploitation and exploration
+
+        """
         self.Q = defaultdict(int)  # total reward of each node
         self.N = defaultdict(int)  # total visit count for each node
         self.children = dict()  # children of each node
         self.exploration_weight = exploration_weight
 
     def choose(self, node):
+
         "Choose the best successor of node. (Choose a move in the game)"
         if node.is_terminal():
             raise RuntimeError(f"choose called on terminal node {node}")

@@ -5,10 +5,33 @@ from back.model.mtcs.monte_carlo_tree_search import Node
 from back.model.business_model.game_manager import GameManager
 from back.model.business_model.token_array import TokenArray
 from back.model.business_model.checker import Checker
-
+from tqdm import tqdm
+import multiprocessing as mp
+import time
 class SplendiaMtcsNode(GameManager, Node):
+    """
+    This class is a node for the tree of the Monte Carlo Tree Search algorithm / Alpha beta algorithm.
+    It is a copy of the GameManager class, with some additional attributes and methods.
 
-    def __init__(self, other: GameManager, scopePlayer: int, depth: int,has_pass = False,max_depth:int = 30):
+    Attributes:
+        has_pass: True if the player has passed his turn, False otherwise
+        depth: the depth of the node in the tree
+        max_depth: the maximum depth of the tree
+        finished: True if the game is finished, False otherwise
+        _bankController: the bank controller of the game
+        _patronController: the patron controller of the game
+        _playerController: the player controller of the game
+        _shopController: the shop controller of the game
+        currentPlayer: the current player
+        nbPlayer: the number of players
+        userId: the id of the user
+        firstPlayerId: the id of the first player
+        scopePlayer: the id of the player for which the tree is built
+        parent_action: the action that led to this node
+        child: the childrens of this node
+
+    """
+    def __init__(self, other: GameManager, scopePlayer: int, depth: int, has_pass=False, max_depth: int = 30):
         self.has_pass = has_pass
         self.depth = depth
         self.max_depth = max_depth
@@ -26,9 +49,13 @@ class SplendiaMtcsNode(GameManager, Node):
         self.firstPlayerId = (other.firstPlayerId)
         self.scopePlayer = scopePlayer
         self.parent_action = None
-        self.child : list[SplendiaMtcsNode] = []
-        #self.find_children()
-    def find_children(self): # -> list[SplendiaMtcsNode]
+        self.child: list[SplendiaMtcsNode] = []
+        # self.find_children()
+
+    def find_children(self):  # -> list[SplendiaMtcsNode]
+        """
+        Find the children of the node, and add them to the child attribute.
+        """
         if self.is_terminal():
             return
 
@@ -40,12 +67,17 @@ class SplendiaMtcsNode(GameManager, Node):
             self.child.append(state_copy)
 
     def evaluate_children(self):
+        """
+        Evaluate the children of the node, and add them to the child attributes
+
+        """
         if self.is_terminal():
             return
         for child in self.child:
             child.apply_action(child.parent_action)
 
-    def find_random_child(self):  # -> SplendiaMtcsNode
+    def find_random_child(self):
+
         if self.is_terminal():
             return None
         out = SplendiaMtcsNode(self)
@@ -60,6 +92,7 @@ class SplendiaMtcsNode(GameManager, Node):
             return self.reward()
         else:
             return self.get_current_player().victoryPoints.value
+
     def reward(self) -> int:
         assert self.is_terminal(), 'reward called on non terminal board'
 
@@ -112,7 +145,7 @@ class SplendiaMtcsNode(GameManager, Node):
     def possible_cards_to_buy(self) -> list[int]:
         out = []
         for rank in self._shopController.ranks:
-            for card in rank.hand.cards
+            for card in rank.hand.cards:
                 if self.get_current_player().can_pay_with_reduced_price(card.price):
                     out.append(card.card_id)
 
@@ -154,12 +187,11 @@ class SplendiaMtcsNode(GameManager, Node):
 
     def make_random_move(self) -> None:
         possible_actions = self.get_possible_actions()
-        if self.depth >= 10:
-            return
+
 
         for action in possible_actions:
-            #copy the state
-            state_copy = SplendiaMtcsNode(self, 2,self.depth+1, self.has_pass)
+            # copy the state
+            state_copy = SplendiaMtcsNode(self, 2, self.depth + 1, self.has_pass)
             # apply the action
             state_copy.apply_action(action)
             (state_copy).parent_action = action
@@ -207,10 +239,47 @@ class SplendiaMtcsNode(GameManager, Node):
         possible_actions = numpy.where(mask == 1)[0]
         return possible_actions
 
+    def simulate_monte_carlo(self, player_id):
+        # while the game is not finished
+        is_finish = False
+        number_iteration = 0
+        self.last_action_done = -1
+        current_node = copy(self)
+        while not is_finish:
+            # choose a random action
+            number_iteration += 1
+            possible_actions = current_node.get_possible_actions()
+            # check if possible_actions contains only 65
+
+
+
+
+            # take a random action
+            action = random.choice(possible_actions)
+            if action == 65 and self.last_action_done == 65:
+                return -1  ,number_iteration # if the last action was pass and the current action is pass, return -1
+            self.last_action_done = action
+            # apply the action
+            current_node.apply_action(action)
+            # check if the game is finished
+            if current_node.currentPlayer == current_node.firstPlayerId and current_node.is_last_turn() == True:
+
+                # return the winner
+                if current_node._playerController.players[player_id].victoryPoints.value > current_node._playerController.players[(player_id + 1) % 2].victoryPoints.value:
+                    return 1 , number_iteration
+                elif current_node._playerController.players[player_id].victoryPoints.value == current_node._playerController.players[(player_id + 1) % 2].victoryPoints.value:
+                    return 0 , number_iteration
+                else:
+                    return 0.5 , number_iteration
+
+            #print('number iteration : ', number_iteration)
+
     def is_leaf(self):
         return len(self.get_possible_actions()) == 0
+
     def stop_game(self):
         self.finished = True
+
     def apply_action(self, action):
         # print the action done
         # print('action done : ', action)
@@ -361,65 +430,129 @@ class SplendiaMtcsNode(GameManager, Node):
                 self.has_pass = True
                 self.pass_turn()
 
+
 def alpha_beta(node, depth, alpha, beta, maximizing_player=True):
-        global pruned_branches # for debugging
-        if depth == 0 or node.is_terminal():
-            print(' evaluate : ' ,node.evaluate())
-            return node.evaluate(), []
-        node.find_children()
-        iterator = 0
-        for action in node.get_possible_actions():
-            node.child[iterator].apply_action(action)
-            node.child[iterator].parent_action = action
+    global pruned_branches  # for debugging
+    if depth == 0 or node.is_terminal():
+        #print(' evaluate : ', node.evaluate())
+        return node.evaluate(), []
+    node.find_children()
+    iterator = 0
+    for action in node.get_possible_actions():
+        node.child[iterator].apply_action(action)
+        node.child[iterator].parent_action = action
 
-            iterator += 1
-        if maximizing_player:
-            best_value = float('-inf')
-            best_path = []
+        iterator += 1
+    if maximizing_player:
+        best_value = float('-inf')
+        best_path = []
 
-            for child in node.child:
+        for child in node.child:
 
-                child_value, child_path = alpha_beta(child, depth - 1, alpha, beta, False)
-                if child_value > best_value:
-                    best_value = child_value
-                    best_path = [child.parent_action] + child_path
-                alpha = max(alpha, best_value)
-                if beta <= alpha:
-                    pruned_branches += 1
-                    break
+            child_value, child_path = alpha_beta(child, depth - 1, alpha, beta, False)
+            if child_value > best_value:
+                best_value = child_value
+                best_path = [child.parent_action] + child_path
+            alpha = max(alpha, best_value)
+            if beta <= alpha:
+                pruned_branches += 1
+                break
 
-            return best_value, best_path
+        return best_value, best_path
 
-        else:
-            best_value = float('inf')
-            best_path = []
+    else:
+        best_value = float('inf')
+        best_path = []
 
-            for child in node.child:
-                child_value, child_path = alpha_beta(child, depth - 1, alpha, beta, True)
-                if child_value < best_value:
-                    best_value = child_value
-                    best_path = [child.parent_action] + child_path
-                beta = min(beta, best_value)
-                if beta <= alpha:
-                    pruned_branches += 1
-                    break
+        for child in node.child:
+            child_value, child_path = alpha_beta(child, depth - 1, alpha, beta, True)
+            if child_value < best_value:
+                best_value = child_value
+                best_path = [child.parent_action] + child_path
+            beta = min(beta, best_value)
+            if beta <= alpha:
+                pruned_branches += 1
+                break
 
-            return best_value, best_path
+        return best_value, best_path
 
 
+def monte_carlo(node: SplendiaMtcsNode, nb_simulations, current_player):
+    node.find_children()
+    node_child = node.child
+    manager = mp.Manager()
+    results = manager.dict()
+    procs = []
+
+
+    for child in node_child:
+        proc = mp.Process(target=compute_random_game_reward, args=(child, current_player, nb_simulations, results))
+        procs.append(proc)
+        proc.start()
+        #compute_random_game_reward(child, current_player, nb_simulations, results)
+        print(f"Simulating action {child.parent_action}")
+
+
+    for proc in procs:
+        proc.join()
+
+    # get the best action
+    best_reward = -float('inf')
+    best_action = None
+    for child in node_child:
+        reward = results[child.parent_action]
+        if reward > best_reward:
+            best_reward = reward
+            best_action = child.parent_action
+
+    print(f"Best action: {best_action}")
+    print(f"Best reward: {best_reward}")
+    return best_action
+
+def compute_random_game_reward(child, current_player, nb_simulations, results):
+    reward_list = []
+    for i in range(nb_simulations):
+        copy = deepcopy(child)
+        reward, _ = copy.simulate_monte_carlo(current_player)
+        reward_list.append(reward)
+
+    avg_reward = sum(reward_list) / len(reward_list)
+    results[child.parent_action] = avg_reward
+
+    print(f"Average reward for action {child.parent_action}: {avg_reward}")
 
 
 if __name__ == '__main__':
     pruned_branches = 0
-
+    # get time
+    start_time = time.time()
     first_state = GameManager(nbPlayer=2)
-    node = SplendiaMtcsNode(first_state,2,0,False,9)
-    node.find_children()
-    best_value, best_path = alpha_beta(node, 7, float('-inf'), float('inf'), True)
+    node = SplendiaMtcsNode(first_state, 2, 0, False, 9)
+    number_actions = 50
+    for i in range(number_actions):
+
+        possible_actions = node.get_possible_actions()
+        # get a random action
+        action = random.choice(possible_actions)
+        node.apply_action(action)
+    print()
+    dummy = copy(node)
+    print(monte_carlo(dummy, 100, 0))
+    print("--- %s seconds ---" % (time.time() - start_time))
+    # node.find_children()
+    dummy = copy(node)
+    #dummy.find_children()
+    player = True if node.currentPlayer == 0 else False
+    best_value, best_path = alpha_beta(dummy, 4, float('-inf'), float('inf'), player)
+    print(f"Optimal path for 4 : {best_path}")
+    dummy = SplendiaMtcsNode(node, 2, 0, False, 9)
+    #dummy.find_children()
+    best_value, best_path = alpha_beta(dummy, 7, float('-inf'), float('inf'), player)
+    print(f"Optimal path for 6 : {best_path}")
+
 
     print(f"Optimal value: {best_value}")
     print("Actions to take:")
     for action in best_path:
         print(action)
     print(f"Number of pruned branches: {pruned_branches}")
-

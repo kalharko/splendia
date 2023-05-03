@@ -40,6 +40,9 @@ class GameManager():
         Args:
             nbPlayer (int): The number of players.
             """
+        self.initialize_game(nbPlayer)
+
+    def initialize_game(self, nbPlayer):
         self._bankController = BankController(nbPlayer)
         self._patronController = PatronController(nbPlayer)
         self._playerController = PlayerController(
@@ -140,6 +143,7 @@ class GameManager():
 
         return out
 
+
     def launch_game(self, nbPlayer: int) -> None:
         """This method launches the game.
 
@@ -147,11 +151,7 @@ class GameManager():
             nbPlayer (int): The number of players.
             """
 
-        self.nbPlayer = nbPlayer
-        # self.firstPlayerId = randint(0, nbPlayer-1)
-        self.firstPlayerId = 0
-        self.currentPlayer = self.firstPlayerId
-        self.userId = 0
+        self.initialize_game(nbPlayer)
 
     def next_player(self) -> None:
         """This method changes the current player.
