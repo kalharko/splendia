@@ -112,7 +112,7 @@ class SplendiaMtcsNode(GameManager, Node):
     def possible_cards_to_buy(self) -> list[int]:
         out = []
         for rank in self._shopController.ranks:
-            for card in rank.hand.cards: #TODO : use the playercontroller...
+            for card in rank.hand.cards
                 if self.get_current_player().can_pay_with_reduced_price(card.price):
                     out.append(card.card_id)
 
