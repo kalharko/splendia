@@ -287,6 +287,7 @@ class SplendorEnv(gym.Env):
 
         return obs
     def reset(self):
+        self.number_turn = 0
         self.game_id += 1
         self.game.launch_game(2)
         return self.from_board_states_to_obs_train()
@@ -296,7 +297,7 @@ class SplendorEnv(gym.Env):
 
     def step(self, action, model):
         self.apply_action(action)
-
+        self.number_turn +=1
         # the ai has played
         obs = self.from_board_states_to_obs_test()
 
@@ -317,21 +318,27 @@ class SplendorEnv(gym.Env):
             if player_0_vp > player_1_vp:
                 # reward = 100
                 # add a new line to the file
-                with open('Blocked_logs/blocked_logs.csv', 'a') as f:
+                with open('Blocked_logs/blocked_logs.csv', 'a+') as f:
 
                     f.write(str(self.game_id) + ',non_blocked\n')
+                with open('Number_turn/number_turn.csv', 'a+') as f:
+
+                    f.write(str(self.number_turn) + '\n')
                 print('win')
             else:
-                with open('Blocked_logs/blocked_logs.csv', 'a') as f:
+                with open('Blocked_logs/blocked_logs.csv', 'a+') as f:
 
                     f.write(str(self.game_id) + ',non_blocked\n')
+                with open('Number_turn/number_turn.csv', 'a+') as f:
+
+                    f.write(str(self.number_turn) + '\n')
                 # reward = -100
                 print('loose')
             done = True
             print('last turn')
         else:
             done = False
-        if action and action_two == 65:
+        if action and action_two == 65 and done == False:
             done = True
             reward = -1000
             with open('Blocked_logs/blocked_logs.csv', 'a') as f:

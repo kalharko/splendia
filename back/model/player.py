@@ -183,3 +183,66 @@ class Player():
     def take_randoms_tokens(self, bank_controller: TokenArray):
 
         pass
+
+    def gather_human_player_information_api_board_state(self) -> dict:
+        """Gather the human player information needed for the api board state in a dictionnary.
+        The dictionnary contains:
+        - the tokens of the player
+        - the bonuses of the player in the form of a list of tokens
+        - the victory points of the player
+        - the reserved cards of the player
+
+        Returns:
+            dict: shop information for the api board state
+        """
+        
+        return {
+            'tokenList': self.tokens.get_tokens(),
+            'bonusList': self.bonus_tokens.get_tokens(),
+            'victoryPoints': self.victoryPoints.get_value(),
+            'reservedCards': self.reserved.gather_cards_information_api_board_state()
+        }
+        
+    def gather_cpu_player_information_api_board_state(self) -> dict:
+        """Gather the CPU player information needed for the api board state in a dictionnary.
+        The dictionnary contains:
+        - the tokens of the player
+        - the bonuses of the player in the form of a list of tokens
+        - the victory points of the player
+        - the number of the reserved cards of the player
+
+        Returns:
+            dict: shop information for the api board state
+        """
+        
+        return {
+            'tokenList': self.tokens.get_tokens(),
+            'bonusList': self.bonus_tokens.get_tokens(),
+            'victoryPoints': self.victoryPoints.get_value(),
+            'numberReservedCards': self.reserved.get_number_cards()
+        }
+        
+    def check_too_many_tokens(self) -> bool:
+        """Check if the player has too many tokens.
+        The maximum of tokens a player can keep is 10
+
+        Returns:
+            bool: true if the player has too many tokens
+        """
+        return sum(self.tokens.get_tokens()) > 10
+    
+    def get_id(self) -> int:
+        """Get the id of the player
+
+        Returns:
+            int: player id
+        """
+        return self.player_id
+    
+    def get_victory_points(self) -> VictoryPoint:
+        """Get the victory points of the player
+
+        Returns:
+            VictoryPoint: victory points of the player
+        """
+        return self.victoryPoints

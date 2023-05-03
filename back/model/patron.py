@@ -14,5 +14,21 @@ class Patron():
         """
 
     patron_id: int
-    requirements: TokenArray()
+    requirements: TokenArray
     victoryPoints: VictoryPoint
+    
+    def gather_patron_information_api_board_state(self) -> dict:
+        """Gather the patron information needed for the api board state in a dictionnary.
+        The dictionnary contains:
+        - the id of the patron
+        - the requirements of the patron
+        - the victory points of the patron
+
+        Returns:
+            dict: shop information for the api board state
+        """
+        return {
+            "patronId": self.patron_id,
+            "requirements": self.requirements.get_tokens(),
+            "victoryPoints": self.victoryPoints.get_value()
+        }

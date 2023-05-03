@@ -67,7 +67,7 @@ def retrieve_and_parse_patrons() -> list[Patron]:
     patron_list = df.apply(
         lambda patron: Patron(
             requirements=TokenArray(
-                [patron['blanc'], patron['bleu'], patron['vert'], patron['rouge'], patron['noir'], 0]),
+                [int(patron['blanc']), int(patron['bleu']), int(patron['vert']), int(patron['rouge']), int(patron['noir']), 0]),
             victoryPoints=VictoryPoint(3),
             patron_id=patron.name),
         axis=1)
