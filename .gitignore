@@ -135,6 +135,9 @@ out
 # Vscode
 *.vscode/
 
+# Idea
+*.idea/
+
 # log
 */log.txt
 
