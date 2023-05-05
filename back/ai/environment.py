@@ -307,20 +307,10 @@ class SplendorEnv(gym.Env):
                 if  player_0_vp > player_1_vp:
                     reward = 100
                     # add a new line to the file
-                    with open('Blocked_logs/blocked_logs.csv', 'a+') as f:
 
-                        f.write(str(self.game_id) + ',non_blocked\n')
-                    with open('Number_turn/number_turn.csv', 'a+') as f:
-
-                        f.write(str(self.number_turn) + '\n')
                     print('win')
                 elif player_0_vp == player_1_vp:
-                    with open('Blocked_logs/blocked_logs.csv', 'a+') as f:
 
-                        f.write(str(self.game_id) + ',non_blocked\n')
-                    with open('Number_turn/number_turn.csv', 'a+') as f:
-
-                        f.write(str(self.number_turn) + '\n')
                     reward = 25
                     print('egality')
                 else:
@@ -356,12 +346,10 @@ class SplendorEnv(gym.Env):
         reward += player_0_vp
         reward -= player_1_vp
 
-        if action and action_two == 65 and done == False:
+        if (action and action_two) == 65 and done == False:
             done = True
             reward -= -10
-            with open('Blocked_logs/blocked_logs.csv', 'a') as f:
-                # write game ID and that it is blocked
-                f.write(str(self.game_id) + ',blocked\n')
+
             print('blocked')
 
 
