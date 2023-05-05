@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReservedCardsComponent } from './reserved-cards/reserved-cards.component';
 import { InfoPlayerComponent } from './info-player/info-player.component';
 import { InfoPlayersComponent } from './info-players/info-players.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -13,7 +14,11 @@ import { InfoPlayersComponent } from './info-players/info-players.component';
     InfoPlayersComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModule
+  ],
+  exports:[
+    InfoPlayerComponent
   ]
 })
 export class InfoPlayerModule { }

@@ -1,0 +1,7 @@
+<p>PRICE TOKEN</p>
+<ul>
+    <li *ngFor="let tokenQuantity of tokenQuantities; let i = index">
+        <p>{{tokenQuantity}}</p>
+        <app-token [quantity]="tokenQuantity" [color]="colorsEnum.get(index)"></app-token>
+    </li>
+</ul>
