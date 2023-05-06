@@ -27,6 +27,7 @@ class TokenArray():
     _tokens: List[int]
     def __hash__(self):
         return hash(tuple(self._tokens))
+    
     def __init__(self, value: List[int] = None) -> None:
         """The constructor for the TokenArray class.
 

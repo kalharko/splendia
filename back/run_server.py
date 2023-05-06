@@ -5,6 +5,9 @@ from model.game_manager import GameManager
 from utils.exception import InvalidNbPlayer
 from utils.run_server_utils import jsonifyException, jsonifyErrorMessage
 from typing import List
+import json
+from json.decoder import JSONDecodeError
+from model.token_array import TokenArray
 
 app = Flask(__name__)
 gameManager: GameManager = GameManager(4)
@@ -26,10 +29,11 @@ def launchGame() -> Response:
             Otherwise, the board state of the game with the HTTP status 200 is returned.
         
     """
+
     try:
         gameManager.launch_game(int(request.args['nb_player']))
     except ValueError as err:
-        return jsonifyErrorMessage("nb_player query param is not a integer. The given value was '" + request.args['nb_player'] + "'"), 400
+        return jsonifyErrorMessage("nb_player query param is not a integer. The given value was '" + request.args['nb_player'] + "."), 400
     except KeyError as err:
         return jsonifyErrorMessage("No nb_player query param was given"), 400
     except InvalidNbPlayer as err:
@@ -52,10 +56,11 @@ def buyCard() -> Response:
         - an exception happens when buying the card
         Otherwise, the board state of the game with the HTTP status 200 is returned.
     """
+
     try:
         cardId = int(request.args['card_id'])
     except ValueError as err:
-        return jsonifyErrorMessage("card_id query param is not a integer. The given value was '" + request.args['card_id'] + "'"), 400
+        return jsonifyErrorMessage("card_id query param is not a integer. The given value was '" + request.args['card_id'] + "."), 400
     except KeyError as err:
         return jsonifyErrorMessage("No card_id query param was given"), 400
     
@@ -82,7 +87,7 @@ def reserveCard():
     try:
         cardId = int(request.args['card_id'])
     except ValueError as err:
-        return jsonifyErrorMessage("card_id query param is not a integer. The given value was '" + request.args['card_id'] + "'"), 400
+        return jsonifyErrorMessage("card_id query param is not a integer. The given value was " + request.args['card_id'] + "."), 400
     except KeyError as err:
         return jsonifyErrorMessage("No card_id query param was given"), 400
     
@@ -109,7 +114,7 @@ def reserveCardOnPile():
     try:
         deckLevel = int(request.args['deck_level'])
     except ValueError as err:
-        return jsonifyErrorMessage("deck_level query param is not a integer. The given value was '" + request.args['deck_level'] + "'"), 400
+        return jsonifyErrorMessage("deck_level query param is not a integer. The given value was " + request.args['deck_level'] + "."), 400
     except KeyError as err:
         return jsonifyErrorMessage("No deck_level query param was given"), 400
     
@@ -119,15 +124,64 @@ def reserveCardOnPile():
     return jsonify(gameManager.gather_api_board_state())
 
 
-@app.route('/api/take_token', methods=['GET'])
-def takeToken():
-    pass
+@app.route('/api/take_tokens', methods=['GET'])
+def takeTokens():
+    """API route to take 2 tokens of the same colour or 3 tokens of different colours.
+
+    Query params:
+        token_list (list[int]): 
+            list of ints that correspond to the number of taken tokens per colour. 
+            The format of the list should be [numberOfWhiteTokens, numberOfBlueTokens, numberOfGreenTokens, numberOfRedTokens, numberOfBlackTokens, numberOfGoldTokens]
+
+    Returns:
+        An error message with the HTTP status 400 is returned in the following cases:
+        - no token_list query param was given
+        - the token_list query param is not a list of 6 ints
+        - an exception happens when taking the tokens
+        Otherwise, the board state of the game with the HTTP status 200 is returned.
+    """
+    
+    try:
+        tokensString = request.args['token_list']
+    except KeyError as err:
+        return jsonifyErrorMessage("No token_list query param was given"), 400
+    
+
+    # The following code is used to check that the given token_list query param is a list of 6 ints
+    jsonifiedIntListErrorMessageWith400HttpStats: Response = jsonifyErrorMessage("It was not possible to convert the token_list query params into a list of ints. The given value was " + tokensString + "."), 400
+    try:
+        tokens = json.loads(tokensString)
+    except JSONDecodeError as err:
+        return jsonifiedIntListErrorMessageWith400HttpStats
+    
+    if type(tokens) is not list:
+        return jsonifiedIntListErrorMessageWith400HttpStats
+    
+    if len(tokens) is not 6:
+        return jsonifyErrorMessage("The length of the tokens list is incorrect. It should be 6 but it is " + str(len(tokens)) + ". The given token_list query param value was " + tokensString + "."), 400
+    
+    for value in tokens:
+        if type(value) is not int:
+            return jsonifiedIntListErrorMessageWith400HttpStats
+    
+    
+    if(err := gameManager.take_token(TokenArray(tokens))):
+        return jsonifyException(err), 400
+    
     return jsonify(gameManager.gather_api_board_state())
 
 
 @app.route('/api/cpu_turn', methods=['GET'])
 def cpuTurn():
-    pass
+    """API route to make a CPU play 
+
+    Returns:
+        An error message with the HTTP status 400 is returned if an error happens during the turn of the cpu
+        Otherwise, the board state of the game with the HTTP status 200 is returned.
+    """
+    
+    if(err := gameManager.cpu_turn()):
+        return jsonifyException(err), 400
     return jsonify(gameManager.gather_api_board_state())
 
 
