@@ -1,2 +1,9 @@
 <app-reject-token></app-reject-token>
 <app-buy-token></app-buy-token>
+
+<p>TOKEN SHOP</p>
+<ul>
+    <li *ngFor="let tokenQuantity of tokenQuantities; let i = index">
+        <p>{{tokenQuantity}}</p>
+    </li>
+</ul>

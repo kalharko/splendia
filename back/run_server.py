@@ -14,38 +14,50 @@ def index():
 @app.route('/api/launchGame', defaults={'nbPlayer': 4})
 @app.route('/api/launchGame/<int:nbPlayer>')
 def launchGame(nbPlayer):
-    gameManager = GameManager(nbPlayer)
-    return jsonify(gameManager.gather_api_board_state())
+    response = jsonify(gameManager.gather_ia_board_state())
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    return response
 
 
 @app.route('/api/buyCard/<cardId>')
 def buyCard(cardId=-1):
-    pass
-    return jsonify(gameManager.gather_ia_board_state())
+    response = jsonify(gameManager.gather_ia_board_state())
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    return response
 
 
 @app.route('/api/reserveCard/<cardId>')
 def reserveCard(cardId=-1):
-    pass
-    return jsonify(gameManager.gather_ia_board_state())
+    response = jsonify(gameManager.gather_ia_board_state())
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    return response
 
 
 @app.route('/api/reserveCardOnPile/<deckLevel>')
 def reserveCardOnPile(deckLevel=-1):
-    pass
-    return jsonify(gameManager.gather_ia_board_state())
+    response = jsonify(gameManager.gather_ia_board_state())
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    return response
 
 
 @app.route('/api/takeToken')
 def takeToken():
-    pass
-    return jsonify(gameManager.gather_ia_board_state())
+    response = jsonify(gameManager.gather_ia_board_state())
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    return response
 
 
 @app.route('/api/cpuTurn')
 def cpuTurn():
-    pass
-    return jsonify(gameManager.gather_ia_board_state())
+    response = jsonify(gameManager.gather_ia_board_state())
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    return response
 
 
 if __name__ == "__main__":
