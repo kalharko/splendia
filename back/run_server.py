@@ -2,6 +2,8 @@
 from flask import Flask, render_template, jsonify
 
 from model.game_manager import GameManager
+from utils.exception import InvalidNbPlayer
+from utils.run_server_utils import jsonifyException
 
 app = Flask(__name__)
 gameManager: GameManager = GameManager(4)
@@ -14,7 +16,11 @@ def index():
 @app.route('/api/launchGame', defaults={'nbPlayer': 4})
 @app.route('/api/launchGame/<int:nbPlayer>')
 def launchGame(nbPlayer):
-    gameManager = GameManager(nbPlayer)
+    try:
+        gameManager.launch_game(nbPlayer)
+    except InvalidNbPlayer as err:
+        return jsonifyException(err), 403 
+    
     return jsonify(gameManager.gather_api_board_state())
 
 
