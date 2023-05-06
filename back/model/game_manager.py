@@ -55,14 +55,14 @@ class GameManager():
         self.userId = 0
         self.randomize_first_player()
         self.cpu_Id = 1
-
+        self.initialize_cpu()
 
     def initialize_cpu(self):
-        state_dim = 87
+        state_dim = 88
 
         # action space dimension
 
-        action_dim = 65
+        action_dim = 66
         update_timestep = 1 * 10  # update policy every n timesteps
         K_epochs = 80  # update policy for K epochs in one PPO update
 
@@ -75,7 +75,7 @@ class GameManager():
         random_seed = 0  # set random seed if required (0 = no random seed)
         self.cpu = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
                        False,
-                       0, )
+                       0, self.cpu_Id+1)
 
 
 
@@ -508,3 +508,149 @@ class GameManager():
             BankController: The game manager's bank controller
             """
         return self._bankController
+
+    def apply_action(self, action):
+        # print the action done
+        # print('action done : ', action)
+        if action == 0:
+            # take [1,1,1,0,0,0] tokens
+            self.take_token(TokenArray([1, 1, 1, 0, 0, 0]))
+        elif action == 1:
+            # take [1,1,0,1,0,0] tokens
+            self.take_token(TokenArray([1, 1, 0, 1, 0, 0]))
+        elif action == 2:
+            # take [1,1,0,0,1,0] tokens
+            self.take_token(TokenArray([1, 1, 0, 0, 1, 0]))
+        elif action == 3:
+            # take [1,0,1,1,0,0] tokens
+            self.take_token(TokenArray([1, 0, 1, 1, 0, 0]))
+        elif action == 4:
+            # take [1,0,1,0,1,0] tokens
+            self.take_token(TokenArray([1, 0, 1, 0, 1, 0]))
+        elif action == 5:
+            # take [1,0,0,1,1,0] tokens
+            self.take_token(TokenArray([1, 0, 0, 1, 1, 0]))
+        elif action == 6:
+            # take [0,1,1,1,0,0] tokens
+            self.take_token(TokenArray([0, 1, 1, 1, 0, 0]))
+        elif action == 7:
+            # take [0,1,1,0,1,0] tokens
+            self.take_token(TokenArray([0, 1, 1, 0, 1, 0]))
+        elif action == 8:
+            # take [0,1,0,1,1,0] tokens
+            self.take_token(TokenArray([0, 1, 0, 1, 1, 0]))
+        elif action == 9:
+            # take [0,0,1,1,1,0] tokens
+            self.take_token(TokenArray([0, 0, 1, 1, 1, 0]))
+        elif action == 10:
+            self.take_token(TokenArray([2, 0, 0, 0, 0, 0]))
+        elif action == 11:
+            self.take_token(TokenArray([0, 2, 0, 0, 0, 0]))
+        elif action == 12:
+            self.take_token(TokenArray([0, 0, 2, 0, 0, 0]))
+        elif action == 13:
+            self.take_token(TokenArray([0, 0, 0, 2, 0, 0]))
+        elif action == 14:
+            self.take_token(TokenArray([0, 0, 0, 0, 2, 0]))
+        elif action == 15:
+            self.buy_card(self.shop1_cards[0].card_id)
+        elif action == 16:
+            self.buy_card(self.shop1_cards[1].card_id)
+        elif action == 17:
+            self.buy_card(self.shop1_cards[2].card_id)
+        elif action == 18:
+            self.buy_card(self.shop1_cards[3].card_id)
+        elif action == 19:
+            self.buy_card(self.shop2_cards[0].card_id)
+        elif action == 20:
+            self.buy_card(self.shop2_cards[1].card_id)
+        elif action == 21:
+            self.buy_card(self.shop2_cards[2].card_id)
+        elif action == 22:
+            self.buy_card(self.shop2_cards[3].card_id)
+        elif action == 23:
+            self.buy_card(self.shop3_cards[0].card_id)
+        elif action == 24:
+            self.buy_card(self.shop3_cards[1].card_id)
+        elif action == 25:
+            self.buy_card(self.shop3_cards[2].card_id)
+        elif action == 26:
+            self.buy_card(self.shop3_cards[3].card_id)
+        elif action == 27:
+            self.buy_card(self.reserved_cards[0])
+        elif action == 28:
+            self.buy_card(self.reserved_cards[1])
+        elif action == 29:
+            self.buy_card(self.reserved_cards[2])
+        elif action == 30:
+            self.reserve_card(self.shop1_cards[0].card_id)
+        elif action == 31:
+            self.reserve_card(self.shop1_cards[1].card_id)
+        elif action == 32:
+            self.reserve_card(self.shop1_cards[2].card_id)
+        elif action == 33:
+            self.reserve_card(self.shop1_cards[3].card_id)
+        elif action == 34:
+            self.reserve_card(self.shop2_cards[0].card_id)
+        elif action == 35:
+            self.reserve_card(self.shop2_cards[1].card_id)
+        elif action == 36:
+            self.reserve_card(self.shop2_cards[2].card_id)
+        elif action == 37:
+            self.reserve_card(self.shop2_cards[3].card_id)
+        elif action == 38:
+            self.reserve_card(self.shop3_cards[0].card_id)
+        elif action == 39:
+            self.reserve_card(self.shop3_cards[1].card_id)
+        elif action == 40:
+            self.reserve_card(self.shop3_cards[2].card_id)
+        elif action == 41:
+            self.reserve_card(self.shop3_cards[3].card_id)
+        elif action == 42:
+            self.reserve_pile_card(0)
+        elif action == 43:
+            self.reserve_pile_card(1)
+        elif action == 44:
+            self.reserve_pile_card(2)
+        elif action == 45:
+            self.take_token(TokenArray([1, 0, 0, 0, 0, 0]))
+        elif action == 46:
+            self.take_token(TokenArray([0, 1, 0, 0, 0, 0]))
+        elif action == 47:
+            self.take_token(TokenArray([0, 0, 1, 0, 0, 0]))
+        elif action == 48:
+            self.take_token(TokenArray([0, 0, 0, 1, 0, 0]))
+        elif action == 49:
+            self.take_token(TokenArray([0, 0, 0, 0, 1, 0]))
+        elif action == 50:
+            self.take_token(TokenArray([1, 1, 0, 0, 0, 0]))
+        elif action == 51:
+            self.take_token(TokenArray([1, 0, 1, 0, 0, 0]))
+        elif action == 52:
+            self.take_token(TokenArray([1, 0, 0, 1, 0, 0]))
+        elif action == 53:
+            self.take_token(TokenArray([1, 0, 0, 0, 1, 0]))
+        elif action == 54:
+            self.take_token(TokenArray([0, 1, 1, 0, 0, 0]))
+        elif action == 55:
+            self.take_token(TokenArray([0, 1, 0, 1, 0, 0]))
+        elif action == 56:
+            self.take_token(TokenArray([0, 1, 0, 0, 1, 0]))
+        elif action == 57:
+            self.take_token(TokenArray([0, 0, 1, 1, 0, 0]))
+        elif action == 58:
+            self.take_token(TokenArray([0, 0, 1, 0, 1, 0]))
+        elif action == 59:
+            self.take_token(TokenArray([0, 0, 0, 1, 1, 0]))
+        elif action == 60:
+            self.take_token(TokenArray([2, 0, 0, 0, 0, 0]))
+        elif action == 61:
+            self.take_token(TokenArray([0, 2, 0, 0, 0, 0]))
+        elif action == 62:
+            self.take_token(TokenArray([0, 0, 2, 0, 0, 0]))
+        elif action == 63:
+            self.take_token(TokenArray([0, 0, 0, 2, 0, 0]))
+        elif action == 64:
+            self.take_token(TokenArray([0, 0, 0, 0, 2, 0]))
+        elif action == 65:
+            self.pass_turn()

@@ -73,6 +73,8 @@ class CliApp():
                 err = self.COMMANDS[user_input[0]](user_input)
                 if err is not None:
                     Logger().log(2, err)
+                else:
+                    self.gm.cpu_turn()
             else:
                 Logger().log(2, self.get_input, str(user_input))
 
