@@ -46,5 +46,9 @@ def splendor_battle(gene1 : Chromosome, gene2 : Chromosome):
             alpha_beta(node, 2, -math.inf, math.inf, True, gene1)
 
 
-genetic_algorithm = GeneticAlgorithm(3, 0.2, 0.1, 10000, lambda x: sum(x), lambda population, n: population[:n])
-genetic_algorithm.run()
+"""genetic_algorithm = GeneticAlgorithm(3, 0.2, 0.1, 10000, lambda x: sum(x), lambda population, n: population[:n])
+genetic_algorithm.run()"""
+fitness_function = lambda x: sum(x)
+selection_function = lambda population, n: population[:n]
+genetic_algorithm = GeneticAlgorithm(1000, 0.8, 0.01, 1000, fitness_function, selection_function)
+best_individual = genetic_algorithm.run()

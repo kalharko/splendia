@@ -10,7 +10,7 @@ class GeneticAlgorithm:
         self.generations = generations
         self.fitness_function = fitness_function
         self.selection_function = selection_function
-        self.population = [Chromosome([random.randint(0, 1) for _ in range(10)]) for _ in range(population_size)]
+        self.population = [Chromosome([random.randint(0, 1) for _ in range(100)]) for _ in range(population_size)]
 
 
     def run(self) -> Chromosome:
@@ -26,7 +26,7 @@ class GeneticAlgorithm:
             print(f"Generation {generation + 1}: Best Fitness = {self.population[0].fitness:.2f}, Best Chromosome = {self.population[0].genes}")
 
             # Check if we've reached the stopping criteria (e.g. target fitness)
-            if self.population[0].fitness >= 10.0:
+            if self.population[0].fitness >= 100.0:
                 return self.population[0]
 
             # Select individuals for the next generation
@@ -46,3 +46,7 @@ class GeneticAlgorithm:
         # Return the best individual found
         return self.population[0]
 
+fitness_function = lambda x: sum(x)
+selection_function = lambda population, n: population[:n]
+genetic_algorithm = GeneticAlgorithm(100, 0.8, 0.1, 100, fitness_function, selection_function)
+best_individual = genetic_algorithm.run()

@@ -46,16 +46,26 @@ class SplendorEnv(gym.Env):
              11, 11, 11, 40, 30, 20])
 
         self.game: GameManager = game
+        self.game.launch_game(2)
+
+        # save the game in a pickle file
+        #with open('game.pickle', 'wb') as handle:
+            #pickle.dump(self.game, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
 
         pass
 
-    def from_board_states_to_obs_train(self):
+    def from_board_states_to_obs_train(self, player_id: int):
         state = self.game.gather_ia_board_state()
+        player_string = 'player' + str(player_id+1)
+        player2 = (player_id + 1) % 3
+        opponent_string = 'player' + str(player2)
+
         obs = numpy.zeros(88)
-        obs[0:6] = state['player1']['tokens']
+        obs[0:6] = state[player_string]['tokens']
         # if the length of the list smaller than 20, we padd with 90
         list_of_cards = [
-            card.card_id for card in state['player1']['cards'] if card is not None]
+            card.card_id for card in state[player_string]['cards'] if card is not None]
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
@@ -63,7 +73,7 @@ class SplendorEnv(gym.Env):
         obs[6:26] = list_of_cards
         # same for nobles, if the length of the list smaller than 5, we padd with 10
         list_of_nobles = [
-            patron.patron_id for patron in state['player1']['nobles']]
+            patron.patron_id for patron in state[player_string]['nobles']]
         if len(list_of_nobles) < 5:
             for i in range(5 - len(list_of_nobles)):
                 list_of_nobles.append(10)
@@ -72,35 +82,35 @@ class SplendorEnv(gym.Env):
         # we save the reserved cards in a list, if the card is None, we padd with 90
 
         self.reserved_cards = [
-            card.card_id for card in state['player1']['reserved'] if card is not None]
+            card.card_id for card in state[player_string]['reserved'] if card is not None]
         if len(self.reserved_cards) < 3:
             for i in range(3 - len(self.reserved_cards)):
                 self.reserved_cards.append(90)
         # same for reserved cards, if the length of the list smaller than 3, we padd with 90
         list_of_reserved = [
-            card.card_id for card in state['player1']['reserved'] if card is not None]
+            card.card_id for card in state[player_string]['reserved'] if card is not None]
         if len(list_of_reserved) < 3:
             for i in range(3 - len(list_of_reserved)):
                 list_of_reserved.append(90)
         obs[31:34] = list_of_reserved
 
-        obs[34:40] = state['player2']['tokens']
+        obs[34:40] = state[opponent_string]['tokens']
         # same for player 2
         list_of_cards = [
-            card.card_id for card in state['player2']['cards'] if card is not None]
+            card.card_id for card in state[opponent_string]['cards'] if card is not None]
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
 
         obs[40:60] = list_of_cards
         list_of_nobles = [
-            patron.patron_id for patron in state['player2']['nobles']]
+            patron.patron_id for patron in state[opponent_string]['nobles']]
         if len(list_of_nobles) < 5:
             for i in range(5 - len(list_of_nobles)):
                 list_of_nobles.append(10)
         obs[60:65] = list_of_nobles
         list_of_reserved = [
-            card.card_id for card in state['player2']['reserved'] if card is not None]
+            card.card_id for card in state[opponent_string]['reserved'] if card is not None]
 
         if len(list_of_reserved) < 3:
             for i in range(3 - len(list_of_reserved)):
@@ -151,101 +161,6 @@ class SplendorEnv(gym.Env):
         self.obs = obs
         return obs
 
-    def from_board_states_to_obs_test(self):
-        state = self.game.gather_ia_board_state()
-        obs = numpy.zeros(88)
-        obs[0:6] = state['player2']['tokens']
-        # if the length of the list smaller than 20, we padd with 90
-        list_of_cards = [
-            card.card_id for card in state['player2']['cards'] if card is not None]
-        if len(list_of_cards) < 20:
-            for i in range(20 - len(list_of_cards)):
-                list_of_cards.append(90)
-        obs[6:26] = list_of_cards
-        # same for nobles, if the length of the list smaller than 5, we padd with 10
-        list_of_nobles = [
-            patron.patron_id for patron in state['player2']['nobles'] if patron is not None]
-        if len(list_of_nobles) < 5:
-            for i in range(5 - len(list_of_nobles)):
-                list_of_nobles.append(10)
-
-        obs[26:31] = list_of_nobles
-
-        self.reserved_cards = [
-            card.card_id for card in state['player2']['reserved'] if card is not None]
-        # same for reserved cards, if the length of the list smaller than 3, we padd with 90
-        list_of_reserved = [
-            card.card_id for card in state['player2']['reserved'] if card is not None]
-        if len(list_of_reserved) < 3:
-            for i in range(3 - len(list_of_reserved)):
-                list_of_reserved.append(90)
-        obs[31:34] = list_of_reserved
-
-        obs[34:40] = state['player1']['tokens']
-        # same for player 2
-        list_of_cards = [
-            card.card_id for card in state['player1']['cards'] if card is not None]
-        if len(list_of_cards) < 20:
-            for i in range(20 - len(list_of_cards)):
-                list_of_cards.append(90)
-
-        obs[40:60] = list_of_cards
-        list_of_nobles = [
-            patron.patron_id for patron in state['player1']['nobles'] if patron is not None]
-        if len(list_of_nobles) < 5:
-            for i in range(5 - len(list_of_nobles)):
-                list_of_nobles.append(10)
-        obs[60:65] = list_of_nobles
-        list_of_reserved = [
-            card.card_id for card in state['player1']['reserved'] if card is not None]
-        if len(list_of_reserved) < 3:
-            for i in range(3 - len(list_of_reserved)):
-                list_of_reserved.append(90)
-
-        obs[65:68] = list_of_reserved
-
-        # same for shop
-        self.shop1_cards = state['shop']['rank1_cards']
-        list_of_cards_rank1 = [
-            card.card_id for card in state['shop']['rank1_cards'] if card is not None]
-
-        if len(list_of_cards_rank1) < 4:
-            for i in range(4 - len(list_of_cards_rank1)):
-                list_of_cards_rank1.append(90)
-        obs[68:72] = list_of_cards_rank1
-
-        self.shop2_cards = state['shop']['rank2_cards']
-        list_of_cards_rank2 = [
-            card.card_id for card in state['shop']['rank2_cards'] if card is not None]
-        if len(list_of_cards_rank2) < 4:
-            for i in range(4 - len(list_of_cards_rank2)):
-                list_of_cards_rank2.append(90)
-        obs[72:76] = list_of_cards_rank2
-
-        self.shop3_cards = state['shop']['rank3_cards']
-        list_of_cards_rank3 = [
-            card.card_id for card in state['shop']['rank3_cards'] if card is not None]
-        if len(list_of_cards_rank3) < 4:
-            for i in range(4 - len(list_of_cards_rank3)):
-                list_of_cards_rank3.append(90)
-        obs[76:80] = list_of_cards_rank3
-
-        list_of_nobles = [
-            patron.patron_id for patron in state['shop']['nobles'] if patron is not None]
-        if len(list_of_nobles) < 5:
-            for i in range(5 - len(list_of_nobles)):
-                list_of_nobles.append(10)
-        obs[80:85] = list_of_nobles
-
-        obs[85] = state['shop']['rank1_size']
-        obs[86] = state['shop']['rank2_size']
-        obs[87] = state['shop']['rank3_size']
-        # save it as a pickle
-        with open('obs.pkl', 'wb') as f:
-            pickle.dump(state, f)
-        obs = self.normalize_obs(obs)
-        self.obs = obs
-        return obs
 
     def normalize_obs(self, obs):
         """
@@ -289,72 +204,75 @@ class SplendorEnv(gym.Env):
     def reset(self):
         self.number_turn = 0
         self.game_id += 1
-
-        self.game.launch_game(2)
-        print('game id : ', self.game_id)
-        return self.from_board_states_to_obs_train()
+        self.last_action = -1
+        #load the pickle file
+        del self.game
+        with open('game.pickle', 'rb') as f:
+            self.game = pickle.load(f)
+        self.game.randomize_first_player()
+        #print('game id : ', self.game_id)
+        #print('first player : ', self.game.currentPlayer)
+        return self.from_board_states_to_obs_train(self.game.currentPlayer)
 
     def is_last_turn(self):
         return self.game.is_last_turn()
 
-    def step(self, action, model):
+    def step(self, action):
+        info = {}
+
         player_0_vp = self.game.get_player_victory_point(0)
         player_1_vp = self.game.get_player_victory_point(1)
         if self.game.is_last_turn():
 
                 # if the file blocked_logs.csv does not exist, we create it
-
-                if  player_0_vp > player_1_vp:
-                    reward = 100
-                    # add a new line to the file
-
-                    print('win')
-                elif player_0_vp == player_1_vp:
-
-                    reward = 25
-                    print('egality')
+                if player_0_vp > player_1_vp:
+                    #print('player 0 win')
+                    info['flag'] = 0
+                elif player_0_vp < player_1_vp:
+                    #print('player 1 win')
+                    info['flag'] = 1
                 else:
-                    reward = -100
-                    print('loose')
-
+                    info['flag'] = 2
+                    #print('draw')
                 done = True
-                print('last turn')
+                #print('last turn')
         else:
                 done = False
+                info['flag'] = -1
         self.apply_action(action)
+        # ave the last action
+
         has_finish = self.game.is_last_turn()
         self.number_turn +=1
         # the ai has played
-        obs = self.from_board_states_to_obs_test()
+        obs = self.from_board_states_to_obs_train(self.game.currentPlayer)
 
         #action_two = model.select_dummy_action(obs)
         has_pass = True if action == 65 else False
-        node = SplendiaMtcsNode(self.game,self.game.currentPlayer,10,has_pass,30)
+        #node = SplendiaMtcsNode(self.game,self.game.currentPlayer,10,has_pass,30)
         #print('monte carlo for a number of iteration : ', 10)
         #print('number of children : ', (len(node.child)))
-        action_two = monte_carlo(node,1,self.game.currentPlayer)
-        print('action two',action_two)
-        self.apply_action(action_two)
 
-        del node
-        obs = self.from_board_states_to_obs_train()
         # reward = self.game.playerController.players[0].victoryPoints.value
-        reward = -1
+        reward = -1/100
 
 
+        if self.game.currentPlayer == 0:
 
-        reward += player_0_vp
-        reward -= player_1_vp
+            reward += player_0_vp/100
+            reward -= player_1_vp/100
+        else:
+            reward += player_1_vp/100
+            reward -= player_0_vp/100
 
-        if (action and action_two) == 65 and done == False:
+        if action == 65 and self.last_action == 65 and done == False:
+            info['flag'] = 3
+            #print('blocked')
             done = True
-            reward -= -10
-
-            print('blocked')
 
 
-        info = {}
-        print('done : ', done)
+        self.last_action = action
+
         return obs, reward, done, info
 
     def apply_action(self, action):
