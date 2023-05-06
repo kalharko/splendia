@@ -7,6 +7,17 @@ def jsonifyException(err: Exception) -> Response:
         err (Exception): exception to jsonify
 
     Returns:
-        Response: jonified exception
+        Response: jsonified exception
     """
     return jsonify({"errorMessage": str(err) })
+
+def jsonifyErrorMessage(errorMessage: str) -> Response:
+    """Jsonfiy an error message 
+
+    Args:
+        errorMessage (str): error message to jsonify
+
+    Returns:
+        Response: jsonified error message
+    """
+    return jsonify({"errorMessage": errorMessage })
