@@ -133,10 +133,13 @@ out
 .out/
 
 # Vscode
-.vscode/
+*.vscode/
+
+# Idea
+*.idea/
 
 # log
-log.txt
+*/log.txt
 
 # documentation doxygen
 Documentation/html/

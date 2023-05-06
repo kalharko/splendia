@@ -3,14 +3,37 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BoardGameComponent } from './board-game/board-game.component';
+import { PatronShopModule } from './patron-shop/patron-shop.module';
+import { SharedModule } from './shared/shared.module';
+import { InfoPlayerComponent } from './info-player/info-player/info-player.component';
+import { InfoPlayerModule } from './info-player/info-player.module';
+import { CardShopModule } from './card-shop/card-shop.module';
+import { TokenShopComponent } from './token-shop/token-shop/token-shop.component';
+import { TokenShopModule } from './token-shop/token-shop.module';
+import { CommonModule } from '@angular/common';
+
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BoardGameComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    CommonModule,
+    AppRoutingModule,
+
+    PatronShopModule,
+    InfoPlayerModule,
+    CardShopModule,
+    TokenShopModule,
+
+    SharedModule
+  ],
+  exports: [
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

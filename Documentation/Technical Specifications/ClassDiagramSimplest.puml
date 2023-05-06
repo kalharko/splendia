@@ -2,44 +2,75 @@
 title Model class diagram
 scale 0.65
 
-GameManager *-- BankController
-GameManager *-- PatronController
-GameManager *-- PlayerController
-GameManager *-- ShopController
+package Model {
+    GameManager *-- BankController
+    GameManager *-- PatronController
+    GameManager *-- PlayerController
+    GameManager *-- ShopController
 
-PatronController o-- Patron
-Patron o-- TokenArray
+    PatronController o-- Patron
+    Patron o-- TokenArray
 
-BankController o-down- TokenArray
+    BankController o-down- TokenArray
 
-PlayerController o-- Player
-Player o-- TokenArray
-Player o-- Hand
-Player o-- Patron
+    PlayerController o-- Player
+    Player o-- TokenArray
+    Player o-- Hand
+    Player o-- Patron
 
-ShopController o-- Rank
-Rank o-- Hand
-Rank o-- Deck
+    ShopController o-- Rank
+    Rank o-- Hand
+    Rank o-- Deck
 
-Deck o-- Card
-Hand o-- Card
+    Deck o-- Card
+    Hand o-- Card
 
-Card o-- TokenArray
-TokenArray <.. Color
-
-
-BankController .r[hidden]. PatronController
-PatronController .r[hidden]. PlayerController
-PlayerController .r[hidden]. ShopController
-
-Patron .r[hidden]. Player
-Player .r[hidden]. Rank
+    Card o-- TokenArray
+    TokenArray <.. Color
 
 
-VictoryPoint .r[hidden]. Hand
-VictoryPoint -[norank]-* Patron
-VictoryPoint -[norank]-* Card
-VictoryPoint -[norank]-* Player
+    BankController .r[hidden]. PatronController
+    PatronController .r[hidden]. PlayerController
+    PlayerController .r[hidden]. ShopController
+
+    Patron .r[hidden]. Player
+    Player .r[hidden]. Rank
+
+
+    VictoryPoint .r[hidden]. Hand
+    VictoryPoint -[norank]-* Patron
+    VictoryPoint -[norank]-* Card
+    VictoryPoint -[norank]-* Player
+
+    PlayerController o-[norank]- BankController
+    PlayerController o-[norank]- ShopController
+}
+
+package Cli {
+    CliApp *-d- GameManager
+    CliApp *-u- PatronWin
+    CliApp *-u- CardWin
+    CliApp *-u- PlayerWin
+    CliApp *-u- InputWin
+    MyWin <|-d- PatronWin
+    MyWin <|-d- CardWin
+    MyWin <|-d- PlayerWin
+    MyWin <|-d- InputWin
+}
+
+package Ai {
+    Ai --* GameManager
+    Ai *-u- Mtcs
+    Ai *-u- MinMax
+
+    Ai -[hidden]l- MyWin
+}
+
+package Utils {
+    Singleton <|-- Logger
+
+    Singleton --[hidden]u- PatronWin
+}
 
 
 
@@ -82,5 +113,3 @@ enum Color {
 }
 
 @enduml
-
-
