@@ -4,7 +4,6 @@ from flask import Flask, jsonify, Response, request
 from model.game_manager import GameManager
 from utils.exception import InvalidNbPlayer
 from utils.run_server_utils import jsonifyException, jsonifyErrorMessage
-from typing import List
 import json
 from json.decoder import JSONDecodeError
 from model.token_array import TokenArray
