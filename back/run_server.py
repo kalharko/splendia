@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, Response
 
 from model.game_manager import GameManager
 from utils.exception import InvalidNbPlayer
@@ -15,7 +15,19 @@ def index():
 
 @app.route('/api/launchGame', defaults={'nbPlayer': 4})
 @app.route('/api/launchGame/<int:nbPlayer>')
-def launchGame(nbPlayer):
+def launchGame(nbPlayer: int) -> Response:
+    """API route to launch a new game
+
+    Args:
+        nbPlayer (int): number of players for the game
+
+    Returns:
+        Response: 
+            If an invalid number of players is given, a response containing an error message with the HTTP status 403 is returned.
+            Otherwise, the board state of the game with the HTTP status 200 is returned.
+        
+    """
+    
     try:
         gameManager.launch_game(nbPlayer)
     except InvalidNbPlayer as err:
@@ -24,8 +36,8 @@ def launchGame(nbPlayer):
     return jsonify(gameManager.gather_api_board_state())
 
 
-@app.route('/api/buyCard/<cardId>')
-def buyCard(cardId=-1):
+@app.route('/api/buyCard/<int:cardId>')
+def buyCard(cardId: int):
     pass
     return jsonify(gameManager.gather_ia_board_state())
 
