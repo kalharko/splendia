@@ -13,8 +13,8 @@ gameManager: GameManager = GameManager(4)
 def index():
     return render_template('front/splendia/src/index.html')
 
-@app.route('/api/launchGame', defaults={'nbPlayer': 4})
-@app.route('/api/launchGame/<int:nbPlayer>')
+@app.route('/api/launch_game', defaults={'nbPlayer': 4})
+@app.route('/api/launch_game/<int:nbPlayer>')
 def launchGame(nbPlayer: int) -> Response:
     """API route to launch a new game
 
@@ -36,34 +36,56 @@ def launchGame(nbPlayer: int) -> Response:
     return jsonify(gameManager.gather_api_board_state())
 
 
-@app.route('/api/buyCard/<int:cardId>')
-def buyCard(cardId: int):
-    pass
-    return jsonify(gameManager.gather_ia_board_state())
+@app.route('/api/buy_card/<int:cardId>')
+def buyCard(cardId: int) -> Response:
+    """API route to buy a card
+
+    Args:
+        cardId (int): id of the card to buy
+
+    Returns:
+        Response: If an exception happens when buying the card, a response containing an error message with the HTTP status 400 is returned.
+        Otherwise, the board state of the game with the HTTP status 200 is returned.
+    """
+    if(err := gameManager.buy_card(cardId)):
+        return jsonifyException(err), 400
+    
+    return jsonify(gameManager.gather_api_board_state())
 
 
-@app.route('/api/reserveCard/<cardId>')
-def reserveCard(cardId=-1):
-    pass
-    return jsonify(gameManager.gather_ia_board_state())
+@app.route('/api/reserve_card/<int:cardId>')
+def reserveCard(cardId: int=-1):
+    """API route to reserve a visible card
+
+    Args:
+        cardId (int): id of the card to reserve
+
+    Returns:
+        Response: If an exception happens when reserving the card, a response containing an error message with the HTTP status 400 is returned.
+        Otherwise, the board state of the game with the HTTP status 200 is returned.
+    """
+    if(err := gameManager.reserve_card(cardId)):
+        return jsonifyException(err), 400
+    
+    return jsonify(gameManager.gather_api_board_state())
 
 
-@app.route('/api/reserveCardOnPile/<deckLevel>')
+@app.route('/api/reserve_card_on_pile/<deckLevel>')
 def reserveCardOnPile(deckLevel=-1):
     pass
-    return jsonify(gameManager.gather_ia_board_state())
+    return jsonify(gameManager.gather_api_board_state())
 
 
-@app.route('/api/takeToken')
+@app.route('/api/take_token')
 def takeToken():
     pass
-    return jsonify(gameManager.gather_ia_board_state())
+    return jsonify(gameManager.gather_api_board_state())
 
 
-@app.route('/api/cpuTurn')
+@app.route('/api/cpu_turn')
 def cpuTurn():
     pass
-    return jsonify(gameManager.gather_ia_board_state())
+    return jsonify(gameManager.gather_api_board_state())
 
 
 if __name__ == "__main__":

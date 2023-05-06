@@ -36,7 +36,7 @@ class CardStack():
         for i in range(len(self.cards)):
             if self.cards[i].card_id == cardId:
                 return self.cards.pop(i)
-        return CardIdNotFound
+        return CardIdNotFound(cardId)
 
     def get_size(self):  # deprecated
         return len(self.cards)
