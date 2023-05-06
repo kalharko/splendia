@@ -70,7 +70,7 @@ class ShopController():
                 return rank.withdraw_card(cardId)
 
 
-        return CardIdNotFound()
+        return CardIdNotFound(cardId)
 
     def can_withdraw_pile_card(self, pileLevel: int) -> bool:
         """This method checks if a card can be withdrawn from a pile.

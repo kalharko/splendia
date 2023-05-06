@@ -7,6 +7,7 @@ from model.shop_controller import ShopController
 from model.token_array import TokenArray
 from utils.logger import Logger
 from model.player import Player
+from utils.exception import InvalidNbPlayer
 
 
 @dataclass
@@ -183,7 +184,8 @@ class GameManager():
         Args:
             nbPlayer (int): The number of players.
             """
-
+        if(nbPlayer < 2 or nbPlayer > 4):
+            raise InvalidNbPlayer(nbPlayer)
         self.initialize_game(nbPlayer)
 
     def next_player(self) -> None:
