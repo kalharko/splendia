@@ -1,7 +1,7 @@
 from flask import jsonify, Response
 
 def jsonifyException(err: Exception) -> Response:
-    """Jsonfiy an exception
+    """Jsonify an exception
 
     Args:
         err (Exception): exception to jsonify
@@ -12,7 +12,7 @@ def jsonifyException(err: Exception) -> Response:
     return jsonify({"errorMessage": str(err) })
 
 def jsonifyErrorMessage(errorMessage: str) -> Response:
-    """Jsonfiy an error message 
+    """Jsonify an error message 
 
     Args:
         errorMessage (str): error message to jsonify
