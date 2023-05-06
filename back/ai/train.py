@@ -175,9 +175,9 @@ def train():
 
     directory = "PPO_preTrained" + '/' + env_name + '/'
     checkpoint_path = directory + \
-                      "PPO_{}_{}_{}.pth".format(env_name, random_seed, 1)
+                      "PPO_{}_{}_{}.pth".format(env_name, random_seed, 0)
     print("loading network from : " + checkpoint_path)
-    #ppo_agent_1.load(checkpoint_path1)
+    ppo_agent_1.load(checkpoint_path1)
     #ppo_agent_2.load(checkpoint_path2)
     # ppo_agent.load(checkpoint_path)
 
