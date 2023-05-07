@@ -142,4 +142,5 @@ out
 */log.txt
 
 # documentation doxygen
+./Documentation/html/
 Documentation/html/
