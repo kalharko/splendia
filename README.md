@@ -11,6 +11,7 @@ You can find more information on how to run:
 
 
 # Splendia back-end
+Python : 3.10.10
 
 To run the server you need to:
 1) Create a python virtual environnement :
@@ -57,7 +58,9 @@ python traina_i.py
 
 # Splendia front-end
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.3.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
+Angular CLI: 14.2.11
+Node: 16.14
 
 ## Development server
 
