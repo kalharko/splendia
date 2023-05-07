@@ -28,6 +28,7 @@ def train():
     log_freq = max_ep_len * 5
     save_model_freq = int(10000)  # save model frequency (in num timesteps)
 
+    challenging_champion_freq = int(2000)
     # starting std for action distribution (Multivariate Normal)
     action_std = 0.6
     # linearly decay action_std (action_std = action_std - action_std_decay_rate)
@@ -47,8 +48,8 @@ def train():
     eps_clip = 0.2  # clip parameter for PPO
     gamma = 0.99  # discount factor
 
-    lr_actor = 0.0005  # learning rate for actor network
-    lr_critic = 0.0002  # learning rate for critic network
+    lr_actor = 0.0002  # learning rate for actor network
+    lr_critic = 0.001  # learning rate for critic network
 
     random_seed = 0  # set random seed if required (0 = no random seed)
     #####################################################
@@ -117,9 +118,9 @@ def train():
         os.makedirs(directory2)
 
     checkpoint_path1 = directory1 + \
-                       "PPO_{}_{}_{}.pth".format(env_name, random_seed, run_num_pretrained)
+                       "PPO_{}_{}_{}.pth".format(env_name, 0, 1)
     checkpoint_path2 = directory2 + \
-                       "PPO_{}_{}_{}.pth".format(env_name, random_seed, run_num_pretrained)
+                       "PPO_{}_{}_{}.pth".format(env_name, 0, 1)
     print("save checkpoint path : " + checkpoint_path1)
     #####################################################
 
@@ -169,6 +170,7 @@ def train():
     ppo_agent_1 = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
                       has_continuous_action_space,
                       action_std,1)
+
     ppo_agent_2 = PPO(state_dim, action_dim, lr_actor, lr_critic,gamma, K_epochs, eps_clip,
                       has_continuous_action_space,
                       action_std,2)
@@ -178,7 +180,7 @@ def train():
                       "PPO_{}_{}_{}.pth".format(env_name, random_seed, 0)
     print("loading network from : " + checkpoint_path)
     ppo_agent_1.load(checkpoint_path1)
-    #ppo_agent_2.load(checkpoint_path2)
+    ppo_agent_2.load(checkpoint_path2)
     # ppo_agent.load(checkpoint_path)
 
     # track total training time
@@ -208,7 +210,8 @@ def train():
     time_step = 0
     saving_timestep = 0
     i_episode = 0
-
+    champion_path= "Champion/" + 'champion_0.pth'
+    #ppo_agent_1.save(champion_path,0)
     # training loop
     while time_step <= max_training_timesteps:
 
@@ -376,6 +379,134 @@ def train():
         log_running_episodes2 += 1
 
         i_episode += 1
+        if i_episode % challenging_champion_freq == 0:
+            champion_rival = 0
+            # Challenge the champion
+            # testing best agent between ppo_agent_1 and ppo_agent_2
+            print("============================================================================================")
+            print("Agent 1 vs Agent 2")
+            print("============================================================================================")
+            agent_1_wins = 0
+            agent_2_wins = 0
+            for i in range(400):
+                state = env.reset()
+                done = False
+
+                while not done:
+                    # select action with policy
+                    if env.game.currentPlayer == 0:
+                        action = ppo_agent_1.select_action(state)
+                        state, reward, done, info = env.step(action)
+                        # saving reward and is_terminals
+                        ppo_agent_1.buffer.rewards.append(reward)
+                        ppo_agent_1.buffer.is_terminals.append(done)
+
+                    else:
+                        action = ppo_agent_2.select_action(state)
+                        state, reward, done, info = env.step(action)
+                        ppo_agent_2.buffer.rewards.append(reward)
+                        ppo_agent_2.buffer.is_terminals.append(done)
+                if info['flag'] ==0:
+                    agent_1_wins += 1
+                elif info['flag'] ==1:
+                    agent_2_wins += 1
+
+            print("Agent 1 wins : ",agent_1_wins)
+            print("Agent 2 wins : ",agent_2_wins)
+            if agent_1_wins > agent_2_wins:
+                print("Agent 1 will play against the champion")
+                champion_rival = 1
+            elif agent_1_wins < agent_2_wins:
+                print("Agent 2 will play against the champion")
+                champion_rival = 2
+            else:
+                print('Draw')
+                champion_rival = 0
+                break
+
+
+
+
+            print("============================================================================================")
+            print("CHALLENGING THE CHAMPION")
+            print("============================================================================================")
+            # load the champion
+            if champion_rival == 1:
+                champion  = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
+                          has_continuous_action_space,
+                          action_std,2)
+                champion.load(champion_path)
+            else :
+                champion  = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
+                          has_continuous_action_space,
+                          action_std,1)
+                champion.load(champion_path)
+
+            # challenge the champion for 400 games
+            champion_wins = 0
+            agent_wins = 0
+            if champion_rival == 1:
+                for i in range(400):
+                    state = env.reset()
+                    done = False
+
+                    while not done:
+                        # select action with policy
+                        if env.game.currentPlayer == 0:
+                            action = ppo_agent_1.select_action(state)
+                            state, reward, done, info = env.step(action)
+
+
+                        else:
+                            action = champion.select_action(state)
+                            state, reward, done, info = env.step(action)
+
+                    if info['flag'] == 0:
+                        agent_wins += 1
+                    elif info['flag'] == 1:
+                        champion_wins += 1
+                print("Agent wins : ", agent_wins)
+                print("Champion wins : ", champion_wins)
+                if agent_wins > champion_wins:
+                    # save the agent as the new champion
+                    print("Agent 1 is the new champion")
+                    ppo_agent_1.save(champion_path,0)
+                elif agent_wins < champion_wins:
+                    print("Champion is still the champion")
+            else:
+                for i in range(400):
+                    state = env.reset()
+                    done = False
+
+                    while not done:
+                        # select action with policy
+                        if env.game.currentPlayer == 1:
+                            action = ppo_agent_2.select_action(state)
+                            state, reward, done, info = env.step(action)
+
+
+                        else:
+                            action = champion.select_action(state)
+                            state, reward, done, info = env.step(action)
+
+                    if info['flag'] == 1:
+                        agent_wins += 1
+                    elif info['flag'] == 0:
+                        champion_wins += 1
+                print("Agent wins : ", agent_wins)
+                print("Champion wins : ", champion_wins)
+                if agent_wins > champion_wins:
+                    # save the agent as the new champion
+                    print("Agent 2 is the new champion")
+                    ppo_agent_2.save(champion_path, 0)
+                elif agent_wins < champion_wins:
+                    print("Champion is still the champion")
+            ppo_agent_1.buffer.clear()
+            ppo_agent_2.buffer.clear()
+
+
+
+
 
 
         # break; if the episode is over

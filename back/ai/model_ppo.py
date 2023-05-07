@@ -96,14 +96,18 @@ class ActorCritic(nn.Module):
             )
         else:
             self.actor = nn.Sequential(
-                nn.Linear(state_dim, 32),
+                nn.Linear(state_dim, 64),
+                nn.ReLU(),
+                nn.Linear(64,32),
                 nn.ReLU(),
                 nn.Linear(32, action_dim),
                 nn.Softmax(dim=-1)
             )
         # critic
         self.critic = nn.Sequential(
-            nn.Linear(state_dim, 32),
+            nn.Linear(state_dim, 64),
+            nn.ReLU(),
+            nn.Linear(64,32),
             nn.ReLU(),
             nn.Linear(32, 1)
         )
@@ -134,9 +138,15 @@ class ActorCritic(nn.Module):
             # print('action_probs',action_probs)
             action_probs = action_probs * \
                 torch.from_numpy(get_mask(self.player_id)).to(self.device)
+            # check if the action_probs is all zero
+            if torch.sum(action_probs) == 0:
+                # if all zero, the last action is the only valid action
+                action_probs[-1] = 1
+
             dist = Categorical(action_probs)
 
             # print('dist',dist.probs)
+
         action = dist.sample()
         action_logprob = dist.log_prob(action)
         state_val = self.critic(state)
@@ -159,6 +169,17 @@ class ActorCritic(nn.Module):
             action_probs = self.actor(state)
             action_probs = action_probs * \
                 torch.from_numpy(get_mask(self.player_id)).to(self.device)
+            # check if the action_probs is all zero
+            iterator = 0
+            tensor_list = []
+            for tensor in action_probs:
+                if torch.sum(tensor) == 0:
+                    tensor_list.append(iterator)
+                    iterator += 1
+            for value in tensor_list:
+                action_probs[value][-1] = 1
+
+
 
             dist = Categorical(action_probs)
 

@@ -83,7 +83,7 @@ class Player():
             return to_deposit, None
 
         else:
-            return PlayerCanNotPay()
+            return PlayerCanNotPay(), None
 
     def can_pay_with_reduced_price(self, price: TokenArray) -> tuple[bool, TokenArray]:
         """This method checks if the player can pay a price.

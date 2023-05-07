@@ -73,9 +73,10 @@ class GameManager():
         lr_critic = 0.0002  # learning rate for critic network
 
         random_seed = 0  # set random seed if required (0 = no random seed)
-        self.cpu = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
+        """self.cpu = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
                        False,
-                       0, self.cpu_Id+1)
+                       0, self.cpu_Id+1)"""
+        #self.cpu.load('PPO_preTrained/Splendor/1/PPO_Splendor_0_0.pth')
 
 
 
@@ -316,6 +317,18 @@ class GameManager():
         player2 = (player_id + 1) % 3
         opponent_string = 'player' + str(player2)
 
+        obs = self.from_board_state_to_obs(opponent_string, player_string, state)
+        # save it as a pickle
+        with open('obs.pkl', 'wb') as f:
+            pickle.dump(state, f)
+        obs = self.normalize_obs(obs)
+
+        ai_action = self.cpu.select_action(obs)
+
+        string_action = self.apply_action(ai_action)
+        return string_action
+
+    def from_board_state_to_obs(self, opponent_string, player_string, state):
         obs = numpy.zeros(88)
         obs[0:6] = state[player_string]['tokens']
         # if the length of the list smaller than 20, we padd with 90
@@ -324,7 +337,6 @@ class GameManager():
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
-
         obs[6:26] = list_of_cards
         # same for nobles, if the length of the list smaller than 5, we padd with 10
         list_of_nobles = [
@@ -332,10 +344,8 @@ class GameManager():
         if len(list_of_nobles) < 5:
             for i in range(5 - len(list_of_nobles)):
                 list_of_nobles.append(10)
-
         obs[26:31] = list_of_nobles
         # we save the reserved cards in a list, if the card is None, we padd with 90
-
         self.reserved_cards = [
             card.card_id for card in state[player_string]['reserved'] if card is not None]
         if len(self.reserved_cards) < 3:
@@ -348,7 +358,6 @@ class GameManager():
             for i in range(3 - len(list_of_reserved)):
                 list_of_reserved.append(90)
         obs[31:34] = list_of_reserved
-
         obs[34:40] = state[opponent_string]['tokens']
         # same for player 2
         list_of_cards = [
@@ -356,7 +365,6 @@ class GameManager():
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
-
         obs[40:60] = list_of_cards
         list_of_nobles = [
             patron.patron_id for patron in state[opponent_string]['nobles']]
@@ -366,23 +374,18 @@ class GameManager():
         obs[60:65] = list_of_nobles
         list_of_reserved = [
             card.card_id for card in state[opponent_string]['reserved'] if card is not None]
-
         if len(list_of_reserved) < 3:
             for i in range(3 - len(list_of_reserved)):
                 list_of_reserved.append(90)
-
         obs[65:68] = list_of_reserved
-
         # same for shop
         self.shop1_cards = state['shop']['rank1_cards']
         list_of_cards_rank1 = [
             card.card_id for card in state['shop']['rank1_cards']]
-
         if len(list_of_cards_rank1) < 4:
             for i in range(4 - len(list_of_cards_rank1)):
                 list_of_cards_rank1.append(90)
         obs[68:72] = list_of_cards_rank1
-
         self.shop2_cards = state['shop']['rank2_cards']
         list_of_cards_rank2 = [
             card.card_id for card in state['shop']['rank2_cards']]
@@ -390,7 +393,6 @@ class GameManager():
             for i in range(4 - len(list_of_cards_rank2)):
                 list_of_cards_rank2.append(90)
         obs[72:76] = list_of_cards_rank2
-
         self.shop3_cards = state['shop']['rank3_cards']
         list_of_cards_rank3 = [
             card.card_id for card in state['shop']['rank3_cards']]
@@ -398,28 +400,16 @@ class GameManager():
             for i in range(4 - len(list_of_cards_rank3)):
                 list_of_cards_rank3.append(90)
         obs[76:80] = list_of_cards_rank3
-
         list_of_nobles = [
             patron.patron_id for patron in state['shop']['nobles']]
         if len(list_of_nobles) < 5:
             for i in range(5 - len(list_of_nobles)):
                 list_of_nobles.append(10)
         obs[80:85] = list_of_nobles
-
         obs[85] = state['shop']['rank1_size']
         obs[86] = state['shop']['rank2_size']
         obs[87] = state['shop']['rank3_size']
-        # save it as a pickle
-        with open('obs.pkl', 'wb') as f:
-            pickle.dump(state, f)
-        obs = self.normalize_obs(obs)
-
-        ai_action = self.cpu.select_action(obs)
-
-        string_action = self.apply_action(ai_action)
-        return string_action
-
-
+        return obs
 
     def normalize_obs(self, obs):
         """
@@ -513,6 +503,7 @@ class GameManager():
         return self._bankController
 
     def apply_action(self, action):
+
         string_action = ""
         # print the action done
         # print('action done : ', action)
