@@ -1,12 +1,15 @@
+import { Cpu } from "./cpu.model";
+import { GameState } from "./game_state.model";
 import { Player } from "./player.model";
-import { Shop } from "./shop.model";
+import { Patron} from "./patron.model";
+import { Rank } from "./rank.model";
 
 export interface BoardState{
-    player1: Player;
-    player2: Player;
-
-
-    shop:Shop;
-
+    CPUS: Cpu[];
+    bank: number[];
+    gameState: GameState;
+    humanPlayer: Player;
+    patrons: Patron[];
+    shop: Rank[];
 }
 

@@ -15,9 +15,8 @@ export class TokenShopComponent extends OnDestroyMixin implements OnInit  {
 
   colorEnum:ColorsEnum;
 
-  constructor(private appService: AppService) { 
+  constructor(private appService: AppService) {
     super();
-  
   }
 
   ngOnInit(): void {
