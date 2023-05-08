@@ -51,5 +51,5 @@ class Card():
             "card_id": self.card_id,
             "price": self.price.get_tokens(),
             "bonus": self.bonus.get_tokens(),
-            "victoryPoints": self.victoryPoint.get_value()
+            "victoryPoint": self.victoryPoint.get_value()
         }

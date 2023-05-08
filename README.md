@@ -58,9 +58,9 @@ python traina_i.py
 
 # Splendia front-end
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
-Angular CLI: 14.2.11
-Node: 16.14
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli).  
+Angular CLI: 14.2.11   
+Node: 16.14  
 
 ## Development server
 

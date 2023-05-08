@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
+import { BoardState } from 'src/app/shared/models/board_state.model';
 
 @Component({
   selector: 'app-card-shop',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CardShopComponent implements OnInit {
 
+  board_state: BoardState;
+  
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
+
 
 }
