@@ -134,8 +134,10 @@ out
 
 # Vscode
 *.vscode/
+
 # Intellij
 *.idea/
+
 # log
 */log.txt
 

@@ -30,7 +30,7 @@ class Hand(CardStack):
         for card in self.cards:
             if card.card_id == cardId:
                 return card.price
-        return CardIdNotFound()
+        return CardIdNotFound(cardId)
 
     def compute_hand_bonuses(self) -> TokenArray:
         """This method computes the bonuses of the cards in the hand.

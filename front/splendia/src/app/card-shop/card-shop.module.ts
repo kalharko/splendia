@@ -4,6 +4,7 @@ import { CardShopComponent } from './card-shop/card-shop.component';
 import { CardRowComponent } from './card-row/card-row.component';
 import { DeckComponent } from './deck/deck.component';
 import { CardComponent } from './card/card.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -15,7 +16,11 @@ import { CardComponent } from './card/card.component';
     CardComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModule
+  ],
+  exports: [
+    CardShopComponent
   ]
 })
 export class CardShopModule { }

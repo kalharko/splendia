@@ -11,6 +11,9 @@ from ai.model_ppo import PPO
 import random
 import numpy
 import pickle
+from utils.exception import InvalidNbPlayer
+
+
 @dataclass
 class GameManager():
     """This class is used to manage the game.
@@ -213,7 +216,8 @@ class GameManager():
         Args:
             nbPlayer (int): The number of players.
             """
-
+        if(nbPlayer < 2 or nbPlayer > 4):
+            raise InvalidNbPlayer(nbPlayer)
         self.initialize_game(nbPlayer)
 
     def next_player(self) -> None:
