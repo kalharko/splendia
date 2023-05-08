@@ -135,11 +135,13 @@ out
 # Vscode
 *.vscode/
 
-# Idea
+# Intellij
 *.idea/
 
 # log
 */log.txt
 
 # documentation doxygen
+./Documentation/html/
 Documentation/html/
+
