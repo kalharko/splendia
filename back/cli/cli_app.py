@@ -6,7 +6,6 @@ from model.token_array import TokenArray
 from cli.objects_win import PatronWin, CardWin, PlayerWin, InputWin
 from utils.logger import Logger
 
-
 class CliApp():
     def __init__(self, nbPlayer: int, stdscr) -> None:
         # encoding
@@ -73,6 +72,15 @@ class CliApp():
                 err = self.COMMANDS[user_input[0]](user_input)
                 if err is not None:
                     Logger().log(2, err)
+                else:
+                    string_action = self.gm.cpu_turn()
+
+                    self.display()
+                    print(string_action)
+                    # pause the program until the user presses a key
+                    self.screen.getch()
+
+
             else:
                 Logger().log(2, self.get_input, str(user_input))
 
@@ -112,7 +120,7 @@ class CliApp():
         self.inputWin.display('')
         return out.split(' ')
 
-    def display(self) -> None:
+    def display(self,action_log = "") -> None:
         self.screen.erase()
         self.screen.border()
         self.screen.refresh()
@@ -150,9 +158,10 @@ class CliApp():
             if self.gm.currentPlayer == player.player_id:
                 self.playerWin[-1].currentPlayer = True
             self.playerWin[-1].display()
-
         # input window
         self.inputWin.display()
+        self.screen.addstr(1,2,action_log)
+
 
     def take_tokens(self, user_input: list[str]) -> None:
         """Parse and call game manager take token action.

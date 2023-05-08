@@ -1,3 +1,4 @@
+import setuptools
 import torch
 import torch.nn as nn
 from torch.distributions import MultivariateNormal
@@ -41,6 +42,7 @@ class RolloutBuffer:
 
 
 def get_mask(player_ID):
+
     player_str = 'player' + str(player_ID)
     # read the pickle
     state = pickle.load(open('obs.pkl', 'rb'))
@@ -74,8 +76,9 @@ def get_mask(player_ID):
 
 
 class ActorCritic(nn.Module):
-    def __init__(self, state_dim, action_dim, has_continuous_action_space, action_std_init,device):
+    def __init__(self, state_dim, action_dim, has_continuous_action_space, action_std_init,device, player_id : int):
         super(ActorCritic, self).__init__()
+        self.player_id = player_id
         self.device = device
         self.has_continuous_action_space = has_continuous_action_space
 
@@ -93,14 +96,18 @@ class ActorCritic(nn.Module):
             )
         else:
             self.actor = nn.Sequential(
-                nn.Linear(state_dim, 32),
+                nn.Linear(state_dim, 64),
+                nn.ReLU(),
+                nn.Linear(64,32),
                 nn.ReLU(),
                 nn.Linear(32, action_dim),
                 nn.Softmax(dim=-1)
             )
         # critic
         self.critic = nn.Sequential(
-            nn.Linear(state_dim, 32),
+            nn.Linear(state_dim, 64),
+            nn.ReLU(),
+            nn.Linear(64,32),
             nn.ReLU(),
             nn.Linear(32, 1)
         )
@@ -130,10 +137,16 @@ class ActorCritic(nn.Module):
             action_probs = self.actor(state)
             # print('action_probs',action_probs)
             action_probs = action_probs * \
-                torch.from_numpy(get_mask(1)).to(self.device)
+                torch.from_numpy(get_mask(self.player_id)).to(self.device)
+            # check if the action_probs is all zero
+            if torch.sum(action_probs) == 0:
+                # if all zero, the last action is the only valid action
+                action_probs[-1] = 1
+
             dist = Categorical(action_probs)
 
             # print('dist',dist.probs)
+
         action = dist.sample()
         action_logprob = dist.log_prob(action)
         state_val = self.critic(state)
@@ -155,7 +168,18 @@ class ActorCritic(nn.Module):
         else:
             action_probs = self.actor(state)
             action_probs = action_probs * \
-                torch.from_numpy(get_mask(1)).to(self.device)
+                torch.from_numpy(get_mask(self.player_id)).to(self.device)
+            # check if the action_probs is all zero
+            iterator = 0
+            tensor_list = []
+            for tensor in action_probs:
+                if torch.sum(tensor) == 0:
+                    tensor_list.append(iterator)
+                    iterator += 1
+            for value in tensor_list:
+                action_probs[value][-1] = 1
+
+
 
             dist = Categorical(action_probs)
 
@@ -168,7 +192,7 @@ class ActorCritic(nn.Module):
 
 class PPO:
     def __init__(self, state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
-                 has_continuous_action_space, action_std_init=0.6):
+                 has_continuous_action_space, action_std_init=0.6, player_id : int = 0):
 
         self.has_continuous_action_space = has_continuous_action_space
         device = torch.device('cpu')
@@ -189,14 +213,14 @@ class PPO:
         self.buffer = RolloutBuffer()
 
         self.policy = ActorCritic(
-            state_dim, action_dim, has_continuous_action_space, action_std_init,self.device).to(self.device)
+            state_dim, action_dim, has_continuous_action_space, action_std_init,self.device,player_id).to(self.device)
         self.optimizer = torch.optim.Adam([
             {'params': self.policy.actor.parameters(), 'lr': lr_actor},
             {'params': self.policy.critic.parameters(), 'lr': lr_critic}
         ])
 
         self.policy_old = ActorCritic(
-            state_dim, action_dim, has_continuous_action_space, action_std_init,self.device).to(self.device)
+            state_dim, action_dim, has_continuous_action_space, action_std_init,self.device,player_id).to(self.device)
         self.policy_old.load_state_dict(self.policy.state_dict())
 
         self.MseLoss = nn.MSELoss()
@@ -232,18 +256,6 @@ class PPO:
                 "WARNING : Calling PPO::decay_action_std() on discrete action space policy")
         print("--------------------------------------------------------------------------------------------")
 
-    def select_dummy_action(self, state):
-        with torch.no_grad():
-            state = torch.FloatTensor(state).to(self.device)
-
-            action_probs = self.policy.actor.forward(state)
-            action_probs = action_probs * \
-                torch.from_numpy(get_mask(2)).to(self.device)
-
-            dist = Categorical(action_probs)
-
-            action = dist.sample()
-            return action.item()
 
     def select_action(self, state):
         """Select an appropriate action from the agent policy.
@@ -285,8 +297,8 @@ class PPO:
         rewards = []
         discounted_reward = 0
         for reward, is_terminal in zip(reversed(self.buffer.rewards), reversed(self.buffer.is_terminals)):
-            if is_terminal:
-                discounted_reward = 0
+            """if is_terminal:
+                discounted_reward = 0"""
             discounted_reward = reward + (self.gamma * discounted_reward)
             rewards.insert(0, discounted_reward)
 
@@ -339,12 +351,13 @@ class PPO:
         # clear buffer
         self.buffer.clear()
 
-    def save(self, checkpoint_path):
+    def save(self, checkpoint_path, checkpoint_name):
         """Save model parameters to checkpoint
 
         Arguments:
             checkpoint_path {str} -- checkpoint path
         """
+
         torch.save(self.policy_old.state_dict(), checkpoint_path)
 
     def load(self, checkpoint_path):

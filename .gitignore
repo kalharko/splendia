@@ -135,7 +135,7 @@ out
 # Vscode
 *.vscode/
 
-# Idea
+# Intellij
 *.idea/
 
 # log
@@ -143,3 +143,4 @@ out
 
 # documentation doxygen
 Documentation/html/
+

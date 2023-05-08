@@ -7,6 +7,10 @@ from model.shop_controller import ShopController
 from model.token_array import TokenArray
 from utils.logger import Logger
 from model.player import Player
+from ai.model_ppo import PPO
+import random
+import numpy
+import pickle
 from utils.exception import InvalidNbPlayer
 
 
@@ -52,7 +56,38 @@ class GameManager():
         self.currentPlayer = 0
         self.nbPlayer = nbPlayer
         self.userId = 0
-        self.firstPlayerId = 0
+        self.randomize_first_player()
+        self.cpu_Id = 1
+        self.initialize_cpu()
+
+    def initialize_cpu(self):
+        state_dim = 88
+
+        # action space dimension
+
+        action_dim = 66
+        update_timestep = 1 * 10  # update policy every n timesteps
+        K_epochs = 80  # update policy for K epochs in one PPO update
+
+        eps_clip = 0.2  # clip parameter for PPO
+        gamma = 0.99  # discount factor
+
+        lr_actor = 0.0005  # learning rate for actor network
+        lr_critic = 0.0002  # learning rate for critic network
+
+        random_seed = 0  # set random seed if required (0 = no random seed)
+        """self.cpu = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
+                       False,
+                       0, self.cpu_Id+1)"""
+        #self.cpu.load('PPO_preTrained/Splendor/1/PPO_Splendor_0_0.pth')
+
+
+
+    def randomize_first_player(self):
+        """This method randomizes the first player."""
+        # get a random number between 0 and nbPlayer
+        self.firstPlayerId = random.randint(0, self.nbPlayer - 1)
+        self.currentPlayer = self.firstPlayerId
 
     def gather_ia_board_state(self, nb_players=2) -> dict or None:
         """This method gathers the board state for the IA.
@@ -68,20 +103,24 @@ class GameManager():
                 'player1': {
                     'object': self._playerController.players[0],
                     # pad with none to have 20 reserved cards
-                    'cards': self._playerController.players[0].hand.cards + [None] * (20 - self._playerController.players[0].hand.get_size()),
+                    'cards': self._playerController.players[0].hand.cards + [None] * (
+                                20 - self._playerController.players[0].hand.get_size()),
                     'tokens': self._playerController.players[0].tokens.get_tokens(),
                     # pad with none to have 3 reserved cards
-                    'reserved': self._playerController.players[0].reserved.cards + [None] * (3 - self._playerController.players[0].reserved.get_size()),
+                    'reserved': self._playerController.players[0].reserved.cards + [None] * (
+                                3 - self._playerController.players[0].reserved.get_size()),
 
                     'nobles': self._playerController.players[0].patrons
                 },
                 'player2': {
                     'object': self._playerController.players[1],
                     # pad with none to have 20 reserved cards
-                    'cards': self._playerController.players[1].hand.cards + [None] * (20 - self._playerController.players[1].hand.get_size()),
+                    'cards': self._playerController.players[1].hand.cards + [None] * (
+                                20 - self._playerController.players[1].hand.get_size()),
                     'tokens': self._playerController.players[1].tokens.get_tokens(),
                     # pad with none to have 3 reserved cards
-                    'reserved': self._playerController.players[1].reserved.cards + [None] * (3 - self._playerController.players[1].reserved.get_size()),
+                    'reserved': self._playerController.players[1].reserved.cards + [None] * (
+                                3 - self._playerController.players[1].reserved.get_size()),
                     'nobles': self._playerController.players[1].patrons
                 },
                 'shop': {
@@ -200,7 +239,8 @@ class GameManager():
 
         # print('bank token before', self.bankController.bank.get_tokens())
         if self._shopController.has_card(cardId):
-            if err := self._playerController.buy_shop_card(self.currentPlayer, cardId, self._shopController, self._bankController):
+            if err := self._playerController.buy_shop_card(self.currentPlayer, cardId, self._shopController,
+                                                           self._bankController):
                 Logger().log(0, err, 'GameManager buy_card')
                 return err
         elif err := self._playerController.buy_reserved_card(self.currentPlayer, cardId, self._bankController):
@@ -218,7 +258,8 @@ class GameManager():
             cardId (int): The card id.
             """
 
-        if err := self._playerController.reserve_card(self.currentPlayer, cardId, self._shopController, self._bankController):
+        if err := self._playerController.reserve_card(self.currentPlayer, cardId, self._shopController,
+                                                      self._bankController):
             Logger().log(0, err, 'GameManager reserve_card')
             return err
 
@@ -246,7 +287,6 @@ class GameManager():
             """
 
         if err := self._playerController.take_tokens(self.currentPlayer, tokens, self._bankController):
-
             Logger().log(0, err, 'GameManager take_token')
             return err
 
@@ -274,9 +314,146 @@ class GameManager():
         """This method plays the turn for the cpu.
 
         """
-        # TODO: call ai
-        pass
 
+        player_id = self.cpu_Id
+        state = self.gather_ia_board_state()
+        player_string = 'player' + str(player_id + 1)
+        player2 = (player_id + 1) % 3
+        opponent_string = 'player' + str(player2)
+
+        obs = self.from_board_state_to_obs(opponent_string, player_string, state)
+        # save it as a pickle
+        with open('obs.pkl', 'wb') as f:
+            pickle.dump(state, f)
+        obs = self.normalize_obs(obs)
+
+        ai_action = self.cpu.select_action(obs)
+
+        string_action = self.apply_action(ai_action)
+        return string_action
+
+    def from_board_state_to_obs(self, opponent_string, player_string, state):
+        obs = numpy.zeros(88)
+        obs[0:6] = state[player_string]['tokens']
+        # if the length of the list smaller than 20, we padd with 90
+        list_of_cards = [
+            card.card_id for card in state[player_string]['cards'] if card is not None]
+        if len(list_of_cards) < 20:
+            for i in range(20 - len(list_of_cards)):
+                list_of_cards.append(90)
+        obs[6:26] = list_of_cards
+        # same for nobles, if the length of the list smaller than 5, we padd with 10
+        list_of_nobles = [
+            patron.patron_id for patron in state[player_string]['nobles']]
+        if len(list_of_nobles) < 5:
+            for i in range(5 - len(list_of_nobles)):
+                list_of_nobles.append(10)
+        obs[26:31] = list_of_nobles
+        # we save the reserved cards in a list, if the card is None, we padd with 90
+        self.reserved_cards = [
+            card.card_id for card in state[player_string]['reserved'] if card is not None]
+        if len(self.reserved_cards) < 3:
+            for i in range(3 - len(self.reserved_cards)):
+                self.reserved_cards.append(90)
+        # same for reserved cards, if the length of the list smaller than 3, we padd with 90
+        list_of_reserved = [
+            card.card_id for card in state[player_string]['reserved'] if card is not None]
+        if len(list_of_reserved) < 3:
+            for i in range(3 - len(list_of_reserved)):
+                list_of_reserved.append(90)
+        obs[31:34] = list_of_reserved
+        obs[34:40] = state[opponent_string]['tokens']
+        # same for player 2
+        list_of_cards = [
+            card.card_id for card in state[opponent_string]['cards'] if card is not None]
+        if len(list_of_cards) < 20:
+            for i in range(20 - len(list_of_cards)):
+                list_of_cards.append(90)
+        obs[40:60] = list_of_cards
+        list_of_nobles = [
+            patron.patron_id for patron in state[opponent_string]['nobles']]
+        if len(list_of_nobles) < 5:
+            for i in range(5 - len(list_of_nobles)):
+                list_of_nobles.append(10)
+        obs[60:65] = list_of_nobles
+        list_of_reserved = [
+            card.card_id for card in state[opponent_string]['reserved'] if card is not None]
+        if len(list_of_reserved) < 3:
+            for i in range(3 - len(list_of_reserved)):
+                list_of_reserved.append(90)
+        obs[65:68] = list_of_reserved
+        # same for shop
+        self.shop1_cards = state['shop']['rank1_cards']
+        list_of_cards_rank1 = [
+            card.card_id for card in state['shop']['rank1_cards']]
+        if len(list_of_cards_rank1) < 4:
+            for i in range(4 - len(list_of_cards_rank1)):
+                list_of_cards_rank1.append(90)
+        obs[68:72] = list_of_cards_rank1
+        self.shop2_cards = state['shop']['rank2_cards']
+        list_of_cards_rank2 = [
+            card.card_id for card in state['shop']['rank2_cards']]
+        if len(list_of_cards_rank2) < 4:
+            for i in range(4 - len(list_of_cards_rank2)):
+                list_of_cards_rank2.append(90)
+        obs[72:76] = list_of_cards_rank2
+        self.shop3_cards = state['shop']['rank3_cards']
+        list_of_cards_rank3 = [
+            card.card_id for card in state['shop']['rank3_cards']]
+        if len(list_of_cards_rank3) < 4:
+            for i in range(4 - len(list_of_cards_rank3)):
+                list_of_cards_rank3.append(90)
+        obs[76:80] = list_of_cards_rank3
+        list_of_nobles = [
+            patron.patron_id for patron in state['shop']['nobles']]
+        if len(list_of_nobles) < 5:
+            for i in range(5 - len(list_of_nobles)):
+                list_of_nobles.append(10)
+        obs[80:85] = list_of_nobles
+        obs[85] = state['shop']['rank1_size']
+        obs[86] = state['shop']['rank2_size']
+        obs[87] = state['shop']['rank3_size']
+        return obs
+
+    def normalize_obs(self, obs):
+        """
+                Player 1 state:
+                5 tokens: 0-4
+                1 gold token: 5
+                20 player cards: 6-25
+                5 noble cards: 26-30
+                3 reserved cards: 31-33
+
+                Player 2 state:
+                5 tokens: 34-38
+                1 gold token: 39
+                20 player cards: 40-59
+                5 noble cards: 60-64
+                3 reserved cards: 65-67
+
+                Shop state:
+                12 cards: 68-79
+                5 noble cards: 80-84
+                1 tier 1 number of cards: 85
+                1 tier 2 number of cards: 86
+                1 tier 3 number of cards: 87
+
+                """
+        obs[0:6] = obs[0:6] / 10
+        obs[6:26] = obs[6:26] / 90
+        obs[26:31] = obs[26:31] / 10
+        obs[31:34] = obs[31:34] / 90
+
+        obs[34:40] = obs[34:40] / 10
+        obs[40:60] = obs[40:60] / 90
+        obs[60:65] = obs[60:65] / 10
+        obs[65:68] = obs[65:68] / 90
+
+        obs[68:80] = obs[68:80] / 90
+        obs[80:85] = obs[80:85] / 10
+        obs[85:88] = obs[85:88] / 30
+
+        return obs
     def get_player_victory_point(self, player_id: int) -> int:
         """This method returns the victory points of a player.
 
@@ -328,3 +505,219 @@ class GameManager():
             BankController: The game manager's bank controller
             """
         return self._bankController
+
+    def apply_action(self, action):
+
+        string_action = ""
+        # print the action done
+        # print('action done : ', action)
+        if action == 0:
+            # take [1,1,1,0,0,0] tokens
+            self.take_token(TokenArray([1, 1, 1, 0, 0, 0]))
+            string_action = "The cpu took [1,1,1,0,0,0] tokens"
+        elif action == 1:
+            # take [1,1,0,1,0,0] tokens
+            self.take_token(TokenArray([1, 1, 0, 1, 0, 0]))
+            string_action = "The cpu took [1,1,0,1,0,0] tokens"
+        elif action == 2:
+            # take [1,1,0,0,1,0] tokens
+            self.take_token(TokenArray([1, 1, 0, 0, 1, 0]))
+            string_action = "The cpu took [1,1,0,0,1,0] tokens"
+        elif action == 3:
+            # take [1,0,1,1,0,0] tokens
+            self.take_token(TokenArray([1, 0, 1, 1, 0, 0]))
+            string_action = "The cpu took [1,0,1,1,0,0] tokens"
+        elif action == 4:
+            # take [1,0,1,0,1,0] tokens
+            self.take_token(TokenArray([1, 0, 1, 0, 1, 0]))
+            string_action = "The cpu took [1,0,1,0,1,0] tokens"
+        elif action == 5:
+            # take [1,0,0,1,1,0] tokens
+            self.take_token(TokenArray([1, 0, 0, 1, 1, 0]))
+            string_action = "The cpu took [1,0,0,1,1,0] tokens"
+        elif action == 6:
+            # take [0,1,1,1,0,0] tokens
+            self.take_token(TokenArray([0, 1, 1, 1, 0, 0]))
+            string_action = "The cpu took [0,1,1,1,0,0] tokens"
+        elif action == 7:
+            # take [0,1,1,0,1,0] tokens
+            self.take_token(TokenArray([0, 1, 1, 0, 1, 0]))
+            string_action = "The cpu took [0,1,1,0,1,0] tokens"
+        elif action == 8:
+            # take [0,1,0,1,1,0] tokens
+            self.take_token(TokenArray([0, 1, 0, 1, 1, 0]))
+            string_action = "The cpu took [0,1,0,1,1,0] tokens"
+        elif action == 9:
+            # take [0,0,1,1,1,0] tokens
+            self.take_token(TokenArray([0, 0, 1, 1, 1, 0]))
+            string_action = "The cpu took [0,0,1,1,1,0] tokens"
+        elif action == 10:
+            self.take_token(TokenArray([2, 0, 0, 0, 0, 0]))
+            string_action = "The cpu took [2,0,0,0,0,0] tokens"
+        elif action == 11:
+            self.take_token(TokenArray([0, 2, 0, 0, 0, 0]))
+            string_action = "The cpu took [0,2,0,0,0,0] tokens"
+        elif action == 12:
+            self.take_token(TokenArray([0, 0, 2, 0, 0, 0]))
+            string_action = "The cpu took [0,0,2,0,0,0] tokens"
+        elif action == 13:
+            self.take_token(TokenArray([0, 0, 0, 2, 0, 0]))
+            string_action = "The cpu took [0,0,0,2,0,0] tokens"
+        elif action == 14:
+            self.take_token(TokenArray([0, 0, 0, 0, 2, 0]))
+            string_action = "The cpu took [0,0,0,0,2,0] tokens"
+        elif action == 15:
+            self.buy_card(self.shop1_cards[0].card_id)
+            string_action = "The cpu bought a card from shop 1, id : " + str(self.shop1_cards[0].card_id)
+        elif action == 16:
+            self.buy_card(self.shop1_cards[1].card_id)
+            string_action = "The cpu bought a card from shop 1, id : " + str(self.shop1_cards[1].card_id)
+        elif action == 17:
+            self.buy_card(self.shop1_cards[2].card_id)
+            string_action = "The cpu bought a card from shop 1, id : " + str(self.shop1_cards[2].card_id)
+        elif action == 18:
+            self.buy_card(self.shop1_cards[3].card_id)
+            string_action = "The cpu bought a card from shop 1, id : " + str(self.shop1_cards[3].card_id)
+        elif action == 19:
+            self.buy_card(self.shop2_cards[0].card_id)
+            string_action = "The cpu bought a card from shop 2, id : " + str(self.shop2_cards[0].card_id)
+        elif action == 20:
+            self.buy_card(self.shop2_cards[1].card_id)
+            string_action = "The cpu bought a card from shop 2, id : " + str(self.shop2_cards[1].card_id)
+        elif action == 21:
+            self.buy_card(self.shop2_cards[2].card_id)
+            string_action = "The cpu bought a card from shop 2, id : " + str(self.shop2_cards[2].card_id)
+        elif action == 22:
+            self.buy_card(self.shop2_cards[3].card_id)
+            string_action = "The cpu bought a card from shop 2, id : " + str(self.shop2_cards[3].card_id)
+        elif action == 23:
+            self.buy_card(self.shop3_cards[0].card_id)
+            string_action = "The cpu bought a card from shop 3, id : " + str(self.shop3_cards[0].card_id)
+        elif action == 24:
+            self.buy_card(self.shop3_cards[1].card_id)
+            string_action = "The cpu bought a card from shop 3, id : " + str(self.shop3_cards[1].card_id)
+        elif action == 25:
+            self.buy_card(self.shop3_cards[2].card_id)
+            string_action = "The cpu bought a card from shop 3, id : " + str(self.shop3_cards[2].card_id)
+        elif action == 26:
+            self.buy_card(self.shop3_cards[3].card_id)
+            string_action = "The cpu bought a card from shop 3, id : " + str(self.shop3_cards[3].card_id)
+        elif action == 27:
+            self.buy_card(self.reserved_cards[0])
+            string_action = "The cpu bought reserved card, id : " + str(self.reserved_cards[0])
+        elif action == 28:
+            self.buy_card(self.reserved_cards[1])
+            string_action = "The cpu bought reserved card, id : " + str(self.reserved_cards[1])
+
+        elif action == 29:
+            self.buy_card(self.reserved_cards[2])
+            string_action = "The cpu bought reserved card , id : " + str(self.reserved_cards[2])
+        elif action == 30:
+            self.reserve_card(self.shop1_cards[0].card_id)
+            string_action = "The cpu reserved a card from shop 1, id : " + str(self.shop1_cards[0].card_id)
+        elif action == 31:
+            self.reserve_card(self.shop1_cards[1].card_id)
+            string_action = "The cpu reserved a card from shop 1, id : " + str(self.shop1_cards[1].card_id)
+        elif action == 32:
+            self.reserve_card(self.shop1_cards[2].card_id)
+            string_action = "The cpu reserved a card from shop 1, id : " + str(self.shop1_cards[2].card_id)
+        elif action == 33:
+            self.reserve_card(self.shop1_cards[3].card_id)
+            string_action = "The cpu reserved a card from shop 1, id : " + str(self.shop1_cards[3].card_id)
+        elif action == 34:
+            self.reserve_card(self.shop2_cards[0].card_id)
+            string_action = "The cpu reserved a card from shop 2, id : " + str(self.shop2_cards[0].card_id)
+        elif action == 35:
+            self.reserve_card(self.shop2_cards[1].card_id)
+            string_action = "The cpu reserved a card from shop 2, id : " + str(self.shop2_cards[1].card_id)
+        elif action == 36:
+            self.reserve_card(self.shop2_cards[2].card_id)
+            string_action = "The cpu reserved a card from shop 2, id : " + str(self.shop2_cards[2].card_id)
+        elif action == 37:
+            self.reserve_card(self.shop2_cards[3].card_id)
+            string_action = "The cpu reserved a card from shop 2, id : " + str(self.shop2_cards[3].card_id)
+        elif action == 38:
+            self.reserve_card(self.shop3_cards[0].card_id)
+            string_action = "The cpu reserved a card from shop 3, id : " + str(self.shop3_cards[0].card_id)
+        elif action == 39:
+            self.reserve_card(self.shop3_cards[1].card_id)
+            string_action = "The cpu reserved a card from shop 3, id : " + str(self.shop3_cards[1].card_id)
+        elif action == 40:
+            self.reserve_card(self.shop3_cards[2].card_id)
+            string_action = "The cpu reserved a card from shop 3, id : " + str(self.shop3_cards[2].card_id)
+        elif action == 41:
+            self.reserve_card(self.shop3_cards[3].card_id)
+            string_action = "The cpu reserved a card from shop 3, id : " + str(self.shop3_cards[3].card_id)
+        elif action == 42:
+            self.reserve_pile_card(0)
+            string_action = "The cpu reserved a card from pile 1"
+        elif action == 43:
+            self.reserve_pile_card(1)
+            string_action = "The cpu reserved a card from pile 2"
+        elif action == 44:
+            self.reserve_pile_card(2)
+            string_action = "The cpu reserved a card from pile 3"
+        elif action == 45:
+            self.take_token(TokenArray([1, 0, 0, 0, 0, 0]))
+            string_action = "The cpu took a white token"
+        elif action == 46:
+            self.take_token(TokenArray([0, 1, 0, 0, 0, 0]))
+            string_action = "The cpu took a blue token"
+        elif action == 47:
+            self.take_token(TokenArray([0, 0, 1, 0, 0, 0]))
+            string_action = "The cpu took a green token"
+        elif action == 48:
+            self.take_token(TokenArray([0, 0, 0, 1, 0, 0]))
+            string_action = "The cpu took a red token"
+        elif action == 49:
+            self.take_token(TokenArray([0, 0, 0, 0, 1, 0]))
+            string_action = "The cpu took a black token"
+        elif action == 50:
+            self.take_token(TokenArray([1, 1, 0, 0, 0, 0]))
+            string_action = "The cpu took [white, blue] tokens"
+        elif action == 51:
+            self.take_token(TokenArray([1, 0, 1, 0, 0, 0]))
+            string_action = "The cpu took [white, green] tokens"
+        elif action == 52:
+            self.take_token(TokenArray([1, 0, 0, 1, 0, 0]))
+            string_action = "The cpu took [white, red] tokens"
+        elif action == 53:
+            self.take_token(TokenArray([1, 0, 0, 0, 1, 0]))
+            string_action = "The cpu took [white, black] tokens"
+        elif action == 54:
+            self.take_token(TokenArray([0, 1, 1, 0, 0, 0]))
+            string_action = "The cpu took [blue, green] tokens"
+        elif action == 55:
+            self.take_token(TokenArray([0, 1, 0, 1, 0, 0]))
+            string_action = "The cpu took [blue, red] tokens"
+        elif action == 56:
+            self.take_token(TokenArray([0, 1, 0, 0, 1, 0]))
+            string_action = "The cpu took [blue, black] tokens"
+        elif action == 57:
+            self.take_token(TokenArray([0, 0, 1, 1, 0, 0]))
+            string_action = "The cpu took [green, red] tokens"
+        elif action == 58:
+            self.take_token(TokenArray([0, 0, 1, 0, 1, 0]))
+            string_action = "The cpu took [green, black] tokens"
+        elif action == 59:
+            self.take_token(TokenArray([0, 0, 0, 1, 1, 0]))
+            string_action = "The cpu took [red, black] tokens"
+        elif action == 60:
+            self.take_token(TokenArray([2, 0, 0, 0, 0, 0]))
+            string_action = "The cpu took 2 white tokens"
+        elif action == 61:
+            self.take_token(TokenArray([0, 2, 0, 0, 0, 0]))
+            string_action = "The cpu took 2 blue tokens"
+        elif action == 62:
+            self.take_token(TokenArray([0, 0, 2, 0, 0, 0]))
+            string_action = "The cpu took 2 green tokens"
+        elif action == 63:
+            self.take_token(TokenArray([0, 0, 0, 2, 0, 0]))
+            string_action = "The cpu took 2 red tokens"
+        elif action == 64:
+            self.take_token(TokenArray([0, 0, 0, 0, 2, 0]))
+            string_action = "The cpu took 2 black tokens"
+        elif action == 65:
+            self.pass_turn()
+            string_action = "The cpu passed his turn"
+        return string_action
