@@ -111,10 +111,8 @@ class ShopController():
         info = []
         for i in range(len(self.ranks)):
             info.append({
-                'rank': {
-                    'numberCardsDeck': self.ranks[i].get_number_of_cards_deck(),
-                    'visibleCards': self.ranks[i].gather_visible_cards_information_api_board_state()
-                }
+                'numberCardsDeck': self.ranks[i].get_number_of_cards_deck(),
+                'visibleCards': self.ranks[i].gather_visible_cards_information_api_board_state()
             })
         
         return info

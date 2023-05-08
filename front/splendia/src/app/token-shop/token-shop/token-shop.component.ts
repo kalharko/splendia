@@ -20,8 +20,5 @@ export class TokenShopComponent extends OnDestroyMixin implements OnInit  {
   }
 
   ngOnInit(): void {
-    this.appService.takeToken().pipe(untilComponentDestroyed(this)).subscribe((board_state:BoardState) => {
-      this.tokenQuantities = board_state.shop.tokens._tokens;
-    });
   }
 }
