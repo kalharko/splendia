@@ -1,5 +1,6 @@
 from flask import jsonify, Response
 
+
 def jsonifyException(err: Exception) -> Response:
     """Jsonify an exception
 
@@ -9,7 +10,8 @@ def jsonifyException(err: Exception) -> Response:
     Returns:
         Response: jsonified exception
     """
-    return jsonify({"errorMessage": str(err) })
+    return jsonify({"errorMessage": str(err)})
+
 
 def jsonifyErrorMessage(errorMessage: str) -> Response:
     """Jsonify an error message 
@@ -20,4 +22,4 @@ def jsonifyErrorMessage(errorMessage: str) -> Response:
     Returns:
         Response: jsonified error message
     """
-    return jsonify({"errorMessage": errorMessage })
+    return jsonify({"errorMessage": errorMessage})

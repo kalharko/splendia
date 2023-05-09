@@ -53,7 +53,7 @@ class Hand(CardStack):
         for card in self.cards:
             out += card.victoryPoint
         return out
-    
+
     def get_number_cards(self) -> int:
         """Get the number of the cards the hand has
 
@@ -61,7 +61,7 @@ class Hand(CardStack):
             int: number of cards of the hand
         """
         return len(self.cards)
-    
+
     def gather_cards_information_api_board_state(self) -> list:
         """Gather the information of the cards of the hand needed for the api board state in a list
 

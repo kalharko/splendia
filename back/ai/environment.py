@@ -5,6 +5,7 @@ from model.token_array import TokenArray
 import pickle
 from model.mtcs.splendia_mtcs_node import SplendiaMtcsNode, monte_carlo
 
+
 class SplendorEnv(gym.Env):
     def __init__(self, game: GameManager, nb_player: int = 2):
         """
@@ -49,9 +50,8 @@ class SplendorEnv(gym.Env):
         self.game.launch_game(2)
 
         # save the game in a pickle file
-        #with open('game.pickle', 'wb') as handle:
-            #pickle.dump(self.game, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
+        # with open('game.pickle', 'wb') as handle:
+        # pickle.dump(self.game, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         pass
 
@@ -161,7 +161,6 @@ class SplendorEnv(gym.Env):
         self.obs = obs
         return obs
 
-
     def normalize_obs(self, obs):
         """
                 Player 1 state:
@@ -201,17 +200,18 @@ class SplendorEnv(gym.Env):
         obs[85:88] = obs[85:88] / 30
 
         return obs
+
     def reset(self):
         self.number_turn = 0
         self.game_id += 1
         self.last_action = -1
-        #load the pickle file
+        # load the pickle file
         del self.game
         with open('game.pickle', 'rb') as f:
             self.game = pickle.load(f)
         self.game.randomize_first_player()
-        #print('game id : ', self.game_id)
-        #print('first player : ', self.game.currentPlayer)
+        # print('game id : ', self.game_id)
+        # print('first player : ', self.game.currentPlayer)
         return self.from_board_states_to_obs_train(self.game.currentPlayer)
 
     def is_last_turn(self):
@@ -224,38 +224,37 @@ class SplendorEnv(gym.Env):
         player_1_vp = self.game.get_player_victory_point(1)
         if self.game.is_last_turn():
 
-                # if the file blocked_logs.csv does not exist, we create it
-                if player_0_vp > player_1_vp:
-                    #print('player 0 win')
-                    info['flag'] = 0
-                elif player_0_vp < player_1_vp:
-                    #print('player 1 win')
-                    info['flag'] = 1
-                else:
-                    info['flag'] = 2
-                    #print('draw')
-                done = True
-                #print('last turn')
+            # if the file blocked_logs.csv does not exist, we create it
+            if player_0_vp > player_1_vp:
+                # print('player 0 win')
+                info['flag'] = 0
+            elif player_0_vp < player_1_vp:
+                # print('player 1 win')
+                info['flag'] = 1
+            else:
+                info['flag'] = 2
+                # print('draw')
+            done = True
+            # print('last turn')
         else:
-                done = False
-                info['flag'] = -1
+            done = False
+            info['flag'] = -1
         self.apply_action(action)
         # ave the last action
 
         has_finish = self.game.is_last_turn()
-        self.number_turn +=1
+        self.number_turn += 1
         # the ai has played
         obs = self.from_board_states_to_obs_train(self.game.currentPlayer)
 
-        #action_two = model.select_dummy_action(obs)
+        # action_two = model.select_dummy_action(obs)
         has_pass = True if action == 65 else False
-        #node = SplendiaMtcsNode(self.game,self.game.currentPlayer,10,has_pass,30)
-        #print('monte carlo for a number of iteration : ', 10)
-        #print('number of children : ', (len(node.child)))
+        # node = SplendiaMtcsNode(self.game,self.game.currentPlayer,10,has_pass,30)
+        # print('monte carlo for a number of iteration : ', 10)
+        # print('number of children : ', (len(node.child)))
 
         # reward = self.game.playerController.players[0].victoryPoints.value
         reward = -1/100
-
 
         if self.game.currentPlayer == 0:
 
@@ -267,9 +266,8 @@ class SplendorEnv(gym.Env):
 
         if action == 65 and self.last_action == 65 and done == False:
             info['flag'] = 3
-            #print('blocked')
+            # print('blocked')
             done = True
-
 
         self.last_action = action
 

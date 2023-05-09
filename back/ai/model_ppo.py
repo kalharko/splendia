@@ -18,7 +18,7 @@ if __name__ == '__main__':
         torch.cuda.empty_cache()
         print("Device set to : " + str(torch.cuda.get_device_name(device)))
     else:
-         print("Device set to : cpu")
+        print("Device set to : cpu")
     print("============================================================================================")
 
 
@@ -76,7 +76,7 @@ def get_mask(player_ID):
 
 
 class ActorCritic(nn.Module):
-    def __init__(self, state_dim, action_dim, has_continuous_action_space, action_std_init,device, player_id : int):
+    def __init__(self, state_dim, action_dim, has_continuous_action_space, action_std_init, device, player_id: int):
         super(ActorCritic, self).__init__()
         self.player_id = player_id
         self.device = device
@@ -98,7 +98,7 @@ class ActorCritic(nn.Module):
             self.actor = nn.Sequential(
                 nn.Linear(state_dim, 64),
                 nn.ReLU(),
-                nn.Linear(64,32),
+                nn.Linear(64, 32),
                 nn.ReLU(),
                 nn.Linear(32, action_dim),
                 nn.Softmax(dim=-1)
@@ -107,7 +107,7 @@ class ActorCritic(nn.Module):
         self.critic = nn.Sequential(
             nn.Linear(state_dim, 64),
             nn.ReLU(),
-            nn.Linear(64,32),
+            nn.Linear(64, 32),
             nn.ReLU(),
             nn.Linear(32, 1)
         )
@@ -179,8 +179,6 @@ class ActorCritic(nn.Module):
             for value in tensor_list:
                 action_probs[value][-1] = 1
 
-
-
             dist = Categorical(action_probs)
 
         action_logprobs = dist.log_prob(action)
@@ -192,7 +190,7 @@ class ActorCritic(nn.Module):
 
 class PPO:
     def __init__(self, state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
-                 has_continuous_action_space, action_std_init=0.6, player_id : int = 0):
+                 has_continuous_action_space, action_std_init=0.6, player_id: int = 0):
 
         self.has_continuous_action_space = has_continuous_action_space
         device = torch.device('cpu')
@@ -213,14 +211,14 @@ class PPO:
         self.buffer = RolloutBuffer()
 
         self.policy = ActorCritic(
-            state_dim, action_dim, has_continuous_action_space, action_std_init,self.device,player_id).to(self.device)
+            state_dim, action_dim, has_continuous_action_space, action_std_init, self.device, player_id).to(self.device)
         self.optimizer = torch.optim.Adam([
             {'params': self.policy.actor.parameters(), 'lr': lr_actor},
             {'params': self.policy.critic.parameters(), 'lr': lr_critic}
         ])
 
         self.policy_old = ActorCritic(
-            state_dim, action_dim, has_continuous_action_space, action_std_init,self.device,player_id).to(self.device)
+            state_dim, action_dim, has_continuous_action_space, action_std_init, self.device, player_id).to(self.device)
         self.policy_old.load_state_dict(self.policy.state_dict())
 
         self.MseLoss = nn.MSELoss()
@@ -256,14 +254,12 @@ class PPO:
                 "WARNING : Calling PPO::decay_action_std() on discrete action space policy")
         print("--------------------------------------------------------------------------------------------")
 
-
     def select_action(self, state):
         """Select an appropriate action from the agent policy.
 
         Arguments:
             state {torch tensor} -- Current state of the environment.
             """
-
 
         if self.has_continuous_action_space:
             with torch.no_grad():

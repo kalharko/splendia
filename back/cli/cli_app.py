@@ -6,6 +6,7 @@ from model.token_array import TokenArray
 from cli.objects_win import PatronWin, CardWin, PlayerWin, InputWin
 from utils.logger import Logger
 
+
 class CliApp():
     def __init__(self, nbPlayer: int, stdscr) -> None:
         # encoding
@@ -80,7 +81,6 @@ class CliApp():
                     # pause the program until the user presses a key
                     self.screen.getch()
 
-
             else:
                 Logger().log(2, self.get_input, str(user_input))
 
@@ -99,7 +99,8 @@ class CliApp():
                 elif newchar == curses.KEY_LEFT:  # left arrow
                     pos_cursor = pos_cursor - 1 if pos_cursor > 0 else 0
                 elif newchar == curses.KEY_RIGHT:  # right arrow
-                    pos_cursor = pos_cursor + 1 if pos_cursor < len(out) else pos_cursor
+                    pos_cursor = pos_cursor + \
+                        1 if pos_cursor < len(out) else pos_cursor
                 elif newchar == curses.KEY_DOWN:  # down arrow
                     pos_cursor = len(out)
                 elif newchar == curses.KEY_UP:  # up arrow
@@ -120,7 +121,7 @@ class CliApp():
         self.inputWin.display('')
         return out.split(' ')
 
-    def display(self,action_log = "") -> None:
+    def display(self, action_log="") -> None:
         self.screen.erase()
         self.screen.border()
         self.screen.refresh()
@@ -129,10 +130,12 @@ class CliApp():
         tokens = self.gm.get_bank_controller().bank.get_tokens()
         self.screen.addstr(1, 13, 'white blue green red black gold')
         for i in range(6):
-            self.screen.addstr(2, 14 + i * 5, f'({tokens[i]})', curses.color_pair(i + 1))
+            self.screen.addstr(
+                2, 14 + i * 5, f'({tokens[i]})', curses.color_pair(i + 1))
 
         # patron windows
-        self.patronWins = [PatronWin(patron, y, 0) for patron, y in zip(self.gm.get_patron_controller().patrons, (3, 8, 13, 18, 23))]
+        self.patronWins = [PatronWin(patron, y, 0) for patron, y in zip(
+            self.gm.get_patron_controller().patrons, (3, 8, 13, 18, 23))]
         for patronWin in self.patronWins:
             patronWin.display()
 
@@ -160,8 +163,7 @@ class CliApp():
             self.playerWin[-1].display()
         # input window
         self.inputWin.display()
-        self.screen.addstr(1,2,action_log)
-
+        self.screen.addstr(1, 2, action_log)
 
     def take_tokens(self, user_input: list[str]) -> None:
         """Parse and call game manager take token action.

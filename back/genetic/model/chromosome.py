@@ -8,7 +8,6 @@ class Chromosome:
         self.fitness = 0.0
         self.winrate = 0.0
 
-
     def calculate_fitness(self, fitness_function: Callable[[List[int]], float]) -> float:
         self.fitness = fitness_function(self.genes)
         return self.fitness
@@ -19,8 +18,10 @@ class Chromosome:
 
         # Perform crossover operation
         crossover_point = random.randint(0, len(self.genes) - 1)
-        child_1 = Chromosome(self.genes[:crossover_point] + other.genes[crossover_point:])
-        child_2 = Chromosome(other.genes[:crossover_point] + self.genes[crossover_point:])
+        child_1 = Chromosome(
+            self.genes[:crossover_point] + other.genes[crossover_point:])
+        child_2 = Chromosome(
+            other.genes[:crossover_point] + self.genes[crossover_point:])
         return child_1, child_2
 
     def mutate(self, mutation_rate: float) -> 'Chromosome':

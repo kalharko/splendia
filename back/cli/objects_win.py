@@ -27,13 +27,15 @@ class PatronWin(MyWin):
             x = 2
             for i in range(6):
                 if requirements[i] == 4:
-                    self.win.addstr(2, x, '[4]', curses.color_pair(self.colors[i]))
+                    self.win.addstr(
+                        2, x, '[4]', curses.color_pair(self.colors[i]))
                     x += 4
         else:
             x = 1
             for i in range(6):
                 if requirements[i] == 3:
-                    self.win.addstr(2, x, '[3]', curses.color_pair(self.colors[i]))
+                    self.win.addstr(
+                        2, x, '[3]', curses.color_pair(self.colors[i]))
                     x += 3
         self.win.refresh()
 
@@ -49,7 +51,8 @@ class CardWin(MyWin):
         self.win.border()
 
         self.win.addstr(1, 1, str(self.card.victoryPoint.value))
-        self.win.addstr(1, 4, '[]', curses.color_pair(self.colors[self.card.bonus.get_tokens().index(1)]))
+        self.win.addstr(1, 4, '[]', curses.color_pair(
+            self.colors[self.card.bonus.get_tokens().index(1)]))
 
         if len(str(self.card.card_id)) == 1:
             self.win.addstr(2, 1, f'__{self.card.card_id}___')
@@ -60,7 +63,8 @@ class CardWin(MyWin):
         y = 3
         for i in range(6):
             if self.card.price.get_tokens()[i] != 0:
-                self.win.addstr(y, x, f'({self.card.price.get_tokens()[i]})', curses.color_pair(self.colors[i]))
+                self.win.addstr(
+                    y, x, f'({self.card.price.get_tokens()[i]})', curses.color_pair(self.colors[i]))
                 x += 3
                 if x > 4:
                     x = 1
@@ -86,10 +90,12 @@ class PlayerWin(MyWin):
         self.win.addstr(1, 15, f'VP:{self.player.victoryPoints.value}')
 
         for i, v in enumerate(self.player.tokens.get_tokens()):
-            self.win.addstr(2, 2 + i * 3, f'({v})', curses.color_pair(self.colors[i]))
+            self.win.addstr(
+                2, 2 + i * 3, f'({v})', curses.color_pair(self.colors[i]))
 
         for i, v in enumerate(self.player.hand.compute_hand_bonuses().get_tokens()[:-1]):
-            self.win.addstr(3, 2 + i * 3, f'[{v}]', curses.color_pair(self.colors[i]))
+            self.win.addstr(
+                3, 2 + i * 3, f'[{v}]', curses.color_pair(self.colors[i]))
         self.win.refresh()
 
 

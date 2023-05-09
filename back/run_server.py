@@ -158,7 +158,8 @@ def takeTokens():
         return jsonifyErrorMessage("No token_list query param was given"), 400
 
     # The following code is used to check that the given token_list query param is a list of 6 ints
-    jsonifiedIntListErrorMessageWith400HttpStats: Response = jsonifyErrorMessage("It was not possible to convert the token_list query params into a list of ints. The given value was " + tokensString + "."), 400
+    jsonifiedIntListErrorMessageWith400HttpStats: Response = jsonifyErrorMessage(
+        "It was not possible to convert the token_list query params into a list of ints. The given value was " + tokensString + "."), 400
     try:
         tokens = json.loads(tokensString)
     except JSONDecodeError:
@@ -185,7 +186,6 @@ def takeTokens():
 
 @app.route('/api/cpu_turn', methods=['GET'])
 def cpuTurn():
-
     """API route to make a CPU play
 
     Returns:
