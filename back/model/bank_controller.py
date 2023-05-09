@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from logging import raiseExceptions
 from utils.exception import TooMuchBankTokens, InvalidTakeTokenAction
-from model.token_array import TokenArray
+from model.token_array import TokenArray, Color
+from utils.logger import Logger
 
 
 @dataclass
@@ -47,7 +48,17 @@ class BankController():
         else:
             return TooMuchBankTokens()
 
-    def withdraw(self, tokens: TokenArray) -> None or InvalidTakeTokenAction:
+    def withdraw_gold(self, tokens : TokenArray, player_token : TokenArray):
+        if  tokens.get_tokens()[Color.GOLD.value] != 1 or self.bank.get_tokens()[Color.GOLD.value] == 0:
+            Logger().log(2, None, '0')
+            return InvalidTakeTokenAction()
+        if player_token.nb_of_tokens() >= 10:
+            # the bank does not discard tokens
+            pass
+        else:
+            self.bank.withdraw_token(Color.GOLD, 1)
+
+    def withdraw(self, tokens: TokenArray, player_token : TokenArray) -> None or InvalidTakeTokenAction:
         """This method is used to withdraw tokens from the bank.
 
         Args:
@@ -55,25 +66,52 @@ class BankController():
 
             """
         assert isinstance(tokens, TokenArray)
+        non_empty_pile = 0
+        for color in range(5):
+            if self.bank.get_tokens()[color] > 0:
+                non_empty_pile += 1
+
         if tokens.nb_of_tokens() == 1:
+            wanted_tokens_index = tokens.get_tokens().index(1)
+            if player_token.nb_of_tokens() != 9 or non_empty_pile < 3 or self.bank.get_tokens()[wanted_tokens_index] == 0:
+                Logger().log(2, None, '0')
+                return InvalidTakeTokenAction()
+                pass
             # if tokens.get_tokens()[Color.GOLD.value] != 1:
             # Logger().log(2, None, '1')
             # return InvalidTakeTokenAction() TODO: corriger ca
             pass
         elif tokens.nb_of_tokens() == 2:
-            if sum([1 if x == 2 else 0 for x in tokens.get_tokens()]) != 1:
-                """Logger().log(2, None, '2')
-                return InvalidTakeTokenAction()"""
-                pass
-            elif self.bank.get_tokens()[tokens.get_tokens().index(2)] < 4:
-                """Logger().log(2, None, '3')
-                return InvalidTakeTokenAction()"""
-                pass
+
+            if sum([1 if x == 2 else 0 for x in tokens.get_tokens()]) == 1:
+                wanted_tokens_index = tokens.get_tokens().index(2)
+                if player_token.nb_of_tokens() >= 9 or self.bank.get_tokens()[wanted_tokens_index] < 4:
+                    Logger().log(2, None, '2')
+                    return InvalidTakeTokenAction()
+                    pass
+
+            elif sum([1 if x == 1 else 0 for x in tokens.get_tokens()]) == 2:
+                wanted_colors = []
+                for color in range(5):
+                    if tokens.get_tokens()[color] == 1:
+                        wanted_colors.append(color)
+                if player_token.nb_of_tokens() != 8 or self.bank.get_tokens()[wanted_colors[0]] == 0 or self.bank.get_tokens()[wanted_colors[1]] == 0 or non_empty_pile < 3:
+                    Logger().log(2, None, '3')
+                    return InvalidTakeTokenAction()
+                    pass
+
+
         elif tokens.nb_of_tokens() == 3:
+            wanted_colors = []
+            for color in range(5):
+                if tokens.get_tokens()[color] == 1:
+                    wanted_colors.append(color)
             if sum([1 if x == 1 else 0 for x in tokens.get_tokens()]) != 3:
-                """Logger().log(2, None, '4')
-                return InvalidTakeTokenAction()"""
-                pass
+                    Logger().log(2, None, '4')
+                    return InvalidTakeTokenAction()
+            elif player_token.nb_of_tokens() >= 8 or non_empty_pile < 3 or self.bank.get_tokens()[wanted_colors[0]] == 0 or self.bank.get_tokens()[wanted_colors[1]] == 0 or self.bank.get_tokens()[wanted_colors[2]] == 0 :
+                    Logger().log(2, None, '5')
+                    return InvalidTakeTokenAction()
         else:
             return InvalidTakeTokenAction()
 

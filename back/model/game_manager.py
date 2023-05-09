@@ -76,10 +76,10 @@ class GameManager():
         lr_critic = 0.0002  # learning rate for critic network
 
         random_seed = 0  # set random seed if required (0 = no random seed)
-        """self.cpu = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
+        self.cpu = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
                        False,
-                       0, self.cpu_Id+1)"""
-        #self.cpu.load('PPO_preTrained/Splendor/1/PPO_Splendor_0_0.pth')
+                       0, self.cpu_Id+1)
+        self.cpu.load('PPO_preTrained/Splendor/1/PPO_Splendor_0_0.pth')
 
 
 
