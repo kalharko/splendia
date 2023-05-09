@@ -141,10 +141,16 @@ class CliApp():
 
         # bank
         tokens = self.gm.get_bank_controller().bank.get_tokens()
-        self.screen.addstr(1, 13, 'white blue green red black gold')
+        self.screen.addstr(1, 14, 'white blue green red black gold')
         for i in range(6):
             self.screen.addstr(
-                2, 14 + i * 5, f'({tokens[i]})', curses.color_pair(i + 1))
+                2, 15 + i * 5, f'({tokens[i]})', curses.color_pair(i + 1))
+
+        # shop
+        yCoords = (5, 11, 17)
+        for i in range(3):
+            deckSize = str(self.gm.get_shop_controller().ranks[i].deck.get_size())
+            self.screen.addstr(yCoords[i], 14 - len(deckSize), deckSize)
 
         # patron windows
         self.patronWins = [PatronWin(patron, y, 0) for patron, y in zip(
@@ -160,14 +166,14 @@ class CliApp():
                 humanPlayer = player
                 continue
             name = f'CPU#{player.player_id}'
-            self.playerWin.append(PlayerWin(player, name, y * 6 + 1, 45))
+            self.playerWin.append(PlayerWin(player, name, y * 6 + 1, 47))
             y += 1
             if self.gm.currentPlayer == player.player_id:
                 self.playerWin[-1].currentPlayer = True
             self.playerWin[-1].display()
 
         # player window
-        self.playerWin.append(PlayerWin(humanPlayer, 'Player', y * 5 + 1, 45))
+        self.playerWin.append(PlayerWin(humanPlayer, 'Player', y * 5 + 1, 47))
         if self.gm.currentPlayer == humanPlayer.player_id:
             self.playerWin[-1].currentPlayer = True
         self.playerWin[-1].display()
@@ -177,11 +183,11 @@ class CliApp():
         self.cardWins = []
         for i, rank in enumerate(self.gm.get_shop_controller().ranks):
             for j, card in enumerate(rank.hand.cards):
-                self.cardWins.append(CardWin(card, 16 - 6 * i, 12 + j * 8))
+                self.cardWins.append(CardWin(card, 16 - 6 * i, 14 + j * 8))
                 self.cardWins[-1].display()
 
         # reserved cards
-        positions = ((10, 47), (10, 56), (16, 51))
+        positions = ((10, 49), (10, 58), (16, 53))
         for i, card in enumerate(humanPlayer.reserved.cards):
             self.cardWins.append(CardWin(card, positions[i][0], positions[i][1]))
             self.cardWins[-1].display()
