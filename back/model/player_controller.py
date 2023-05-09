@@ -97,7 +97,7 @@ class PlayerController():
         if self.players[playerId].nb_reserved_cards() >= 3:
             return TooMuchReservedCards()
         if not isinstance(card := shop_controller.withdraw_card(cardId), Card):
-            Logger().log(2, None, '0')
+            Logger().log(0, card, '0')
             return card
         if bank_controller.bank.get_tokens()[5] != 0:
             if error := bank_controller.withdraw_gold(TokenArray([0, 0, 0, 0, 0, 1]), self.players[playerId].tokens):

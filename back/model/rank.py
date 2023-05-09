@@ -106,6 +106,6 @@ class Rank():
         """Gather the information of the visible cards of the rank needed for the api board state in a list
 
         Returns:
-            list: information about the visible cards of the rank for the api board state 
+            list: information about the visible cards of the rank for the api board state
         """
         return self.hand.gather_cards_information_api_board_state()

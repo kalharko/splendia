@@ -147,7 +147,7 @@ class CliApp():
                 2, 15 + i * 5, f'({tokens[i]})', curses.color_pair(i + 1))
 
         # shop
-        yCoords = (5, 11, 17)
+        yCoords = (17, 11, 5)
         for i in range(3):
             deckSize = str(self.gm.get_shop_controller().ranks[i].deck.get_size())
             self.screen.addstr(yCoords[i], 14 - len(deckSize), deckSize)
