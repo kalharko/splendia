@@ -25,7 +25,6 @@ class MCTS:
         self.exploration_weight = exploration_weight
 
     def choose(self, node):
-
         "Choose the best successor of node. (Choose a move in the game)"
         if node.is_terminal():
             raise RuntimeError(f"choose called on terminal node {node}")

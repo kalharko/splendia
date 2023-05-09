@@ -49,4 +49,3 @@ class Deck(CardStack):
             int: the number of cards of the deck
         """
         return len(self.cards)
-

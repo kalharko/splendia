@@ -48,8 +48,8 @@ class BankController():
         else:
             return TooMuchBankTokens()
 
-    def withdraw_gold(self, tokens : TokenArray, player_token : TokenArray):
-        if  tokens.get_tokens()[Color.GOLD.value] != 1 or self.bank.get_tokens()[Color.GOLD.value] == 0:
+    def withdraw_gold(self, tokens: TokenArray, player_token: TokenArray):
+        if tokens.get_tokens()[Color.GOLD.value] != 1 or self.bank.get_tokens()[Color.GOLD.value] == 0:
             Logger().log(2, None, '0')
             return InvalidTakeTokenAction()
         if player_token.nb_of_tokens() >= 10:
@@ -58,7 +58,7 @@ class BankController():
         else:
             self.bank.withdraw_token(Color.GOLD, 1)
 
-    def withdraw(self, tokens: TokenArray, player_token : TokenArray) -> None or InvalidTakeTokenAction:
+    def withdraw(self, tokens: TokenArray, player_token: TokenArray) -> None or InvalidTakeTokenAction:
         """This method is used to withdraw tokens from the bank.
 
         Args:
@@ -100,18 +100,17 @@ class BankController():
                     return InvalidTakeTokenAction()
                     pass
 
-
         elif tokens.nb_of_tokens() == 3:
             wanted_colors = []
             for color in range(5):
                 if tokens.get_tokens()[color] == 1:
                     wanted_colors.append(color)
             if sum([1 if x == 1 else 0 for x in tokens.get_tokens()]) != 3:
-                    Logger().log(2, None, '4')
-                    return InvalidTakeTokenAction()
-            elif player_token.nb_of_tokens() >= 8 or non_empty_pile < 3 or self.bank.get_tokens()[wanted_colors[0]] == 0 or self.bank.get_tokens()[wanted_colors[1]] == 0 or self.bank.get_tokens()[wanted_colors[2]] == 0 :
-                    Logger().log(2, None, '5')
-                    return InvalidTakeTokenAction()
+                Logger().log(2, None, '4')
+                return InvalidTakeTokenAction()
+            elif player_token.nb_of_tokens() >= 8 or non_empty_pile < 3 or self.bank.get_tokens()[wanted_colors[0]] == 0 or self.bank.get_tokens()[wanted_colors[1]] == 0 or self.bank.get_tokens()[wanted_colors[2]] == 0:
+                Logger().log(2, None, '5')
+                return InvalidTakeTokenAction()
         else:
             return InvalidTakeTokenAction()
 
@@ -145,7 +144,7 @@ class BankController():
             """
 
         return self.bank.can_withdraw(tokens)
-    
+
     def gather_bank_information_api_board_state(self) -> list[int]:
         """Gather the bank information needed for the api board state. 
         This information is the list of tokens of the bank.
