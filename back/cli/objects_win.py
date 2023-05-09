@@ -10,7 +10,7 @@ class MyWin():
 
 
 class PatronWin(MyWin):
-    def __init__(self, patron: Patron,  y, x) -> None:
+    def __init__(self, patron: Patron, y, x) -> None:
         self.patron = patron
         self.win = curses.newwin(4, 11, y, x)
         self.win.refresh()
@@ -80,7 +80,7 @@ class PlayerWin(MyWin):
         self.win = curses.newwin(5, 22, y, x)
         self.win.refresh()
 
-    def display(self):
+    def display(self) -> None:
         self.win.erase()
         self.win.border()
 
@@ -104,9 +104,30 @@ class InputWin(MyWin):
         self.win = curses.newwin(3, 67, 22, 0)
         self.win.refresh()
 
-    def display(self, message=''):
+    def display(self, message='') -> None:
         self.win.erase()
         self.win.clear()
         self.win.border()
         self.win.addstr(1, 2, message)
+        self.win.refresh()
+
+
+class HistWin(MyWin):
+    def __init__(self, y: int, x: int, h: int) -> None:
+        self.nbLines = h - 2
+        self.win = curses.newwin(h, 67, y, x)
+        self.win.refresh()
+
+    def display(self, message: list[str]) -> None:
+        self.win.erase()
+        self.win.clear()
+        self.win.border()
+
+        if len(message) > self.nbLines:
+            toDisplay = message[len(message) - self.nbLines::-1]
+        else:
+            toDisplay = message[::-1]
+
+        for i, line in enumerate(toDisplay):
+            self.win.addstr(i + 1, 2, line)
         self.win.refresh()
