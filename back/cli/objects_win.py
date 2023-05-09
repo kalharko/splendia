@@ -129,5 +129,8 @@ class HistWin(MyWin):
             toDisplay = message[::-1]
 
         for i, line in enumerate(toDisplay):
-            self.win.addstr(i + 1, 2, line)
+            if i == 0:
+                self.win.addstr(i + 1, 2, line)
+            else:
+                self.win.addstr(i + 1, 2, line, curses.color_pair(5))
         self.win.refresh()

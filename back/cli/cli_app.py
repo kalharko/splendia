@@ -85,9 +85,15 @@ class CliApp():
                 break
             elif user_input[0] in self.COMMANDS.keys():
                 err = self.COMMANDS[user_input[0]](user_input)
+                log = 'Player ('
+                for w in user_input:
+                    log += w + ' '
+                log = log[:-1] + ')'
+
                 if err is not None:
                     Logger().log(2, err, 'cli main loop, err returned by GM')
-                    self.history.append(str(type(err)).split(" '")[1].rstrip("'>").split('.')[-1])
+                    log += ' => ' + str(type(err)).split(" '")[1].rstrip("'>").split('.')[-1]
+                self.history.append(log)
             else:
                 Logger().log(2, self, str(user_input))
 

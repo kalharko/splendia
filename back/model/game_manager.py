@@ -312,7 +312,7 @@ class GameManager():
                 return True
         return False
 
-    def cpu_turn(self) -> None:
+    def cpu_turn(self) -> str:
         """This method plays the turn for the cpu.
 
         """
