@@ -67,14 +67,16 @@ class Rank():
                 self.hand.add_card(draw_card)
             return card
         return None
-    def has_card(self,card_id : int):
+
+    def has_card(self, card_id: int):
 
         for card in self.hand.cards:
-            if card is  None :
+            if card is None:
                 continue
-            if  card.card_id == card_id:
+            if card.card_id == card_id:
                 return True
         return False
+
     def can_draw(self) -> bool:
         """This method checks if the rank can draw a card.
 
@@ -99,7 +101,7 @@ class Rank():
             int: the number of cards in the deck
         """
         return self.deck.get_number_of_cards()
-    
+
     def gather_visible_cards_information_api_board_state(self) -> list:
         """Gather the information of the visible cards of the rank needed for the api board state in a list
 

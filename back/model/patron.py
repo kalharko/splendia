@@ -16,7 +16,7 @@ class Patron():
     patron_id: int
     requirements: TokenArray
     victoryPoints: VictoryPoint
-    
+
     def gather_patron_information_api_board_state(self) -> dict:
         """Gather the patron information needed for the api board state in a dictionnary.
         The dictionnary contains:

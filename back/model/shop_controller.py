@@ -69,7 +69,6 @@ class ShopController():
             if rank.has_card(cardId):
                 return rank.withdraw_card(cardId)
 
-
         return CardIdNotFound(cardId)
 
     def can_withdraw_pile_card(self, pileLevel: int) -> bool:
@@ -98,7 +97,7 @@ class ShopController():
         assert isinstance(pileLevel, int)
         assert 0 <= pileLevel <= 3
         return self.ranks[pileLevel].withdraw_pile_card()
-    
+
     def gather_shop_information_api_board_state(self) -> list:
         """Gather the shop information needed for the api board state in a list that contains "rank" objects. 
         A rank object contains:
@@ -114,5 +113,5 @@ class ShopController():
                 'numberCardsDeck': self.ranks[i].get_number_of_cards_deck(),
                 'visibleCards': self.ranks[i].gather_visible_cards_information_api_board_state()
             })
-        
+
         return info
