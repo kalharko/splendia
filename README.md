@@ -20,7 +20,7 @@ python -m venv env
 ```
 2) Enter the virtual environnement:
 ```
-source env/bin/activate
+source venv/bin/activate
 ```
 3) Install the necessary dependancies:
 ```
