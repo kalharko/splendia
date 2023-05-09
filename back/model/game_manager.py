@@ -76,10 +76,10 @@ class GameManager():
         lr_critic = 0.0002  # learning rate for critic network
 
         random_seed = 0  # set random seed if required (0 = no random seed)
-        """self.cpu = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
+        self.cpu = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
                        False,
-                       0, self.cpu_Id+1)"""
-        #self.cpu.load('PPO_preTrained/Splendor/1/PPO_Splendor_0_0.pth')
+                       0, self.cpu_Id+1)
+        self.cpu.load('PPO_preTrained/Splendor/1/PPO_Splendor_0_0.pth')
 
 
 
@@ -124,23 +124,20 @@ class GameManager():
                     'nobles': self._playerController.players[1].patrons
                 },
                 'shop': {
-                    'rank1':{
-                        'cards': self._shopController.ranks[0].hand.cards,
-                        'size': self._shopController.ranks[0].deck.get_size()
-                    },
-                    'rank2':{
-                        'cards': self._shopController.ranks[1].hand.cards,
-                        'size': self._shopController.ranks[1].deck.get_size()
-                    },
-                    'rank3':{
-                        'cards': self._shopController.ranks[2].hand.cards,
-                        'size': self._shopController.ranks[2].deck.get_size()
-                    },
+                    'rank1_cards': self._shopController.ranks[0].hand.cards,
+                    'rank2_cards': self._shopController.ranks[1].hand.cards,
+                    'rank3_cards': self._shopController.ranks[2].hand.cards,
+                    'rank1_size': self._shopController.ranks[0].deck.get_size(),
+                    'rank2_size': self._shopController.ranks[1].deck.get_size(),
+                    'rank3_size': self._shopController.ranks[2].deck.get_size(),
+                    'nobles': self._patronController.patrons,
+                    'tokens': self._bankController.bank,
+                },
                 
                     'nobles': self._patronController.patrons,
                     'tokens': self._bankController.bank
-                },
-            }
+                }
+
             return dictionary
         else:
             return None
