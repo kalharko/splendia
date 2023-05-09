@@ -79,7 +79,7 @@ class GameManager():
         self.cpu = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
                        False,
                        0, self.cpu_Id+1)
-        self.cpu.load('PPO_preTrained/Splendor/1/PPO_Splendor_0_0.pth')
+        self.cpu.load('Champion/champion_0.pth')
 
     def randomize_first_player(self):
         """This method randomizes the first player."""

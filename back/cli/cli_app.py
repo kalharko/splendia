@@ -121,7 +121,7 @@ class CliApp():
         self.inputWin.display('')
         return out.split(' ')
 
-    def display(self, action_log="") -> None:
+    def display(self) -> None:
         self.screen.erase()
         self.screen.border()
         self.screen.refresh()
@@ -139,31 +139,42 @@ class CliApp():
         for patronWin in self.patronWins:
             patronWin.display()
 
+        # cpus windows
+        self.playerWin = []
+        y = 0
+        for player in self.gm.get_player_controller().players:
+            if player.player_id == self.gm.userId:
+                humanPlayer = player
+                continue
+            name = f'CPU#{player.player_id}'
+            self.playerWin.append(PlayerWin(player, name, y * 6 + 1, 45))
+            y += 1
+            if self.gm.currentPlayer == player.player_id:
+                self.playerWin[-1].currentPlayer = True
+            self.playerWin[-1].display()
+
+        # player window
+        self.playerWin.append(PlayerWin(humanPlayer, 'Player', y * 5 + 1, 45))
+        if self.gm.currentPlayer == humanPlayer.player_id:
+            self.playerWin[-1].currentPlayer = True
+        self.playerWin[-1].display()
+
         # card windows
+        # shop
         self.cardWins = []
         for i, rank in enumerate(self.gm.get_shop_controller().ranks):
             for j, card in enumerate(rank.hand.cards):
                 self.cardWins.append(CardWin(card, 16 - 6 * i, 12 + j * 8))
                 self.cardWins[-1].display()
 
-        for i, card in enumerate(self.gm.get_player_controller().players[self.gm.userId].reserved.cards):
-            self.cardWins.append(CardWin(card, 10 + 6 * i, 47))
+        # reserved cards
+        positions = ((10, 47), (10, 56), (16, 51))
+        for i, card in enumerate(humanPlayer.reserved.cards):
+            self.cardWins.append(CardWin(card, positions[i][0], positions[i][1]))
             self.cardWins[-1].display()
 
-        # player windows
-        self.playerWin = []
-        for i, player in enumerate(self.gm.get_player_controller().players):
-            if player.player_id == self.gm.userId:
-                name = 'Player'
-            else:
-                name = f'CPU#{player.player_id}'
-            self.playerWin.append(PlayerWin(player, name, i * 6, 45))
-            if self.gm.currentPlayer == player.player_id:
-                self.playerWin[-1].currentPlayer = True
-            self.playerWin[-1].display()
         # input window
         self.inputWin.display()
-        self.screen.addstr(1, 2, action_log)
 
     def take_tokens(self, user_input: list[str]) -> None:
         """Parse and call game manager take token action.
@@ -236,4 +247,4 @@ class CliApp():
         pass
 
     def restart(self, user_input: list[str]) -> None:
-        self.gm = GameManager(2)
+        self.gm = GameManager(self.gm.nbPlayer)
