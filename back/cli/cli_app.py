@@ -162,19 +162,19 @@ class CliApp():
         self.playerWin = []
         y = 0
         for player in self.gm.get_player_controller().players:
-            if player.player_id == self.gm.userId:
+            if player.playerId == self.gm.userId:
                 humanPlayer = player
                 continue
-            name = f'CPU#{player.player_id}'
+            name = f'CPU#{player.playerId}'
             self.playerWin.append(PlayerWin(player, name, y * 6 + 1, 47))
             y += 1
-            if self.gm.currentPlayer == player.player_id:
+            if self.gm.currentPlayer == player.playerId:
                 self.playerWin[-1].currentPlayer = True
             self.playerWin[-1].display()
 
         # player window
         self.playerWin.append(PlayerWin(humanPlayer, 'Player', y * 5 + 1, 47))
-        if self.gm.currentPlayer == humanPlayer.player_id:
+        if self.gm.currentPlayer == humanPlayer.playerId:
             self.playerWin[-1].currentPlayer = True
         self.playerWin[-1].display()
 

@@ -45,9 +45,18 @@ class GameManager():
         Args:
             nbPlayer (int): The number of players.
             """
+        assert isinstance(nbPlayer, int)
+
         self.initialize_game(nbPlayer)
 
     def initialize_game(self, nbPlayer):
+        """This method initializes the game manager. It creates the controllers of the game.
+
+        Args:
+            nbPlayer (int): The number of players.
+            """
+        assert isinstance(nbPlayer, int)
+
         self._bankController = BankController(nbPlayer)
         self._patronController = PatronController(nbPlayer)
         self._playerController = PlayerController(
@@ -61,6 +70,9 @@ class GameManager():
         self.initialize_cpu()
 
     def initialize_cpu(self):
+        """This method initializes the cpu.
+            """
+
         state_dim = 88
 
         # action space dimension
@@ -96,6 +108,8 @@ class GameManager():
         Returns:
             dict: The board state.
             """
+        assert isinstance(nb_players, int)
+
         if nb_players == 2:
             dictionary = {
                 'player1': {
@@ -218,14 +232,15 @@ class GameManager():
         Args:
             nbPlayer (int): The number of players.
             """
+        assert isinstance(nbPlayer, int)
+
         if (nbPlayer < 2 or nbPlayer > 4):
             raise InvalidNbPlayer(nbPlayer)
         self.initialize_game(nbPlayer)
 
     def next_player(self) -> None:
         """This method changes the current player.
-
-        """
+            """
 
         self.currentPlayer += 1
 
@@ -238,6 +253,7 @@ class GameManager():
         Args:
             cardId (int): The card id.
             """
+        assert isinstance(cardId, int)
 
         # print('bank token before', self.bankController.bank.get_tokens())
         if self._shopController.has_card(cardId):
@@ -259,6 +275,7 @@ class GameManager():
         Args:
             cardId (int): The card id.
             """
+        assert isinstance(cardId, int)
 
         if err := self._playerController.reserve_card(self.currentPlayer, cardId, self._shopController,
                                                       self._bankController):
@@ -274,6 +291,8 @@ class GameManager():
         Args:
             pile_level (int): The pile level.
             """
+        assert isinstance(pile_level, int)
+
         if err := self._playerController.reserve_pile_card(self.currentPlayer, pile_level, self._shopController):
             Logger().log(0, err, 'GameManager reserve_pile_card')
             return err
@@ -287,6 +306,7 @@ class GameManager():
         Args:
             tokens (TokenArray): The tokens.
             """
+        assert isinstance(tokens, TokenArray)
 
         if err := self._playerController.take_tokens(self.currentPlayer, tokens, self._bankController):
             Logger().log(0, err, 'GameManager take_token')
@@ -297,8 +317,8 @@ class GameManager():
 
     def pass_turn(self):
         """This method passes the turn.
-
             """
+
         self.next_player()
 
     def is_last_turn(self) -> bool:
@@ -307,6 +327,7 @@ class GameManager():
         Returns:
             bool: True if it is the last turn, False otherwise.
             """
+
         for player in self._playerController.players:
             if player.victoryPoints.value >= 15:
                 return True
@@ -314,13 +335,12 @@ class GameManager():
 
     def cpu_turn(self) -> str:
         """This method plays the turn for the cpu.
+            """
 
-        """
-
-        player_id = self.cpu_Id
+        playerId = self.cpu_Id
         state = self.gather_ia_board_state()
-        player_string = 'player' + str(player_id + 1)
-        player2 = (player_id + 1) % 3
+        player_string = 'player' + str(playerId + 1)
+        player2 = (playerId + 1) % 3
         opponent_string = 'player' + str(player2)
 
         obs = self.from_board_state_to_obs(
@@ -336,11 +356,14 @@ class GameManager():
         return string_action
 
     def from_board_state_to_obs(self, opponent_string, player_string, state):
+        """TODO: documentation
+            """
+
         obs = numpy.zeros(88)
         obs[0:6] = state[player_string]['tokens']
         # if the length of the list smaller than 20, we padd with 90
         list_of_cards = [
-            card.card_id for card in state[player_string]['cards'] if card is not None]
+            card.cardId for card in state[player_string]['cards'] if card is not None]
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
@@ -354,13 +377,13 @@ class GameManager():
         obs[26:31] = list_of_nobles
         # we save the reserved cards in a list, if the card is None, we padd with 90
         self.reserved_cards = [
-            card.card_id for card in state[player_string]['reserved'] if card is not None]
+            card.cardId for card in state[player_string]['reserved'] if card is not None]
         if len(self.reserved_cards) < 3:
             for i in range(3 - len(self.reserved_cards)):
                 self.reserved_cards.append(90)
         # same for reserved cards, if the length of the list smaller than 3, we padd with 90
         list_of_reserved = [
-            card.card_id for card in state[player_string]['reserved'] if card is not None]
+            card.cardId for card in state[player_string]['reserved'] if card is not None]
         if len(list_of_reserved) < 3:
             for i in range(3 - len(list_of_reserved)):
                 list_of_reserved.append(90)
@@ -368,7 +391,7 @@ class GameManager():
         obs[34:40] = state[opponent_string]['tokens']
         # same for player 2
         list_of_cards = [
-            card.card_id for card in state[opponent_string]['cards'] if card is not None]
+            card.cardId for card in state[opponent_string]['cards'] if card is not None]
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
@@ -380,7 +403,7 @@ class GameManager():
                 list_of_nobles.append(10)
         obs[60:65] = list_of_nobles
         list_of_reserved = [
-            card.card_id for card in state[opponent_string]['reserved'] if card is not None]
+            card.cardId for card in state[opponent_string]['reserved'] if card is not None]
         if len(list_of_reserved) < 3:
             for i in range(3 - len(list_of_reserved)):
                 list_of_reserved.append(90)
@@ -388,21 +411,21 @@ class GameManager():
         # same for shop
         self.shop1_cards = state['shop']['rank1_cards']
         list_of_cards_rank1 = [
-            card.card_id for card in state['shop']['rank1_cards']]
+            card.cardId for card in state['shop']['rank1_cards']]
         if len(list_of_cards_rank1) < 4:
             for i in range(4 - len(list_of_cards_rank1)):
                 list_of_cards_rank1.append(90)
         obs[68:72] = list_of_cards_rank1
         self.shop2_cards = state['shop']['rank2_cards']
         list_of_cards_rank2 = [
-            card.card_id for card in state['shop']['rank2_cards']]
+            card.cardId for card in state['shop']['rank2_cards']]
         if len(list_of_cards_rank2) < 4:
             for i in range(4 - len(list_of_cards_rank2)):
                 list_of_cards_rank2.append(90)
         obs[72:76] = list_of_cards_rank2
         self.shop3_cards = state['shop']['rank3_cards']
         list_of_cards_rank3 = [
-            card.card_id for card in state['shop']['rank3_cards']]
+            card.cardId for card in state['shop']['rank3_cards']]
         if len(list_of_cards_rank3) < 4:
             for i in range(4 - len(list_of_cards_rank3)):
                 list_of_cards_rank3.append(90)
@@ -458,16 +481,18 @@ class GameManager():
 
         return obs
 
-    def get_player_victory_point(self, player_id: int) -> int:
+    def get_player_victory_point(self, playerId: int) -> int:
         """This method returns the victory points of a player.
 
         Args:
-            player_id (int): The player id.
+            playerId (int): The player id.
 
         Returns:
             int: The victory points of the player.
             """
-        return self._playerController.players[player_id].victoryPoints.value
+        assert isinstance(playerId, int)
+
+        return self._playerController.players[playerId].victoryPoints.value
 
     def get_current_player(self) -> Player:
         """This method returns the current player.
@@ -484,6 +509,7 @@ class GameManager():
         Returns:
             PatronController: The game manager's patron controller
             """
+
         return self._patronController
 
     def get_player_controller(self) -> PlayerController:
@@ -492,6 +518,7 @@ class GameManager():
         Returns:
             PlayerController: The game manager's player controller
             """
+
         return self._playerController
 
     def get_shop_controller(self) -> ShopController:
@@ -500,6 +527,7 @@ class GameManager():
         Returns:
             ShopController: The game manager's shop controller
             """
+
         return self._shopController
 
     def get_bank_controller(self) -> BankController:
@@ -508,9 +536,13 @@ class GameManager():
         Returns:
             BankController: The game manager's bank controller
             """
+
         return self._bankController
 
     def apply_action(self, action):
+        """TODO: Documentation
+            """
+        assert isinstance(action, int)
 
         string_action = ""
         # print the action done
@@ -572,52 +604,52 @@ class GameManager():
             string_action = "The cpu took [0,0,0,0,2,0] tokens"
         elif action == 15:
             string_action = "The cpu bought a card from shop 1, id : " + \
-                str(self.shop1_cards[0].card_id)
-            self.buy_card(self.shop1_cards[0].card_id)
+                str(self.shop1_cards[0].cardId)
+            self.buy_card(self.shop1_cards[0].cardId)
         elif action == 16:
             string_action = "The cpu bought a card from shop 1, id : " + \
-                str(self.shop1_cards[1].card_id)
-            self.buy_card(self.shop1_cards[1].card_id)
+                str(self.shop1_cards[1].cardId)
+            self.buy_card(self.shop1_cards[1].cardId)
         elif action == 17:
             string_action = "The cpu bought a card from shop 1, id : " + \
-                str(self.shop1_cards[2].card_id)
-            self.buy_card(self.shop1_cards[2].card_id)
+                str(self.shop1_cards[2].cardId)
+            self.buy_card(self.shop1_cards[2].cardId)
         elif action == 18:
             string_action = "The cpu bought a card from shop 1, id : " + \
-                str(self.shop1_cards[3].card_id)
-            self.buy_card(self.shop1_cards[3].card_id)
+                str(self.shop1_cards[3].cardId)
+            self.buy_card(self.shop1_cards[3].cardId)
         elif action == 19:
             string_action = "The cpu bought a card from shop 2, id : " + \
-                str(self.shop2_cards[0].card_id)
-            self.buy_card(self.shop2_cards[0].card_id)
+                str(self.shop2_cards[0].cardId)
+            self.buy_card(self.shop2_cards[0].cardId)
         elif action == 20:
             string_action = "The cpu bought a card from shop 2, id : " + \
-                str(self.shop2_cards[1].card_id)
-            self.buy_card(self.shop2_cards[1].card_id)
+                str(self.shop2_cards[1].cardId)
+            self.buy_card(self.shop2_cards[1].cardId)
         elif action == 21:
             string_action = "The cpu bought a card from shop 2, id : " + \
-                str(self.shop2_cards[2].card_id)
-            self.buy_card(self.shop2_cards[2].card_id)
+                str(self.shop2_cards[2].cardId)
+            self.buy_card(self.shop2_cards[2].cardId)
         elif action == 22:
             string_action = "The cpu bought a card from shop 2, id : " + \
-                str(self.shop2_cards[3].card_id)
-            self.buy_card(self.shop2_cards[3].card_id)
+                str(self.shop2_cards[3].cardId)
+            self.buy_card(self.shop2_cards[3].cardId)
         elif action == 23:
             string_action = "The cpu bought a card from shop 3, id : " + \
-                str(self.shop3_cards[0].card_id)
-            self.buy_card(self.shop3_cards[0].card_id)
+                str(self.shop3_cards[0].cardId)
+            self.buy_card(self.shop3_cards[0].cardId)
         elif action == 24:
             string_action = "The cpu bought a card from shop 3, id : " + \
-                str(self.shop3_cards[1].card_id)
-            self.buy_card(self.shop3_cards[1].card_id)
+                str(self.shop3_cards[1].cardId)
+            self.buy_card(self.shop3_cards[1].cardId)
         elif action == 25:
             string_action = "The cpu bought a card from shop 3, id : " + \
-                str(self.shop3_cards[2].card_id)
-            self.buy_card(self.shop3_cards[2].card_id)
+                str(self.shop3_cards[2].cardId)
+            self.buy_card(self.shop3_cards[2].cardId)
         elif action == 26:
             string_action = "The cpu bought a card from shop 3, id : " + \
-                str(self.shop3_cards[3].card_id)
-            self.buy_card(self.shop3_cards[3].card_id)
+                str(self.shop3_cards[3].cardId)
+            self.buy_card(self.shop3_cards[3].cardId)
         elif action == 27:
             string_action = "The cpu bought reserved card, id : " + \
                 str(self.reserved_cards[0])
@@ -633,52 +665,52 @@ class GameManager():
             self.buy_card(self.reserved_cards[2])
         elif action == 30:
             string_action = "The cpu reserved a card from shop 1, id : " + \
-                str(self.shop1_cards[0].card_id)
-            self.reserve_card(self.shop1_cards[0].card_id)
+                str(self.shop1_cards[0].cardId)
+            self.reserve_card(self.shop1_cards[0].cardId)
         elif action == 31:
             string_action = "The cpu reserved a card from shop 1, id : " + \
-                str(self.shop1_cards[1].card_id)
-            self.reserve_card(self.shop1_cards[1].card_id)
+                str(self.shop1_cards[1].cardId)
+            self.reserve_card(self.shop1_cards[1].cardId)
         elif action == 32:
             string_action = "The cpu reserved a card from shop 1, id : " + \
-                str(self.shop1_cards[2].card_id)
-            self.reserve_card(self.shop1_cards[2].card_id)
+                str(self.shop1_cards[2].cardId)
+            self.reserve_card(self.shop1_cards[2].cardId)
         elif action == 33:
             string_action = "The cpu reserved a card from shop 1, id : " + \
-                str(self.shop1_cards[3].card_id)
-            self.reserve_card(self.shop1_cards[3].card_id)
+                str(self.shop1_cards[3].cardId)
+            self.reserve_card(self.shop1_cards[3].cardId)
         elif action == 34:
             string_action = "The cpu reserved a card from shop 2, id : " + \
-                str(self.shop2_cards[0].card_id)
-            self.reserve_card(self.shop2_cards[0].card_id)
+                str(self.shop2_cards[0].cardId)
+            self.reserve_card(self.shop2_cards[0].cardId)
         elif action == 35:
             string_action = "The cpu reserved a card from shop 2, id : " + \
-                str(self.shop2_cards[1].card_id)
-            self.reserve_card(self.shop2_cards[1].card_id)
+                str(self.shop2_cards[1].cardId)
+            self.reserve_card(self.shop2_cards[1].cardId)
         elif action == 36:
             string_action = "The cpu reserved a card from shop 2, id : " + \
-                str(self.shop2_cards[2].card_id)
-            self.reserve_card(self.shop2_cards[2].card_id)
+                str(self.shop2_cards[2].cardId)
+            self.reserve_card(self.shop2_cards[2].cardId)
         elif action == 37:
             string_action = "The cpu reserved a card from shop 2, id : " + \
-                str(self.shop2_cards[3].card_id)
-            self.reserve_card(self.shop2_cards[3].card_id)
+                str(self.shop2_cards[3].cardId)
+            self.reserve_card(self.shop2_cards[3].cardId)
         elif action == 38:
             string_action = "The cpu reserved a card from shop 3, id : " + \
-                str(self.shop3_cards[0].card_id)
-            self.reserve_card(self.shop3_cards[0].card_id)
+                str(self.shop3_cards[0].cardId)
+            self.reserve_card(self.shop3_cards[0].cardId)
         elif action == 39:
             string_action = "The cpu reserved a card from shop 3, id : " + \
-                str(self.shop3_cards[1].card_id)
-            self.reserve_card(self.shop3_cards[1].card_id)
+                str(self.shop3_cards[1].cardId)
+            self.reserve_card(self.shop3_cards[1].cardId)
         elif action == 40:
             string_action = "The cpu reserved a card from shop 3, id : " + \
-                str(self.shop3_cards[2].card_id)
-            self.reserve_card(self.shop3_cards[2].card_id)
+                str(self.shop3_cards[2].cardId)
+            self.reserve_card(self.shop3_cards[2].cardId)
         elif action == 41:
             string_action = "The cpu reserved a card from shop 3, id : " + \
-                str(self.shop3_cards[3].card_id)
-            self.reserve_card(self.shop3_cards[3].card_id)
+                str(self.shop3_cards[3].cardId)
+            self.reserve_card(self.shop3_cards[3].cardId)
         elif action == 42:
             self.reserve_pile_card(0)
             string_action = "The cpu reserved a card from pile 1"

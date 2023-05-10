@@ -20,13 +20,16 @@ class Rank():
     hand: Hand
     deck: Deck
 
-    def __init__(self, cards: List[Card], level: int) -> None:
+    def __init__(self, cards: list[Card], level: int) -> None:
         """This method initializes the rank. It creates the hand and the deck of the rank.
 
         Args:
             cards (List[Card]): The cards of the rank.
             level (int): The level of the rank.
             """
+        assert isinstance(cards, list)
+        assert isinstance(level, int)
+
         self.level = level
         self.hand = Hand([])
         self.deck = Deck(cards)
@@ -43,12 +46,13 @@ class Rank():
         Returns:
             TokenArray or None: The price of the card if the rank has it, None otherwise.
             """
+        assert isinstance(cardId, int)
 
         for card in self.hand.cards:
             if card is None:
                 return 1000
 
-            if card.card_id == cardId:
+            if card.cardId == cardId:
                 return card.price
         return None
 
@@ -61,6 +65,8 @@ class Rank():
         Returns:
             Card or None: The card if the rank has it, None otherwise.
             """
+        assert isinstance(cardId, int)
+
         if isinstance((card := self.hand.pop_card(cardId)), Card):
             draw_card = self.deck.draw()
             if isinstance(card, Card):
@@ -68,12 +74,21 @@ class Rank():
             return card
         return None
 
-    def has_card(self, card_id: int):
+    def has_card(self, cardId: int) -> bool:
+        """This method returns True if this rank has a particular card in it's hand
+
+        Args:
+            cardId (int): The id of the card to withdraw
+
+        Returns:
+            bool: If this rank has a particular card or not
+            """
+        assert isinstance(cardId, int)
 
         for card in self.hand.cards:
             if card is None:
                 continue
-            if card.card_id == card_id:
+            if card.cardId == cardId:
                 return True
         return False
 
@@ -92,6 +107,7 @@ class Rank():
         Returns:
             Card: The card withdrawn.
             """
+
         return self.deck.draw()
 
     def get_number_of_cards_deck(self) -> int:
@@ -100,6 +116,7 @@ class Rank():
         Returns:
             int: the number of cards in the deck
         """
+
         return self.deck.get_number_of_cards()
 
     def gather_visible_cards_information_api_board_state(self) -> list:
@@ -108,4 +125,5 @@ class Rank():
         Returns:
             list: information about the visible cards of the rank for the api board state
         """
+
         return self.hand.gather_cards_information_api_board_state()
