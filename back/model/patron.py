@@ -27,6 +27,7 @@ class Patron():
         Returns:
             dict: shop information for the api board state
         """
+
         return {
             "patronId": self.patron_id,
             "requirements": self.requirements.get_tokens(),

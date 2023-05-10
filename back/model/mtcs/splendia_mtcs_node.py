@@ -119,7 +119,7 @@ class SplendiaMtcsNode(GameManager, Node):
         # shop information
         for i in range(3):
             for j in range(4):
-                out.append(self._shopController.ranks[i].hand.cards[j].card_id)
+                out.append(self._shopController.ranks[i].hand.cards[j].cardId)
         # players information
         for i in range(self.nbPlayer):
             # tokens
@@ -129,11 +129,11 @@ class SplendiaMtcsNode(GameManager, Node):
             # cards
             for j in range(len(self._playerController.players[i].hand.cards)):
                 out.append(
-                    self._playerController.players[i].hand.cards[j].card_id)
+                    self._playerController.players[i].hand.cards[j].cardId)
             # reserved cards
             for j in range(len(self._playerController.players[i].reserved.cards)):
                 out.append(
-                    self._playerController.players[i].reserved.cards[j].card_id)
+                    self._playerController.players[i].reserved.cards[j].cardId)
             # patrons
             for j in range(len(self._playerController.players[i].patrons)):
                 out.append(
@@ -157,18 +157,18 @@ class SplendiaMtcsNode(GameManager, Node):
         for rank in self._shopController.ranks:
             for card in rank.hand.cards:
                 if self.get_current_player().can_pay_with_reduced_price(card.price):
-                    out.append(card.card_id)
+                    out.append(card.cardId)
 
         for card in self.get_current_player().reserved.cards:
             if self.get_current_player().can_pay_with_reduced_price(card.price):
-                out.append(card.card_id)
+                out.append(card.cardId)
         return out
 
     def possible_cards_to_reserve(self) -> list[int]:
         out = []
         for rank in self._shopController.ranks:
             for card in rank.hand.cards:
-                out.append(card.card_id)
+                out.append(card.cardId)
         return out
 
     def possible_tokens_to_take(self) -> list[TokenArray]:
@@ -250,7 +250,7 @@ class SplendiaMtcsNode(GameManager, Node):
         possible_actions = numpy.where(mask == 1)[0]
         return possible_actions
 
-    def simulate_monte_carlo(self, player_id):
+    def simulate_monte_carlo(self, playerId):
         # while the game is not finished
         is_finish = False
         number_iteration = 0
@@ -274,9 +274,9 @@ class SplendiaMtcsNode(GameManager, Node):
             if current_node.currentPlayer == current_node.firstPlayerId and current_node.is_last_turn() == True:
 
                 # return the winner
-                if current_node._playerController.players[player_id].victoryPoints.value > current_node._playerController.players[(player_id + 1) % 2].victoryPoints.value:
+                if current_node._playerController.players[playerId].victoryPoints.value > current_node._playerController.players[(playerId + 1) % 2].victoryPoints.value:
                     return 1, number_iteration
-                elif current_node._playerController.players[player_id].victoryPoints.value == current_node._playerController.players[(player_id + 1) % 2].victoryPoints.value:
+                elif current_node._playerController.players[playerId].victoryPoints.value == current_node._playerController.players[(playerId + 1) % 2].victoryPoints.value:
                     return 0, number_iteration
                 else:
                     return 0.5, number_iteration
@@ -333,71 +333,71 @@ class SplendiaMtcsNode(GameManager, Node):
         elif action == 14:
             self.take_token(TokenArray([0, 0, 0, 0, 2, 0]))
         elif action == 15:
-            self.buy_card(self._shopController.ranks[0].hand.cards[0].card_id)
+            self.buy_card(self._shopController.ranks[0].hand.cards[0].cardId)
         elif action == 16:
-            self.buy_card(self._shopController.ranks[0].hand.cards[1].card_id)
+            self.buy_card(self._shopController.ranks[0].hand.cards[1].cardId)
         elif action == 17:
-            self.buy_card(self._shopController.ranks[0].hand.cards[2].card_id)
+            self.buy_card(self._shopController.ranks[0].hand.cards[2].cardId)
         elif action == 18:
-            self.buy_card(self._shopController.ranks[0].hand.cards[3].card_id)
+            self.buy_card(self._shopController.ranks[0].hand.cards[3].cardId)
         elif action == 19:
-            self.buy_card(self._shopController.ranks[1].hand.cards[0].card_id)
+            self.buy_card(self._shopController.ranks[1].hand.cards[0].cardId)
         elif action == 20:
-            self.buy_card(self._shopController.ranks[1].hand.cards[1].card_id)
+            self.buy_card(self._shopController.ranks[1].hand.cards[1].cardId)
         elif action == 21:
-            self.buy_card(self._shopController.ranks[1].hand.cards[2].card_id)
+            self.buy_card(self._shopController.ranks[1].hand.cards[2].cardId)
         elif action == 22:
-            self.buy_card(self._shopController.ranks[1].hand.cards[3].card_id)
+            self.buy_card(self._shopController.ranks[1].hand.cards[3].cardId)
         elif action == 23:
-            self.buy_card(self._shopController.ranks[2].hand.cards[0].card_id)
+            self.buy_card(self._shopController.ranks[2].hand.cards[0].cardId)
         elif action == 24:
-            self.buy_card(self._shopController.ranks[2].hand.cards[1].card_id)
+            self.buy_card(self._shopController.ranks[2].hand.cards[1].cardId)
         elif action == 25:
-            self.buy_card(self._shopController.ranks[2].hand.cards[2].card_id)
+            self.buy_card(self._shopController.ranks[2].hand.cards[2].cardId)
         elif action == 26:
-            self.buy_card(self._shopController.ranks[2].hand.cards[3].card_id)
+            self.buy_card(self._shopController.ranks[2].hand.cards[3].cardId)
         elif action == 27:
-            self.buy_card(self.get_current_player().reserved.cards[0].card_id)
+            self.buy_card(self.get_current_player().reserved.cards[0].cardId)
         elif action == 28:
-            self.buy_card(self.get_current_player().reserved.cards[1].card_id)
+            self.buy_card(self.get_current_player().reserved.cards[1].cardId)
         elif action == 29:
-            self.buy_card(self.get_current_player().reserved.cards[2].card_id)
+            self.buy_card(self.get_current_player().reserved.cards[2].cardId)
         elif action == 30:
             self.reserve_card(
-                self._shopController.ranks[0].hand.cards[0].card_id)
+                self._shopController.ranks[0].hand.cards[0].cardId)
         elif action == 31:
             self.reserve_card(
-                self._shopController.ranks[0].hand.cards[1].card_id)
+                self._shopController.ranks[0].hand.cards[1].cardId)
         elif action == 32:
             self.reserve_card(
-                self._shopController.ranks[0].hand.cards[2].card_id)
+                self._shopController.ranks[0].hand.cards[2].cardId)
         elif action == 33:
             self.reserve_card(
-                self._shopController.ranks[0].hand.cards[3].card_id)
+                self._shopController.ranks[0].hand.cards[3].cardId)
         elif action == 34:
             self.reserve_card(
-                self._shopController.ranks[1].hand.cards[0].card_id)
+                self._shopController.ranks[1].hand.cards[0].cardId)
         elif action == 35:
             self.reserve_card(
-                self._shopController.ranks[1].hand.cards[1].card_id)
+                self._shopController.ranks[1].hand.cards[1].cardId)
         elif action == 36:
             self.reserve_card(
-                self._shopController.ranks[1].hand.cards[2].card_id)
+                self._shopController.ranks[1].hand.cards[2].cardId)
         elif action == 37:
             self.reserve_card(
-                self._shopController.ranks[1].hand.cards[3].card_id)
+                self._shopController.ranks[1].hand.cards[3].cardId)
         elif action == 38:
             self.reserve_card(
-                self._shopController.ranks[2].hand.cards[0].card_id)
+                self._shopController.ranks[2].hand.cards[0].cardId)
         elif action == 39:
             self.reserve_card(
-                self._shopController.ranks[2].hand.cards[1].card_id)
+                self._shopController.ranks[2].hand.cards[1].cardId)
         elif action == 40:
             self.reserve_card(
-                self._shopController.ranks[2].hand.cards[2].card_id)
+                self._shopController.ranks[2].hand.cards[2].cardId)
         elif action == 41:
             self.reserve_card(
-                self._shopController.ranks[2].hand.cards[3].card_id)
+                self._shopController.ranks[2].hand.cards[3].cardId)
         elif action == 42:
             self.reserve_pile_card(0)
         elif action == 43:

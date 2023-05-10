@@ -25,11 +25,11 @@ export class CardComponent extends OnDestroyMixin implements OnInit {
   }
 
   buyCard(){
-    this.appService.buyCard(this.card.card_id);
+    this.appService.buyCard(this.card.cardId);
   }
 
   reserveCard(){
-    this.appService.reserveCard(this.card.card_id);
+    this.appService.reserveCard(this.card.cardId);
   }
 
 }

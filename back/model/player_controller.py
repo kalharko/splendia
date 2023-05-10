@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import List
-from utils.exception import TooMuchReservedCards
+from utils.exception import TooMuchReservedCards, PlayerCanNotPay
 from model.patron_controller import PatronController
 from model.bank_controller import BankController
 from model.shop_controller import ShopController
@@ -29,6 +29,9 @@ class PlayerController():
             nbPlayer (int): The number of players.
             observer (PatronController): The patron controller.
             """
+        assert isinstance(nbPlayer, int)
+        assert isinstance(observer, PatronController)
+
         self.players = [Player(i, observer) for i in range(nbPlayer)]
         self.idHumanPlayer = 0
 
@@ -42,12 +45,17 @@ class PlayerController():
 
         Returns:
             TokenArray or None: The price of the card if the player has it, None otherwise.
-
             """
+        assert isinstance(playerId, int)
+        assert isinstance(cardId, int)
+        assert isinstance(bank_controller, BankController)
+
         # TODO: check the return types
         if not isinstance(price := self.players[playerId].get_card_price_reserved_card(cardId), TokenArray):
             return price
         to_deposit, _ = self.players[playerId].pay(price)
+        if not isinstance(to_deposit, TokenArray):
+            return to_deposit
 
         bank_controller.deposit(to_deposit)
         if not isinstance(card := self.players[playerId].withdraw_reserved_card(cardId), Card):
@@ -66,15 +74,19 @@ class PlayerController():
 
         Returns:
             None or TokenArray: None if the player has not enough tokens, the price of the card otherwise.
-
             """
+        assert isinstance(playerId, int)
+        assert isinstance(cardId, int)
+        assert isinstance(shop_controller, ShopController)
+        assert isinstance(bank_controller, BankController)
 
         player = self.players[playerId]
         if not isinstance(price := shop_controller.get_card_price(cardId), TokenArray):
             return price
         to_deposit, _ = player.pay(price)
-        """if error := player.pay(price):
-            return error"""
+        if not isinstance(to_deposit, TokenArray):
+            return to_deposit
+
         bank_controller.deposit(to_deposit)
         card = shop_controller.withdraw_card(cardId)
         player.deposit_card(card)
@@ -91,8 +103,11 @@ class PlayerController():
 
         Returns:
             Card or None: The card if the player has it, None otherwise.
-
             """
+        assert isinstance(playerId, int)
+        assert isinstance(cardId, int)
+        assert isinstance(shop_controller, ShopController)
+        assert isinstance(bank_controller, BankController)
 
         if self.players[playerId].nb_reserved_cards() >= 3:
             return TooMuchReservedCards()
@@ -118,8 +133,10 @@ class PlayerController():
 
         Returns:
             None or TooMuchReservedCards: None if the player has not too much reserved cards, TooMuchReservedCards otherwise.
-
             """
+        assert isinstance(playerId, int)
+        assert isinstance(pileLevel, int)
+        assert isinstance(shop_controller, ShopController)
 
         if self.players[playerId].nb_reserved_cards() >= 3:
             return TooMuchReservedCards()
@@ -137,8 +154,11 @@ class PlayerController():
 
         Returns:
             None or TokenArray: None if the player has not enough tokens, the price of the card otherwise.
-
             """
+        assert isinstance(playerId, int)
+        assert isinstance(tokens, TokenArray)
+        assert isinstance(bank_controller, BankController)
+
         if (error := bank_controller.withdraw(tokens, self.players[playerId].tokens)) is not None:
             with open('log.txt', 'a') as file:
                 file.write('err' + str(type(error)) + '\n')
@@ -152,8 +172,11 @@ class PlayerController():
             playerId (int): The id of the player.
             tokens (TokenArray): The tokens to take.
             bank_controller (BankController): The bank controller.
+            """
+        assert isinstance(playerId, int)
+        assert isinstance(tokens, TokenArray)
+        assert isinstance(bank_controller, BankController)
 
-                """
         bank_controller.cheat_withdraw(tokens)
         self.players[playerId].deposit_tokens(tokens)
 
@@ -162,7 +185,8 @@ class PlayerController():
 
         Returns:
             Player: the human player
-        """
+            """
+
         return self.players[self.idHumanPlayer]
 
     def get_cpu_players(self) -> list[Player]:
@@ -170,7 +194,8 @@ class PlayerController():
 
         Returns:
             list[Player]: list of the CPU players
-        """
+            """
+
         human_player = self.get_human_player()
         return filter(lambda player: player != human_player, self.players)
 
@@ -179,7 +204,8 @@ class PlayerController():
 
         Returns:
             dict: human player information for the api board state
-        """
+            """
+
         return self.get_human_player().gather_human_player_information_api_board_state()
 
     def gather_cpu_players_information_api_board_state(self) -> list:
@@ -187,7 +213,8 @@ class PlayerController():
 
         Returns:
             list: contains information of each CPU player for the api board state
-        """
+            """
+
         return [cpu_player.gather_cpu_player_information_api_board_state() for cpu_player in self.get_cpu_players()]
 
     def check_human_player_too_many_tokens(self) -> bool:
@@ -195,7 +222,8 @@ class PlayerController():
 
         Returns:
             bool: true if the human player has too many tokens
-        """
+            """
+
         return self.get_human_player().check_too_many_tokens()
 
     def get_winners(self) -> list[Player]:
@@ -203,7 +231,8 @@ class PlayerController():
 
         Returns:
             list[Player]: winners of the game. The list can be empty if there are no winners
-        """
+            """
+
         # Find the maximum amount of points of the players
         maxPoints = 0
         for player in self.players:
@@ -223,5 +252,6 @@ class PlayerController():
 
         Returns:
             list[int]: ids of the winners. The list is empty if there are no winners
-        """
+            """
+
         return [winner.get_id() for winner in self.get_winners()]
