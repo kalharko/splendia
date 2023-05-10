@@ -99,7 +99,7 @@ class ShopController():
         return self.ranks[pileLevel].withdraw_pile_card()
 
     def gather_shop_information_api_board_state(self) -> list:
-        """Gather the shop information needed for the api board state in a list that contains "rank" objects. 
+        """Gather the shop information needed for the api board state in a list that contains "rank" objects.
         A rank object contains:
         - the number of cards in the deck associated to that rank
         - the visible cards associated to the rank (i.e., the hand of the rank)

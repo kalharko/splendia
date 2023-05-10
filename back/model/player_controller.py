@@ -97,13 +97,15 @@ class PlayerController():
         if self.players[playerId].nb_reserved_cards() >= 3:
             return TooMuchReservedCards()
         if not isinstance(card := shop_controller.withdraw_card(cardId), Card):
-            Logger().log(2, None, '0')
+            Logger().log(0, card, '0')
             return card
         if bank_controller.bank.get_tokens()[5] != 0:
             if error := bank_controller.withdraw_gold(TokenArray([0, 0, 0, 0, 0, 1]), self.players[playerId].tokens):
                 return error
-            if err := self.players[playerId].deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1])):
-                return err
+            if self.players[playerId].tokens.nb_of_tokens() < 10:
+
+                if err := self.players[playerId].deposit_tokens(TokenArray([0, 0, 0, 0, 0, 1])):
+                    return err
         self.players[playerId].deposit_reserved_card(card)
 
     def reserve_pile_card(self, playerId: int, pileLevel: int, shop_controller: ShopController) -> None or TooMuchReservedCards:

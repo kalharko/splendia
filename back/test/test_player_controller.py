@@ -38,7 +38,7 @@ class Test_PlayerController(unittest.TestCase):
         cardId = shopController.ranks[0].hand.cards[0].card_id
         price = shopController.ranks[0].hand.cards[0].price
         pc.players[0].tokens = TokenArray([7, 7, 7, 7, 7, 5])
-        pc.buy_shop_card(0, cardId, shopController, BankController)
+        pc.buy_shop_card(0, cardId, shopController, bankController)
         self.assertEqual(pc.players[0].tokens.get_tokens(
         ), (TokenArray([7, 7, 7, 7, 7, 5]) - price).get_tokens())
         self.assertEqual(pc.players[0].hand.cards[0].card_id, cardId)

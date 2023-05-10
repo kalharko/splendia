@@ -78,8 +78,8 @@ class GameManager():
         random_seed = 0  # set random seed if required (0 = no random seed)
         self.cpu = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
                        False,
-                       0, self.cpu_Id+1)
-        self.cpu.load('PPO_preTrained/Splendor/1/PPO_Splendor_0_0.pth')
+                       0, self.cpu_Id + 1)
+        self.cpu.load('Champion/champion_0.pth')
 
     def randomize_first_player(self):
         """This method randomizes the first player."""
@@ -312,7 +312,7 @@ class GameManager():
                 return True
         return False
 
-    def cpu_turn(self) -> None:
+    def cpu_turn(self) -> str:
         """This method plays the turn for the cpu.
 
         """
@@ -571,114 +571,114 @@ class GameManager():
             self.take_token(TokenArray([0, 0, 0, 0, 2, 0]))
             string_action = "The cpu took [0,0,0,0,2,0] tokens"
         elif action == 15:
-            self.buy_card(self.shop1_cards[0].card_id)
             string_action = "The cpu bought a card from shop 1, id : " + \
                 str(self.shop1_cards[0].card_id)
+            self.buy_card(self.shop1_cards[0].card_id)
         elif action == 16:
-            self.buy_card(self.shop1_cards[1].card_id)
             string_action = "The cpu bought a card from shop 1, id : " + \
                 str(self.shop1_cards[1].card_id)
+            self.buy_card(self.shop1_cards[1].card_id)
         elif action == 17:
-            self.buy_card(self.shop1_cards[2].card_id)
             string_action = "The cpu bought a card from shop 1, id : " + \
                 str(self.shop1_cards[2].card_id)
+            self.buy_card(self.shop1_cards[2].card_id)
         elif action == 18:
-            self.buy_card(self.shop1_cards[3].card_id)
             string_action = "The cpu bought a card from shop 1, id : " + \
                 str(self.shop1_cards[3].card_id)
+            self.buy_card(self.shop1_cards[3].card_id)
         elif action == 19:
-            self.buy_card(self.shop2_cards[0].card_id)
             string_action = "The cpu bought a card from shop 2, id : " + \
                 str(self.shop2_cards[0].card_id)
+            self.buy_card(self.shop2_cards[0].card_id)
         elif action == 20:
-            self.buy_card(self.shop2_cards[1].card_id)
             string_action = "The cpu bought a card from shop 2, id : " + \
                 str(self.shop2_cards[1].card_id)
+            self.buy_card(self.shop2_cards[1].card_id)
         elif action == 21:
-            self.buy_card(self.shop2_cards[2].card_id)
             string_action = "The cpu bought a card from shop 2, id : " + \
                 str(self.shop2_cards[2].card_id)
+            self.buy_card(self.shop2_cards[2].card_id)
         elif action == 22:
-            self.buy_card(self.shop2_cards[3].card_id)
             string_action = "The cpu bought a card from shop 2, id : " + \
                 str(self.shop2_cards[3].card_id)
+            self.buy_card(self.shop2_cards[3].card_id)
         elif action == 23:
-            self.buy_card(self.shop3_cards[0].card_id)
             string_action = "The cpu bought a card from shop 3, id : " + \
                 str(self.shop3_cards[0].card_id)
+            self.buy_card(self.shop3_cards[0].card_id)
         elif action == 24:
-            self.buy_card(self.shop3_cards[1].card_id)
             string_action = "The cpu bought a card from shop 3, id : " + \
                 str(self.shop3_cards[1].card_id)
+            self.buy_card(self.shop3_cards[1].card_id)
         elif action == 25:
-            self.buy_card(self.shop3_cards[2].card_id)
             string_action = "The cpu bought a card from shop 3, id : " + \
                 str(self.shop3_cards[2].card_id)
+            self.buy_card(self.shop3_cards[2].card_id)
         elif action == 26:
-            self.buy_card(self.shop3_cards[3].card_id)
             string_action = "The cpu bought a card from shop 3, id : " + \
                 str(self.shop3_cards[3].card_id)
+            self.buy_card(self.shop3_cards[3].card_id)
         elif action == 27:
-            self.buy_card(self.reserved_cards[0])
             string_action = "The cpu bought reserved card, id : " + \
                 str(self.reserved_cards[0])
+            self.buy_card(self.reserved_cards[0])
         elif action == 28:
-            self.buy_card(self.reserved_cards[1])
             string_action = "The cpu bought reserved card, id : " + \
                 str(self.reserved_cards[1])
+            self.buy_card(self.reserved_cards[1])
 
         elif action == 29:
-            self.buy_card(self.reserved_cards[2])
             string_action = "The cpu bought reserved card , id : " + \
                 str(self.reserved_cards[2])
+            self.buy_card(self.reserved_cards[2])
         elif action == 30:
-            self.reserve_card(self.shop1_cards[0].card_id)
             string_action = "The cpu reserved a card from shop 1, id : " + \
                 str(self.shop1_cards[0].card_id)
+            self.reserve_card(self.shop1_cards[0].card_id)
         elif action == 31:
-            self.reserve_card(self.shop1_cards[1].card_id)
             string_action = "The cpu reserved a card from shop 1, id : " + \
                 str(self.shop1_cards[1].card_id)
+            self.reserve_card(self.shop1_cards[1].card_id)
         elif action == 32:
-            self.reserve_card(self.shop1_cards[2].card_id)
             string_action = "The cpu reserved a card from shop 1, id : " + \
                 str(self.shop1_cards[2].card_id)
+            self.reserve_card(self.shop1_cards[2].card_id)
         elif action == 33:
-            self.reserve_card(self.shop1_cards[3].card_id)
             string_action = "The cpu reserved a card from shop 1, id : " + \
                 str(self.shop1_cards[3].card_id)
+            self.reserve_card(self.shop1_cards[3].card_id)
         elif action == 34:
-            self.reserve_card(self.shop2_cards[0].card_id)
             string_action = "The cpu reserved a card from shop 2, id : " + \
                 str(self.shop2_cards[0].card_id)
+            self.reserve_card(self.shop2_cards[0].card_id)
         elif action == 35:
-            self.reserve_card(self.shop2_cards[1].card_id)
             string_action = "The cpu reserved a card from shop 2, id : " + \
                 str(self.shop2_cards[1].card_id)
+            self.reserve_card(self.shop2_cards[1].card_id)
         elif action == 36:
-            self.reserve_card(self.shop2_cards[2].card_id)
             string_action = "The cpu reserved a card from shop 2, id : " + \
                 str(self.shop2_cards[2].card_id)
+            self.reserve_card(self.shop2_cards[2].card_id)
         elif action == 37:
-            self.reserve_card(self.shop2_cards[3].card_id)
             string_action = "The cpu reserved a card from shop 2, id : " + \
                 str(self.shop2_cards[3].card_id)
+            self.reserve_card(self.shop2_cards[3].card_id)
         elif action == 38:
-            self.reserve_card(self.shop3_cards[0].card_id)
             string_action = "The cpu reserved a card from shop 3, id : " + \
                 str(self.shop3_cards[0].card_id)
+            self.reserve_card(self.shop3_cards[0].card_id)
         elif action == 39:
-            self.reserve_card(self.shop3_cards[1].card_id)
             string_action = "The cpu reserved a card from shop 3, id : " + \
                 str(self.shop3_cards[1].card_id)
+            self.reserve_card(self.shop3_cards[1].card_id)
         elif action == 40:
-            self.reserve_card(self.shop3_cards[2].card_id)
             string_action = "The cpu reserved a card from shop 3, id : " + \
                 str(self.shop3_cards[2].card_id)
+            self.reserve_card(self.shop3_cards[2].card_id)
         elif action == 41:
-            self.reserve_card(self.shop3_cards[3].card_id)
             string_action = "The cpu reserved a card from shop 3, id : " + \
                 str(self.shop3_cards[3].card_id)
+            self.reserve_card(self.shop3_cards[3].card_id)
         elif action == 42:
             self.reserve_pile_card(0)
             string_action = "The cpu reserved a card from pile 1"
