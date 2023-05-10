@@ -30,7 +30,7 @@ class Test_ShopController(unittest.TestCase):
         sc = ShopController()
 
         for i in range(3):
-            cardId = sc.ranks[i].hand.cards[i].card_id
+            cardId = sc.ranks[i].hand.cards[i].cardId
             cardPrice = sc.ranks[i].hand.cards[i].price
             self.assertEqual(sc.get_card_price(cardId), cardPrice)
 
@@ -39,7 +39,7 @@ class Test_ShopController(unittest.TestCase):
 
         for i in range(3):
             card = sc.ranks[i].hand.cards[i]
-            self.assertEqual(sc.withdraw_card(card.card_id), card)
+            self.assertEqual(sc.withdraw_card(card.cardId), card)
 
 
 if __name__ == '__main__':

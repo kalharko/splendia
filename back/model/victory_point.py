@@ -14,8 +14,9 @@ class VictoryPoint():
         """Return the number of victory points of a player
 
         Returns:
-        int: the number of victory points of a player
-        """
+            int: the number of victory points of a player
+            """
+
         return self.value
 
     def set_value(self, value: int) -> None:
@@ -23,6 +24,6 @@ class VictoryPoint():
 
         Args:
             value (int): the number of victory points of a player
-        """
+            """
 
         self.value = value

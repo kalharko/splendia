@@ -25,6 +25,8 @@ class PatronController():
             nbPlayer (int): The number of players.
 
             """
+        assert isinstance(nbPlayer, int)
+
         patrons = retrieve_and_parse_patrons()
         random.shuffle(patrons)
         self.patrons = patrons[:nbPlayer + 1]
@@ -39,6 +41,7 @@ class PatronController():
             Patron: The patron withdrawn.
                 """
         assert isinstance(hand, Hand)
+
         return self.withdraw(hand)
 
     def withdraw(self, hand: Hand) -> Patron or None:
@@ -51,6 +54,7 @@ class PatronController():
             Patron: The patron withdrawn.
 
             """
+        assert isinstance(hand, Hand)
 
         token_player = hand.compute_hand_bonuses()
         for patron in self.patrons:
@@ -66,4 +70,5 @@ class PatronController():
         Returns:
             list: contains information of patron for the api board state
         """
+
         return [patron.gather_patron_information_api_board_state() for patron in self.patrons]
