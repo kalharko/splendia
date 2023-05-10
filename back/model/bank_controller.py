@@ -21,8 +21,9 @@ class BankController():
 
         Args:
             nb_player (int): The number of players in the game.
-
             """
+        assert isinstance(nb_player, int)
+        assert 2 <= nb_player <= 4
 
         if nb_player == 2:
             self.bank = TokenArray([4, 4, 4, 4, 4, 5])
@@ -41,14 +42,23 @@ class BankController():
 
         Args:
             tokens (TokenArray): The tokens to deposit.
-
             """
+        assert isinstance(tokens, TokenArray)
+
         if self.bank + tokens <= self.maxInBank:
             self.bank += tokens
         else:
             return TooMuchBankTokens()
 
     def withdraw_gold(self, tokens: TokenArray, player_token: TokenArray):
+        """This method is used to withdraw one gold from the bank
+
+        Args:
+            tokens (TokenArray):
+            """
+        assert isinstance(tokens, TokenArray)
+        assert isinstance(player_token, TokenArray)
+
         if tokens.get_tokens()[Color.GOLD.value] != 1 or self.bank.get_tokens()[Color.GOLD.value] == 0:
             return InvalidTakeTokenAction()
         if player_token.nb_of_tokens() >= 10:
@@ -62,9 +72,10 @@ class BankController():
 
         Args:
             tokens (TokenArray): The tokens to withdraw.
-
             """
         assert isinstance(tokens, TokenArray)
+        assert isinstance(player_token, TokenArray)
+
         non_empty_pile = 0
         for color in range(5):
             if self.bank.get_tokens()[color] > 0:
@@ -115,9 +126,9 @@ class BankController():
         """This method is used to withdraw tokens from the bank.
 
         Args:
-        tokens (TokenArray): The tokens to withdraw.
-
-        """
+            tokens (TokenArray): The tokens to withdraw.
+            """
+        assert isinstance(tokens, TokenArray)
 
         if error := self.bank.withdraw_tokens(tokens):
             return error
@@ -128,6 +139,8 @@ class BankController():
         Args:
             tokens (TokenArray): The tokens to deposit.
             """
+        assert isinstance(tokens, TokenArray)
+
         return self.bank + tokens <= self.maxInBank
 
     def can_withdraw(self, tokens: TokenArray) -> bool:
@@ -136,6 +149,7 @@ class BankController():
         Args:
             tokens (TokenArray): The tokens to withdraw.
             """
+        assert isinstance(tokens, TokenArray)
 
         return self.bank.can_withdraw(tokens)
 
@@ -145,5 +159,5 @@ class BankController():
 
         Returns:
             list[int]: tokens of the bank
-        """
+            """
         return self.bank.get_tokens()

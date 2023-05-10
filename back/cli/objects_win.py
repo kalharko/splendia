@@ -3,6 +3,7 @@ import curses
 from model.patron import Patron
 from model.card import Card
 from model.player import Player
+from utils.logger import Logger
 
 
 class MyWin():
@@ -17,7 +18,6 @@ class PatronWin(MyWin):
 
     def display(self) -> None:
         self.win.erase()
-        # self.draw_border()
         self.win.border()
 
         self.win.addstr(1, 1, ' - 3PV - ')
@@ -54,10 +54,10 @@ class CardWin(MyWin):
         self.win.addstr(1, 4, '[]', curses.color_pair(
             self.colors[self.card.bonus.get_tokens().index(1)]))
 
-        if len(str(self.card.card_id)) == 1:
-            self.win.addstr(2, 1, f'__{self.card.card_id}___')
+        if len(str(self.card.cardId)) == 1:
+            self.win.addstr(2, 1, f'__{self.card.cardId}___')
         else:
-            self.win.addstr(2, 1, f'__{self.card.card_id}__')
+            self.win.addstr(2, 1, f'__{self.card.cardId}__')
 
         x = 1
         y = 3
@@ -96,6 +96,7 @@ class PlayerWin(MyWin):
         for i, v in enumerate(self.player.hand.compute_hand_bonuses().get_tokens()[:-1]):
             self.win.addstr(
                 3, 2 + i * 3, f'[{v}]', curses.color_pair(self.colors[i]))
+        self.win.addstr(3, 6 + i * 3, f'[{self.player.reserved.get_size()}]')
         self.win.refresh()
 
 
@@ -106,7 +107,6 @@ class InputWin(MyWin):
 
     def display(self, message='') -> None:
         self.win.erase()
-        self.win.clear()
         self.win.border()
         self.win.addstr(1, 2, message)
         self.win.refresh()
@@ -120,7 +120,6 @@ class HistWin(MyWin):
 
     def display(self, message: list[str]) -> None:
         self.win.erase()
-        self.win.clear()
         self.win.border()
 
         if len(message) > self.nbLines:
@@ -132,5 +131,9 @@ class HistWin(MyWin):
             if i == 0:
                 self.win.addstr(i + 1, 2, line)
             else:
-                self.win.addstr(i + 1, 2, line, curses.color_pair(5))
+                try:
+                    self.win.addstr(i + 1, 2, line, curses.color_pair(5))
+                except:
+                    Logger().log(0, self, line)
+                    exit()
         self.win.refresh()

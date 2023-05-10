@@ -3,6 +3,7 @@ from model.token_array import TokenArray
 import numpy
 from model.card import Card
 from typing import List
+from model.player import Player
 
 
 class Checker:
@@ -19,6 +20,9 @@ class Checker:
         Returns:
             List[int]: The list of the tokens that the player can take.
             """
+        assert isinstance(player_token, TokenArray)
+        assert isinstance(bank_token, TokenArray)
+
         token_list = [0, 0, 0, 0, 0]
         higher_than_8 = []
         iterator = 0
@@ -58,6 +62,9 @@ class Checker:
         2,4,5 -> [0,1,0,1,1,0]
         3,4,5 -> [0,0,1,1,1,0]
         """
+        assert isinstance(player_token, TokenArray)
+        assert isinstance(bank_token, TokenArray)
+
         if (numpy.array(player_token.get_tokens()).sum()) > 7:
             return [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         combination_dict = {
@@ -85,7 +92,7 @@ class Checker:
         return mask_list
 
     @staticmethod
-    def possible_card_to_buy(shop_cards: list[Card], player_hand: list[Card], player) -> List[int]:
+    def possible_card_to_buy(shop_cards: list[Card], player_hand: list[Card], player: Player) -> List[int]:
         """This method returns a list of 12 elements, each element is 1 if the player can buy the card of the same index, 0 otherwise.
         Args:
             shop_cards (list[Card]): The cards in the shop.
@@ -94,6 +101,9 @@ class Checker:
         Returns:
             List[int]: The list of the cards that the player can buy.
             """
+        assert isinstance(shop_cards, list)
+        assert isinstance(player_hand, list)
+        assert isinstance(player, Player)
 
         mask = []
         count_not_none = [card for card in player_hand if card is not None]
@@ -115,7 +125,7 @@ class Checker:
         return mask
 
     @staticmethod
-    def possible_card_to_buy_in_reserve(reserved_cards: list[Card], player_hand: list[Card], player) -> List[int]:
+    def possible_card_to_buy_in_reserve(reserved_cards: list[Card], player_hand: list[Card], player: Player) -> List[int]:
         """This method returns a list of 3 elements, each element is 1 if the player can buy the card of the same index, 0 otherwise.
 
         Args:
@@ -125,6 +135,9 @@ class Checker:
         Returns:
             List[int]: The list of the cards that the player can buy.
             """
+        assert isinstance(reserved_cards, list)
+        assert isinstance(player_hand, list)
+        assert isinstance(player, Player)
 
         mask = []
         count_not_none = [card for card in player_hand if card is not None]
@@ -153,6 +166,9 @@ class Checker:
         Returns:
             List[int]: The list of the cards that the player can reserve.
             """
+        assert isinstance(player_reserved_cards, int)
+        assert isinstance(shop_cards, list)
+
         mask = []
         if player_reserved_cards == 3:
             return [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -180,6 +196,11 @@ class Checker:
         Returns:
             List[int]: The list of the cards that the player can reserve.
             """
+        assert isinstance(player_reserved_number, int)
+        assert isinstance(tier1, int)
+        assert isinstance(tier2, int)
+        assert isinstance(tier3, int)
+
         mask = []
 
         if (player_reserved_number) == 3:
@@ -203,7 +224,7 @@ class Checker:
     @staticmethod
     def get_mask(player_hand: list[Card], shop_cards: list[Card], tier1: int, tier2: int, tier3: int,
                  player_reserved_number: int, player_token: TokenArray, bank_token: TokenArray,
-                 player_reserved_cards: list[Card], player) -> numpy.ndarray:
+                 player_reserved_cards: list[Card], player: Player) -> numpy.ndarray:
         """This method returns a mask of 66 elements, each element is 1 if the player can do the action of the same index, 0 otherwise.
 
         Args:
@@ -229,6 +250,17 @@ class Checker:
         12 bites to reserve in the shop
         3 bites to reserve card at the top of the deck
         """
+        assert isinstance(player_hand, list)
+        assert isinstance(shop_cards, list)
+        assert isinstance(tier1, int)
+        assert isinstance(tier2, int)
+        assert isinstance(tier3, int)
+        assert isinstance(player_reserved_number, int)
+        assert isinstance(player_token, TokenArray)
+        assert isinstance(bank_token, TokenArray)
+        assert isinstance(player_reserved_cards, list)
+        assert isinstance(player, Player)
+
         # count none values of player_reserved cards
 
         mask = numpy.zeros(66)
@@ -267,6 +299,9 @@ class Checker:
         Returns:
             numpy.ndarray: The list of the tokens that the player can take.
         """
+        assert isinstance(player_token, TokenArray)
+        assert isinstance(bank_token, TokenArray)
+
         # check if there is at least three colors none empty in the bank that are not gold
         non_empty_pile = 0
         for color in range(5):
@@ -291,6 +326,8 @@ class Checker:
         Returns:
             numpy.ndarray: The list of the tokens that the player can take.
         """
+        assert isinstance(player_token, TokenArray)
+        assert isinstance(bank_token, TokenArray)
 
         # check if there is at least three colors none empty in the bank that are not gold
         non_empty_pile = 0
@@ -347,6 +384,8 @@ class Checker:
         Returns:
             numpy.ndarray: The list of the tokens that the player can take.
             """
+        assert isinstance(player_token, TokenArray)
+        assert isinstance(bank_token, TokenArray)
 
         # check if there is at least three colors none empty in the bank that are not gold
         non_empty_pile = 0

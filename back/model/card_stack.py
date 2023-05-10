@@ -15,7 +15,7 @@ class CardStack():
     cards: List[Card]
 
     def add_card(self, card: Card) -> None:
-        # assert isinstance(card, Card)
+        assert isinstance(card, Card)
         if isinstance(card, Card):
 
             self.cards.append(card)
@@ -34,7 +34,7 @@ class CardStack():
         assert 0 <= cardId < 90
 
         for i in range(len(self.cards)):
-            if self.cards[i].card_id == cardId:
+            if self.cards[i].cardId == cardId:
                 return self.cards.pop(i)
         return CardIdNotFound(cardId)
 

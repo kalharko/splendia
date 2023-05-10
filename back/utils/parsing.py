@@ -48,7 +48,7 @@ def retrieve_and_parse_cards() -> list[Card]:
                              card['Green'], card['Red'], card['Black'], 0]),
             bonus=bonus_color_to_enum_array(card['Color']),
             victoryPoint=VictoryPoint(card['PV']),
-            card_id=card.name),
+            cardId=card.name),
         axis=1)
     return card_list
 

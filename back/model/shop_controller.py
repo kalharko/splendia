@@ -18,13 +18,14 @@ class ShopController():
 
     def __init__(self):
         """This method initializes the shop controller. It creates the 3 ranks of cards.
-        """
+            """
+
         self.ranks: list[Rank] = []
         all_cards: list[Card] = retrieve_and_parse_cards()
-        self.ranks.append(Rank([x for x in all_cards if x.card_id < 40], 1))
+        self.ranks.append(Rank([x for x in all_cards if x.cardId < 40], 1))
         self.ranks.append(
-            Rank([x for x in all_cards if 40 <= x.card_id < 70], 2))
-        self.ranks.append(Rank([x for x in all_cards if 70 <= x.card_id], 3))
+            Rank([x for x in all_cards if 40 <= x.cardId < 70], 2))
+        self.ranks.append(Rank([x for x in all_cards if 70 <= x.cardId], 3))
 
     def has_card(self, cardId: int) -> bool:
         """This method checks if the shop has a card with the given id.
@@ -35,6 +36,8 @@ class ShopController():
         Returns:
             bool: True if the shop has the card, False otherwise.
             """
+        assert isinstance(cardId, int)
+
         for rank in self.ranks:
             if isinstance((price := rank.get_card_price(cardId)), TokenArray):
                 return True
@@ -49,6 +52,7 @@ class ShopController():
         Returns:
             Card or None: The price of the card if the shop has it, None otherwise.
             """
+        assert isinstance(cardId, int)
 
         for rank in self.ranks:
             if isinstance((price := rank.get_card_price(cardId)), TokenArray):
@@ -64,6 +68,8 @@ class ShopController():
         Returns:
             Card or CardIdNotFound: The card if the shop has it, CardIdNotFound otherwise.
             """
+        assert isinstance(cardId, int)
+
         # find the rank where the cards is :
         for rank in self.ranks:
             if rank.has_card(cardId):
@@ -79,9 +85,9 @@ class ShopController():
 
         Returns:
             bool: True if a card can be withdrawn from the pile, False otherwise.
-
             """
         assert isinstance(pileLevel, int)
+
         assert 0 <= pileLevel <= 3
         return self.ranks[pileLevel].can_draw()
 
@@ -96,6 +102,7 @@ class ShopController():
             """
         assert isinstance(pileLevel, int)
         assert 0 <= pileLevel <= 3
+
         return self.ranks[pileLevel].withdraw_pile_card()
 
     def gather_shop_information_api_board_state(self) -> list:
@@ -106,7 +113,8 @@ class ShopController():
 
         Returns:
             list: shop information for the api board state
-        """
+            """
+
         info = []
         for i in range(len(self.ranks)):
             info.append({
