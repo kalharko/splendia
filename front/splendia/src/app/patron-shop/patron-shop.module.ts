@@ -17,7 +17,7 @@ import { BrowserModule } from '@angular/platform-browser';
     SharedModule
   ],
   exports: [
-    PatronShopComponent
+    PatronShopComponent,
   ]
 })
 export class PatronShopModule { }

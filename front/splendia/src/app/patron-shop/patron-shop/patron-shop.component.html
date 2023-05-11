@@ -1,2 +1,3 @@
-<app-patron-card></app-patron-card>
-<app-price-token></app-price-token>
+<div *ngFor="let patron of patrons">
+    <app-patron-card class="patron-card" [patron]="patron"></app-patron-card>
+</div>
