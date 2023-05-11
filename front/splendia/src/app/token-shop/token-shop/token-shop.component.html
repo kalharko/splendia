@@ -1,8 +1,7 @@
 
 
-<p>TOKEN SHOP</p>
-<ul>
-    <li *ngFor="let tokenQuantity of tokenQuantities; let i = index">
+<ul id="token-shop">
+    <li *ngFor="let tokenQuantity of tokenQuantities; let i = index" [class]="['token', getCssTokenClassOfColor(i)]" >
         {{tokenQuantity}}
     </li>
 </ul>
