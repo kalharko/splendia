@@ -26,6 +26,11 @@ export class TokenShopComponent extends OnDestroyMixin implements OnInit {
     });
   }
 
+  /**
+   * Get the css class for a token color
+   * @param tokenColor color of the token
+   * @returns css class of specific token color
+   */
   getCssTokenClassOfColor(tokenColor: ColorsEnum): string {
     return ColorsEnumUtil.getCssTokenClassOfColor(tokenColor);
   }
