@@ -1,1 +1,5 @@
-<p>tokens-display works!</p>
+<ul>
+    <li *ngFor="let tokenQuantity of tokenQuantities; let i = index" [class.hidden]="!showTokens[i]">
+        {{tokenQuantity}}
+    </li>
+</ul>
