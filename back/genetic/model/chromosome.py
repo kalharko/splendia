@@ -1,13 +1,14 @@
 import random
 from typing import List, Tuple, Callable
-
+# from genetic.model.duel import Duel
 
 class Chromosome:
     def __init__(self, genes: List[int]):
         self.genes = genes
         self.fitness = 0.0
         self.winrate = 0.0
-
+        self.duel_list = []
+        self.game_count = 0
     def calculate_fitness(self, fitness_function: Callable[[List[int]], float]) -> float:
         self.fitness = fitness_function(self.genes)
         return self.fitness
@@ -33,3 +34,9 @@ class Chromosome:
 
     def __str__(self) -> str:
         return f"Chromosome: {self.genes}, Fitness: {self.fitness:.2f}"
+
+    def duel(self, opponent: 'Chromosome') -> int:
+        random_winner : int = random.randint(0, 1)
+        self.game_count += 1
+        opponent.game_count += 1
+        return random_winner

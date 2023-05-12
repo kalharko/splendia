@@ -6,7 +6,6 @@ def generate_chromosome():
     fitness_function = lambda x: sum(x)
     selection_function = lambda population, n: population[:n]
 
-
     # for i in range(10):
     #     crossover_rate = i/10
     #     genetic_algorithm = GeneticAlgorithm(100, crossover_rate, 0.1, 100, fitness_function, selection_function)
@@ -16,7 +15,8 @@ def generate_chromosome():
     #     average_generation /= 100
     #     print(f"Average generation for crossover rate {crossover_rate}: {average_generation}")
 
-    genetic_algorithm = GeneticAlgorithm(1000, 0.6, 0.1, 100, fitness_function, selection_function)
+
+    genetic_algorithm = GeneticAlgorithm(10, 0.6, 0.1, 10, fitness_function, selection_function)
     goal_reached = genetic_algorithm.run()
     print(f"goal reached, {goal_reached}")
 

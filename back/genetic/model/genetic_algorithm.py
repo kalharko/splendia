@@ -3,6 +3,7 @@ from typing import List, Callable
 import random
 from genetic.model.chromosome_generation import ChromosomeGeneration
 from genetic.model.genetic_training_session import GeneticTrainingSession
+from genetic.model.genetic_tournament import GeneticTournament
 
 
 
@@ -24,10 +25,9 @@ class GeneticAlgorithm:
         for generation in range(self.generations):
             chromosome_generation: ChromosomeGeneration = ChromosomeGeneration(generation)
             print(f"generation table created", {generation})
-            # Calculate fitness for each individual
-            for individual in self.population:
-                individual.calculate_fitness(self.fitness_function)
-
+            # Calculate fitness for each individual by launching a duel tournament
+            tournament : GeneticTournament = GeneticTournament(self.population)
+            best_chromosome : Chromosome = tournament.start_tournamenent()
             # Sort the population by fitness
             self.population.sort(key=lambda x: x.fitness, reverse=True)
 
