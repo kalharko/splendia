@@ -63,4 +63,13 @@ export class AppService {
     );
   }
 
+  buyTokens(tokensToBuy:number[]){
+    this.http.get<BoardState>(this.rootURL + '/take_tokens?token_list=[' + tokensToBuy + ']')
+    .subscribe(
+      board_state =>{
+        this._board_state.next(Object.assign({}, board_state));
+      },
+      error => console.log('Error while trying to buy tokens')
+    );
+  }
 }

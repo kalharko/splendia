@@ -1,1 +1,9 @@
-<p>tokens-display works!</p>
+<div class="tokens-display">
+    <app-token 
+        class="token"
+        *ngFor="let tokenQuantity of tokenQuantities; let i = index" 
+        [color]="i"
+        [quantity]="tokenQuantity"
+        [show]="showTokens[i]"
+    ></app-token>
+</div>

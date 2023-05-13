@@ -1,6 +1,5 @@
-import { ApplicationInitStatus, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
-import { ColorsEnum } from 'src/app/shared/enums/colors.enum';
 import { BoardState } from 'src/app/shared/models/board_state.model';
 import { AppService } from 'src/app/shared/services/app.service';
 
@@ -9,16 +8,19 @@ import { AppService } from 'src/app/shared/services/app.service';
   templateUrl: './token-shop.component.html',
   styleUrls: ['./token-shop.component.scss']
 })
-export class TokenShopComponent extends OnDestroyMixin implements OnInit  {
+export class TokenShopComponent extends OnDestroyMixin implements OnInit {
 
-  tokenQuantities : number[];
+  // token quantities to display
+  tokenQuantities: number[];
 
-  colorEnum:ColorsEnum;
-
-  constructor(private appService: AppService) {
+  constructor(private appService: AppService) { 
     super();
   }
 
   ngOnInit(): void {
+    // Subscribe to board_state.bank
+    this.appService.board_state.pipe(untilComponentDestroyed(this)).subscribe((board_state:BoardState) => {
+      this.tokenQuantities = board_state.bank;
+    });
   }
 }
