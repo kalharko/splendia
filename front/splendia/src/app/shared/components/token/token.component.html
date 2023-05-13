@@ -1,4 +1,8 @@
-<p>= Token : </p>
-<p>Quantity : {{quantity}}</p>
-<p>color : {{colorsEnum[color]}}</p>
-
+<div 
+    [style.backgroundImage]="getBackgroundImageToken()"
+    [style.color]="getTextColor()"
+    class="token"
+    [class.hidden]="!show"
+>
+    {{ quantity }}
+</div>

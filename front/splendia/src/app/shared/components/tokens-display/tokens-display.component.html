@@ -1,5 +1,9 @@
-<ul class="tokens-display">
-    <li *ngFor="let tokenQuantity of tokenQuantities; let i = index" [class.hidden]="!showTokens[i]">
-        {{tokenQuantity}}
-    </li>
-</ul>
+<div class="tokens-display">
+    <app-token 
+        class="token"
+        *ngFor="let tokenQuantity of tokenQuantities; let i = index" 
+        [color]="i"
+        [quantity]="tokenQuantity"
+        [show]="showTokens[i]"
+    ></app-token>
+</div>

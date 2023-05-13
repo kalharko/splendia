@@ -1,45 +1,9 @@
 .tokens-display {
     padding: 0;
+    display: flex;
+    align-content: flex-start;
 }
 
-li {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    border: 2px solid black;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 40px;
-    font-size: 125%;
-    margin-right: 10px;
-    font-weight: bold;
-}
-
-li:nth-child(1) {
-    background-color: #fafdff;
-}
-
-li:nth-child(2) {
-    background-color: #68aed4;
-}
-
-li:nth-child(3) {
-    background-color: #10d275;
-}
-
-li:nth-child(4) {
-    background-color: #d62411;
-}
-
-li:nth-child(5) {
-    background-color: #16171a ;
-    color: #fafdff
-}
-
-li:nth-child(6) {
-    background-color: #ffd100 ;
-}
-
-.hidden {
-    visibility: hidden;
+.token {
+    margin-right: 0.5em;
 }
