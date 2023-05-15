@@ -3,8 +3,9 @@ import locale
 
 from model.game_manager import GameManager
 from model.token_array import TokenArray
-from cli.objects_win import PatronWin, CardWin, PlayerWin, InputWin
+from cli.objects_win import PatronWin, CardWin, PlayerWin, InputWin, HistWin
 from utils.logger import Logger
+
 
 class CliApp():
     def __init__(self, nbPlayer: int, stdscr) -> None:
@@ -54,6 +55,8 @@ class CliApp():
             print('console too small' + str((self.screenH, self.screenW)))
             quit()
         self.inputWin = InputWin()
+        self.histWin = HistWin(25, 0, self.screenH - 25)
+        self.history = ['Game Start']
 
         # main loop
         self.main_loop()
@@ -65,24 +68,34 @@ class CliApp():
     def main_loop(self) -> None:
         while True:
             self.display()
+
+            # cpu action
+            if self.gm.currentPlayer != self.gm.userId:
+                string_action = self.gm.cpu_turn()
+                if not isinstance(string_action, str):
+                    Logger().log(0, string_action, 'cpu_turn did not return a string')
+                else:
+                    self.history.append(string_action)
+                    self.display()
+                continue
+
+            # player action
             user_input = self.get_input('')
             if user_input[0] in self.ESCAPE:
                 break
             elif user_input[0] in self.COMMANDS.keys():
                 err = self.COMMANDS[user_input[0]](user_input)
+                log = 'Player ('
+                for w in user_input:
+                    log += w + ' '
+                log = log[:-1] + ')'
+
                 if err is not None:
-                    Logger().log(2, err)
-                else:
-                    string_action = self.gm.cpu_turn()
-
-                    self.display()
-                    print(string_action)
-                    # pause the program until the user presses a key
-                    self.screen.getch()
-
-
+                    Logger().log(2, err, 'cli main loop, err returned by GM')
+                    log += ' => ' + str(type(err)).split(" '")[1].rstrip("'>").split('.')[-1]
+                self.history.append(log)
             else:
-                Logger().log(2, self.get_input, str(user_input))
+                Logger().log(2, self, str(user_input))
 
     def get_input(self, message="") -> list[str]:
         self.inputWin.display(message)
@@ -99,7 +112,8 @@ class CliApp():
                 elif newchar == curses.KEY_LEFT:  # left arrow
                     pos_cursor = pos_cursor - 1 if pos_cursor > 0 else 0
                 elif newchar == curses.KEY_RIGHT:  # right arrow
-                    pos_cursor = pos_cursor + 1 if pos_cursor < len(out) else pos_cursor
+                    pos_cursor = pos_cursor + \
+                        1 if pos_cursor < len(out) else pos_cursor
                 elif newchar == curses.KEY_DOWN:  # down arrow
                     pos_cursor = len(out)
                 elif newchar == curses.KEY_UP:  # up arrow
@@ -120,48 +134,69 @@ class CliApp():
         self.inputWin.display('')
         return out.split(' ')
 
-    def display(self,action_log = "") -> None:
+    def display(self) -> None:
         self.screen.erase()
         self.screen.border()
         self.screen.refresh()
 
         # bank
         tokens = self.gm.get_bank_controller().bank.get_tokens()
-        self.screen.addstr(1, 13, 'white blue green red black gold')
+        self.screen.addstr(1, 14, 'white blue green red black gold')
         for i in range(6):
-            self.screen.addstr(2, 14 + i * 5, f'({tokens[i]})', curses.color_pair(i + 1))
+            self.screen.addstr(
+                2, 15 + i * 5, f'({tokens[i]})', curses.color_pair(i + 1))
+
+        # shop
+        yCoords = (17, 11, 5)
+        for i in range(3):
+            deckSize = str(self.gm.get_shop_controller().ranks[i].deck.get_size())
+            self.screen.addstr(yCoords[i], 14 - len(deckSize), deckSize)
 
         # patron windows
-        self.patronWins = [PatronWin(patron, y, 0) for patron, y in zip(self.gm.get_patron_controller().patrons, (3, 8, 13, 18, 23))]
+        self.patronWins = [PatronWin(patron, y, 0) for patron, y in zip(
+            self.gm.get_patron_controller().patrons, (3, 8, 13, 18, 23))]
         for patronWin in self.patronWins:
             patronWin.display()
 
+        # cpus windows
+        self.playerWin = []
+        y = 0
+        for player in self.gm.get_player_controller().players:
+            if player.playerId == self.gm.userId:
+                humanPlayer = player
+                continue
+            name = f'CPU#{player.playerId}'
+            self.playerWin.append(PlayerWin(player, name, y * 6 + 1, 47))
+            y += 1
+            if self.gm.currentPlayer == player.playerId:
+                self.playerWin[-1].currentPlayer = True
+            self.playerWin[-1].display()
+
+        # player window
+        self.playerWin.append(PlayerWin(humanPlayer, 'Player', y * 5 + 1, 47))
+        if self.gm.currentPlayer == humanPlayer.playerId:
+            self.playerWin[-1].currentPlayer = True
+        self.playerWin[-1].display()
+
         # card windows
+        # shop
         self.cardWins = []
         for i, rank in enumerate(self.gm.get_shop_controller().ranks):
             for j, card in enumerate(rank.hand.cards):
-                self.cardWins.append(CardWin(card, 16 - 6 * i, 12 + j * 8))
+                self.cardWins.append(CardWin(card, 16 - 6 * i, 14 + j * 8))
                 self.cardWins[-1].display()
 
-        for i, card in enumerate(self.gm.get_player_controller().players[self.gm.userId].reserved.cards):
-            self.cardWins.append(CardWin(card, 10 + 6 * i, 47))
+        # reserved cards
+        positions = ((10, 49), (10, 58), (16, 53))
+        for i, card in enumerate(humanPlayer.reserved.cards):
+            self.cardWins.append(CardWin(card, positions[i][0], positions[i][1]))
             self.cardWins[-1].display()
 
-        # player windows
-        self.playerWin = []
-        for i, player in enumerate(self.gm.get_player_controller().players):
-            if player.player_id == self.gm.userId:
-                name = 'Player'
-            else:
-                name = f'CPU#{player.player_id}'
-            self.playerWin.append(PlayerWin(player, name, i * 6, 45))
-            if self.gm.currentPlayer == player.player_id:
-                self.playerWin[-1].currentPlayer = True
-            self.playerWin[-1].display()
         # input window
         self.inputWin.display()
-        self.screen.addstr(1,2,action_log)
 
+        # history window
+        self.histWin.display(self.history)
 
     def take_tokens(self, user_input: list[str]) -> None:
         """Parse and call game manager take token action.
@@ -234,4 +269,4 @@ class CliApp():
         pass
 
     def restart(self, user_input: list[str]) -> None:
-        self.gm = GameManager(2)
+        self.gm = GameManager(self.gm.nbPlayer)

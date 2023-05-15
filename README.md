@@ -14,19 +14,20 @@ You can find more information on how to run:
 Python : 3.10.10
 
 To run the server you need to:
-1) Create a python virtual environnement :
+1) Set your current working directory in the back repository
+2) Create a python virtual environnement :
 ```
 python -m venv env
 ```
-2) Enter the virtual environnement:
+3) Enter the virtual environnement:
 ```
-source env/bin/activate
+source venv/bin/activate
 ```
-3) Install the necessary dependancies:
+4) Install the necessary dependancies:
 ```
 pip install -r requirements.txt
 ```
-4) Run the server:
+5) Run the server:
 ```
 python run_server.py
 ```
@@ -58,9 +59,9 @@ python traina_i.py
 
 # Splendia front-end
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli).
-Angular CLI: 14.2.11
-Node: 16.14
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli).  
+Angular CLI: 14.2.11   
+Node: 16.14  
 
 ## Development server
 

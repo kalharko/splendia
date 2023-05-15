@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Patron } from 'src/app/shared/models/patron.model';
+
 
 @Component({
   selector: 'app-patron-card',
@@ -7,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PatronCardComponent implements OnInit {
 
-  constructor() { }
+  // Patron to display
+  @Input() patron: Patron;
+
+  constructor() {}
 
   ngOnInit(): void {
   }

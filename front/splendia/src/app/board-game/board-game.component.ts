@@ -17,9 +17,11 @@ export class BoardGameComponent extends OnDestroyMixin implements OnInit {
   }
 
   ngOnInit(): void {
-    this.appService.launchGame().pipe(untilComponentDestroyed(this)).subscribe((board_state:BoardState) => {
+    this.appService.launchGame();
+    this.appService.board_state.pipe(untilComponentDestroyed(this)).subscribe((board_state:BoardState) => {
       this.board_state = board_state;
     });
+
   }
 
 }

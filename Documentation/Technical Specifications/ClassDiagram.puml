@@ -118,7 +118,7 @@ class ShopController {
 
 
 class Player {
-    -player_id: int
+    -playerId: int
     -hand: Hand
     -reserved: Hand
     -bonus_tokens: TokenArray

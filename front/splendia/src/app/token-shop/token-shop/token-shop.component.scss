@@ -1,43 +1,15 @@
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
+ul {
+  list-style-type: none;
+  padding: 1em;
+  margin: 0 0 1em 0;
+  width: fit-content;
+  border-radius: 25px;
+  transition-duration: 0.5s;
+  cursor: pointer;
 
-    li {
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      border: 2px solid black;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 40px;
-      font-size: 125%;
-      margin-right: 10px;
-      font-weight: bold;
-    }
+  &:hover {
+    background-color: #a9a9a9;
+    transition-duration: 0.5s;
+  }
+}
 
-    li:nth-child(1) {
-      background-color: #fafdff;
-    }
-
-    li:nth-child(2) {
-      background-color: #68aed4;
-    }
-
-    li:nth-child(3) {
-      background-color: #10d275;
-    }
-
-    li:nth-child(4) {
-      background-color: #d62411;
-    }
-
-    li:nth-child(5) {
-      background-color: #16171a ;
-      color: #fafdff
-    }
-
-    li:nth-child(6) {
-      background-color: #ffd100 ;
-    }

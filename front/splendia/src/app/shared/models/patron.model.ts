@@ -1,5 +1,5 @@
 export class Patron{
-    patron_id: number;
+    patronId: number;
     requirements: number[];
-    victory_point: number;
+    victoryPoints: number;
 }

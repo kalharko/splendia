@@ -8,6 +8,8 @@ from model.checker import Checker
 from tqdm import tqdm
 import multiprocessing as mp
 import time
+
+
 class SplendiaMtcsNode(GameManager, Node):
     """
     This class is a node for the tree of the Monte Carlo Tree Search algorithm / Alpha beta algorithm.
@@ -31,6 +33,7 @@ class SplendiaMtcsNode(GameManager, Node):
         child: the childrens of this node
 
     """
+
     def __init__(self, other: GameManager, scopePlayer: int, depth: int, has_pass=False, max_depth: int = 30):
         self.has_pass = has_pass
         self.depth = depth
@@ -61,7 +64,8 @@ class SplendiaMtcsNode(GameManager, Node):
 
         action_possible = self.get_possible_actions()
         for action in action_possible:
-            state_copy = SplendiaMtcsNode(self, self.scopePlayer, self.depth + 1, self.has_pass)
+            state_copy = SplendiaMtcsNode(
+                self, self.scopePlayer, self.depth + 1, self.has_pass)
             state_copy.parent_action = action
 
             self.child.append(state_copy)
@@ -96,8 +100,10 @@ class SplendiaMtcsNode(GameManager, Node):
     def reward(self) -> int:
         assert self.is_terminal(), 'reward called on non terminal board'
 
-        victoryPoints = [player.victoryPoints.value for player in self._playerController.players]
-        ties = [1 if points == max(victoryPoints) else 0 for points in victoryPoints]
+        victoryPoints = [
+            player.victoryPoints.value for player in self._playerController.players]
+        ties = [1 if points == max(victoryPoints)
+                else 0 for points in victoryPoints]
         if sum(ties) == 1:
             if self.scopePlayer == victoryPoints.index(max(victoryPoints)):
                 return 1  # the scope player won, reward = 1
@@ -113,21 +119,25 @@ class SplendiaMtcsNode(GameManager, Node):
         # shop information
         for i in range(3):
             for j in range(4):
-                out.append(self._shopController.ranks[i].hand.cards[j].card_id)
+                out.append(self._shopController.ranks[i].hand.cards[j].cardId)
         # players information
         for i in range(self.nbPlayer):
             # tokens
             for j in range(6):
-                out.append(self._playerController.players[i].tokens.get_tokens()[j])
+                out.append(
+                    self._playerController.players[i].tokens.get_tokens()[j])
             # cards
             for j in range(len(self._playerController.players[i].hand.cards)):
-                out.append(self._playerController.players[i].hand.cards[j].card_id)
+                out.append(
+                    self._playerController.players[i].hand.cards[j].cardId)
             # reserved cards
             for j in range(len(self._playerController.players[i].reserved.cards)):
-                out.append(self._playerController.players[i].reserved.cards[j].card_id)
+                out.append(
+                    self._playerController.players[i].reserved.cards[j].cardId)
             # patrons
             for j in range(len(self._playerController.players[i].patrons)):
-                out.append(self._playerController.players[i].patrons[j].patron_id)
+                out.append(
+                    self._playerController.players[i].patrons[j].patron_id)
         # patron information
         for i in range(len(self._patronController.patrons)):
             out.append(self._patronController.patrons[i].patron_id)
@@ -147,18 +157,18 @@ class SplendiaMtcsNode(GameManager, Node):
         for rank in self._shopController.ranks:
             for card in rank.hand.cards:
                 if self.get_current_player().can_pay_with_reduced_price(card.price):
-                    out.append(card.card_id)
+                    out.append(card.cardId)
 
         for card in self.get_current_player().reserved.cards:
             if self.get_current_player().can_pay_with_reduced_price(card.price):
-                out.append(card.card_id)
+                out.append(card.cardId)
         return out
 
     def possible_cards_to_reserve(self) -> list[int]:
         out = []
         for rank in self._shopController.ranks:
             for card in rank.hand.cards:
-                out.append(card.card_id)
+                out.append(card.cardId)
         return out
 
     def possible_tokens_to_take(self) -> list[TokenArray]:
@@ -188,10 +198,10 @@ class SplendiaMtcsNode(GameManager, Node):
     def make_random_move(self) -> None:
         possible_actions = self.get_possible_actions()
 
-
         for action in possible_actions:
             # copy the state
-            state_copy = SplendiaMtcsNode(self, 2, self.depth + 1, self.has_pass)
+            state_copy = SplendiaMtcsNode(
+                self, 2, self.depth + 1, self.has_pass)
             # apply the action
             state_copy.apply_action(action)
             (state_copy).parent_action = action
@@ -231,7 +241,8 @@ class SplendiaMtcsNode(GameManager, Node):
         shop_cards = [shop_cards_rank1, shop_cards_rank2, shop_cards_rank3]
         mask = Checker.get_mask(state[player_str]['cards'], shop_cards, state['shop']['rank1_size'],
                                 state['shop']['rank2_size'], state['shop']['rank3_size'], number_card_reserved,
-                                TokenArray(state[player_str]['tokens']), state['shop']['tokens'],
+                                TokenArray(
+                                    state[player_str]['tokens']), state['shop']['tokens'],
                                 state[player_str]['reserved'],
                                 state[player_str]['object'])
         # print(mask)
@@ -239,7 +250,7 @@ class SplendiaMtcsNode(GameManager, Node):
         possible_actions = numpy.where(mask == 1)[0]
         return possible_actions
 
-    def simulate_monte_carlo(self, player_id):
+    def simulate_monte_carlo(self, playerId):
         # while the game is not finished
         is_finish = False
         number_iteration = 0
@@ -251,13 +262,11 @@ class SplendiaMtcsNode(GameManager, Node):
             possible_actions = current_node.get_possible_actions()
             # check if possible_actions contains only 65
 
-
-
-
             # take a random action
             action = random.choice(possible_actions)
             if action == 65 and self.last_action_done == 65:
-                return -1  ,number_iteration # if the last action was pass and the current action is pass, return -1
+                # if the last action was pass and the current action is pass, return -1
+                return -1, number_iteration
             self.last_action_done = action
             # apply the action
             current_node.apply_action(action)
@@ -265,14 +274,14 @@ class SplendiaMtcsNode(GameManager, Node):
             if current_node.currentPlayer == current_node.firstPlayerId and current_node.is_last_turn() == True:
 
                 # return the winner
-                if current_node._playerController.players[player_id].victoryPoints.value > current_node._playerController.players[(player_id + 1) % 2].victoryPoints.value:
-                    return 1 , number_iteration
-                elif current_node._playerController.players[player_id].victoryPoints.value == current_node._playerController.players[(player_id + 1) % 2].victoryPoints.value:
-                    return 0 , number_iteration
+                if current_node._playerController.players[playerId].victoryPoints.value > current_node._playerController.players[(playerId + 1) % 2].victoryPoints.value:
+                    return 1, number_iteration
+                elif current_node._playerController.players[playerId].victoryPoints.value == current_node._playerController.players[(playerId + 1) % 2].victoryPoints.value:
+                    return 0, number_iteration
                 else:
-                    return 0.5 , number_iteration
+                    return 0.5, number_iteration
 
-            #print('number iteration : ', number_iteration)
+            # print('number iteration : ', number_iteration)
 
     def is_leaf(self):
         return len(self.get_possible_actions()) == 0
@@ -324,59 +333,71 @@ class SplendiaMtcsNode(GameManager, Node):
         elif action == 14:
             self.take_token(TokenArray([0, 0, 0, 0, 2, 0]))
         elif action == 15:
-            self.buy_card(self._shopController.ranks[0].hand.cards[0].card_id)
+            self.buy_card(self._shopController.ranks[0].hand.cards[0].cardId)
         elif action == 16:
-            self.buy_card(self._shopController.ranks[0].hand.cards[1].card_id)
+            self.buy_card(self._shopController.ranks[0].hand.cards[1].cardId)
         elif action == 17:
-            self.buy_card(self._shopController.ranks[0].hand.cards[2].card_id)
+            self.buy_card(self._shopController.ranks[0].hand.cards[2].cardId)
         elif action == 18:
-            self.buy_card(self._shopController.ranks[0].hand.cards[3].card_id)
+            self.buy_card(self._shopController.ranks[0].hand.cards[3].cardId)
         elif action == 19:
-            self.buy_card(self._shopController.ranks[1].hand.cards[0].card_id)
+            self.buy_card(self._shopController.ranks[1].hand.cards[0].cardId)
         elif action == 20:
-            self.buy_card(self._shopController.ranks[1].hand.cards[1].card_id)
+            self.buy_card(self._shopController.ranks[1].hand.cards[1].cardId)
         elif action == 21:
-            self.buy_card(self._shopController.ranks[1].hand.cards[2].card_id)
+            self.buy_card(self._shopController.ranks[1].hand.cards[2].cardId)
         elif action == 22:
-            self.buy_card(self._shopController.ranks[1].hand.cards[3].card_id)
+            self.buy_card(self._shopController.ranks[1].hand.cards[3].cardId)
         elif action == 23:
-            self.buy_card(self._shopController.ranks[2].hand.cards[0].card_id)
+            self.buy_card(self._shopController.ranks[2].hand.cards[0].cardId)
         elif action == 24:
-            self.buy_card(self._shopController.ranks[2].hand.cards[1].card_id)
+            self.buy_card(self._shopController.ranks[2].hand.cards[1].cardId)
         elif action == 25:
-            self.buy_card(self._shopController.ranks[2].hand.cards[2].card_id)
+            self.buy_card(self._shopController.ranks[2].hand.cards[2].cardId)
         elif action == 26:
-            self.buy_card(self._shopController.ranks[2].hand.cards[3].card_id)
+            self.buy_card(self._shopController.ranks[2].hand.cards[3].cardId)
         elif action == 27:
-            self.buy_card(self.get_current_player().reserved.cards[0].card_id)
+            self.buy_card(self.get_current_player().reserved.cards[0].cardId)
         elif action == 28:
-            self.buy_card(self.get_current_player().reserved.cards[1].card_id)
+            self.buy_card(self.get_current_player().reserved.cards[1].cardId)
         elif action == 29:
-            self.buy_card(self.get_current_player().reserved.cards[2].card_id)
+            self.buy_card(self.get_current_player().reserved.cards[2].cardId)
         elif action == 30:
-            self.reserve_card(self._shopController.ranks[0].hand.cards[0].card_id)
+            self.reserve_card(
+                self._shopController.ranks[0].hand.cards[0].cardId)
         elif action == 31:
-            self.reserve_card(self._shopController.ranks[0].hand.cards[1].card_id)
+            self.reserve_card(
+                self._shopController.ranks[0].hand.cards[1].cardId)
         elif action == 32:
-            self.reserve_card(self._shopController.ranks[0].hand.cards[2].card_id)
+            self.reserve_card(
+                self._shopController.ranks[0].hand.cards[2].cardId)
         elif action == 33:
-            self.reserve_card(self._shopController.ranks[0].hand.cards[3].card_id)
+            self.reserve_card(
+                self._shopController.ranks[0].hand.cards[3].cardId)
         elif action == 34:
-            self.reserve_card(self._shopController.ranks[1].hand.cards[0].card_id)
+            self.reserve_card(
+                self._shopController.ranks[1].hand.cards[0].cardId)
         elif action == 35:
-            self.reserve_card(self._shopController.ranks[1].hand.cards[1].card_id)
+            self.reserve_card(
+                self._shopController.ranks[1].hand.cards[1].cardId)
         elif action == 36:
-            self.reserve_card(self._shopController.ranks[1].hand.cards[2].card_id)
+            self.reserve_card(
+                self._shopController.ranks[1].hand.cards[2].cardId)
         elif action == 37:
-            self.reserve_card(self._shopController.ranks[1].hand.cards[3].card_id)
+            self.reserve_card(
+                self._shopController.ranks[1].hand.cards[3].cardId)
         elif action == 38:
-            self.reserve_card(self._shopController.ranks[2].hand.cards[0].card_id)
+            self.reserve_card(
+                self._shopController.ranks[2].hand.cards[0].cardId)
         elif action == 39:
-            self.reserve_card(self._shopController.ranks[2].hand.cards[1].card_id)
+            self.reserve_card(
+                self._shopController.ranks[2].hand.cards[1].cardId)
         elif action == 40:
-            self.reserve_card(self._shopController.ranks[2].hand.cards[2].card_id)
+            self.reserve_card(
+                self._shopController.ranks[2].hand.cards[2].cardId)
         elif action == 41:
-            self.reserve_card(self._shopController.ranks[2].hand.cards[3].card_id)
+            self.reserve_card(
+                self._shopController.ranks[2].hand.cards[3].cardId)
         elif action == 42:
             self.reserve_pile_card(0)
         elif action == 43:
@@ -434,7 +455,7 @@ class SplendiaMtcsNode(GameManager, Node):
 def alpha_beta(node, depth, alpha, beta, maximizing_player=True):
     global pruned_branches  # for debugging
     if depth == 0 or node.is_terminal():
-        #print(' evaluate : ', node.evaluate())
+        # print(' evaluate : ', node.evaluate())
         return node.evaluate(), []
     node.find_children()
     iterator = 0
@@ -449,7 +470,8 @@ def alpha_beta(node, depth, alpha, beta, maximizing_player=True):
 
         for child in node.child:
 
-            child_value, child_path = alpha_beta(child, depth - 1, alpha, beta, False)
+            child_value, child_path = alpha_beta(
+                child, depth - 1, alpha, beta, False)
             if child_value > best_value:
                 best_value = child_value
                 best_path = [child.parent_action] + child_path
@@ -465,7 +487,8 @@ def alpha_beta(node, depth, alpha, beta, maximizing_player=True):
         best_path = []
 
         for child in node.child:
-            child_value, child_path = alpha_beta(child, depth - 1, alpha, beta, True)
+            child_value, child_path = alpha_beta(
+                child, depth - 1, alpha, beta, True)
             if child_value < best_value:
                 best_value = child_value
                 best_path = [child.parent_action] + child_path
@@ -484,14 +507,13 @@ def monte_carlo(node: SplendiaMtcsNode, nb_simulations, current_player):
     results = manager.dict()
     procs = []
 
-
     for child in node_child:
-        proc = mp.Process(target=compute_random_game_reward, args=(child, current_player, nb_simulations, results))
+        proc = mp.Process(target=compute_random_game_reward, args=(
+            child, current_player, nb_simulations, results))
         procs.append(proc)
         proc.start()
-        #compute_random_game_reward(child, current_player, nb_simulations, results)
+        # compute_random_game_reward(child, current_player, nb_simulations, results)
         print(f"Simulating action {child.parent_action}")
-
 
     for proc in procs:
         proc.join()
@@ -508,6 +530,7 @@ def monte_carlo(node: SplendiaMtcsNode, nb_simulations, current_player):
     print(f"Best action: {best_action}")
     print(f"Best reward: {best_reward}")
     return best_action
+
 
 def compute_random_game_reward(child, current_player, nb_simulations, results):
     reward_list = []
@@ -541,15 +564,16 @@ if __name__ == '__main__':
     print("--- %s seconds ---" % (time.time() - start_time))
     # node.find_children()
     dummy = copy(node)
-    #dummy.find_children()
+    # dummy.find_children()
     player = True if node.currentPlayer == 0 else False
-    best_value, best_path = alpha_beta(dummy, 4, float('-inf'), float('inf'), player)
+    best_value, best_path = alpha_beta(
+        dummy, 4, float('-inf'), float('inf'), player)
     print(f"Optimal path for 4 : {best_path}")
     dummy = SplendiaMtcsNode(node, 2, 0, False, 9)
-    #dummy.find_children()
-    best_value, best_path = alpha_beta(dummy, 7, float('-inf'), float('inf'), player)
+    # dummy.find_children()
+    best_value, best_path = alpha_beta(
+        dummy, 7, float('-inf'), float('inf'), player)
     print(f"Optimal path for 6 : {best_path}")
-
 
     print(f"Optimal value: {best_value}")
     print("Actions to take:")

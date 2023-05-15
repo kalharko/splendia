@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-buy-token',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BuyTokenComponent implements OnInit {
 
-  constructor() { }
+  tokensToBuy: number[];
+
+  constructor(private appService: AppService) {
+    this.tokensToBuy = [0, 0, 0, 0, 0, 0];
+  }
 
   ngOnInit(): void {
+  }
+
+  buyTokens(): void {
+    this.appService.buyTokens(this.tokensToBuy);
   }
 
 }

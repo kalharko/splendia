@@ -1,0 +1,22 @@
+#boardgame {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+#left-column {
+    align-self: stretch;
+    margin-right: 2em;
+    display: flex;
+    flex-direction: column;
+    width: 6em;
+}
+
+#logs {
+    flex-grow: 1;
+}
+
+#middle-shop {
+    display: flex;
+    flex-direction: column;
+}

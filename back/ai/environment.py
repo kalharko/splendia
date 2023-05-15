@@ -5,6 +5,7 @@ from model.token_array import TokenArray
 import pickle
 from model.mtcs.splendia_mtcs_node import SplendiaMtcsNode, monte_carlo
 
+
 class SplendorEnv(gym.Env):
     def __init__(self, game: GameManager, nb_player: int = 2):
         """
@@ -49,23 +50,22 @@ class SplendorEnv(gym.Env):
         self.game.launch_game(2)
 
         # save the game in a pickle file
-        #with open('game.pickle', 'wb') as handle:
-            #pickle.dump(self.game, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
+        # with open('game.pickle', 'wb') as handle:
+        # pickle.dump(self.game, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         pass
 
-    def from_board_states_to_obs_train(self, player_id: int):
+    def from_board_states_to_obs_train(self, playerId: int):
         state = self.game.gather_ia_board_state()
-        player_string = 'player' + str(player_id+1)
-        player2 = (player_id + 1) % 3
+        player_string = 'player' + str(playerId+1)
+        player2 = (playerId + 1) % 3
         opponent_string = 'player' + str(player2)
 
         obs = numpy.zeros(88)
         obs[0:6] = state[player_string]['tokens']
         # if the length of the list smaller than 20, we padd with 90
         list_of_cards = [
-            card.card_id for card in state[player_string]['cards'] if card is not None]
+            card.cardId for card in state[player_string]['cards'] if card is not None]
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
@@ -82,13 +82,13 @@ class SplendorEnv(gym.Env):
         # we save the reserved cards in a list, if the card is None, we padd with 90
 
         self.reserved_cards = [
-            card.card_id for card in state[player_string]['reserved'] if card is not None]
+            card.cardId for card in state[player_string]['reserved'] if card is not None]
         if len(self.reserved_cards) < 3:
             for i in range(3 - len(self.reserved_cards)):
                 self.reserved_cards.append(90)
         # same for reserved cards, if the length of the list smaller than 3, we padd with 90
         list_of_reserved = [
-            card.card_id for card in state[player_string]['reserved'] if card is not None]
+            card.cardId for card in state[player_string]['reserved'] if card is not None]
         if len(list_of_reserved) < 3:
             for i in range(3 - len(list_of_reserved)):
                 list_of_reserved.append(90)
@@ -97,7 +97,7 @@ class SplendorEnv(gym.Env):
         obs[34:40] = state[opponent_string]['tokens']
         # same for player 2
         list_of_cards = [
-            card.card_id for card in state[opponent_string]['cards'] if card is not None]
+            card.cardId for card in state[opponent_string]['cards'] if card is not None]
         if len(list_of_cards) < 20:
             for i in range(20 - len(list_of_cards)):
                 list_of_cards.append(90)
@@ -110,7 +110,7 @@ class SplendorEnv(gym.Env):
                 list_of_nobles.append(10)
         obs[60:65] = list_of_nobles
         list_of_reserved = [
-            card.card_id for card in state[opponent_string]['reserved'] if card is not None]
+            card.cardId for card in state[opponent_string]['reserved'] if card is not None]
 
         if len(list_of_reserved) < 3:
             for i in range(3 - len(list_of_reserved)):
@@ -121,7 +121,7 @@ class SplendorEnv(gym.Env):
         # same for shop
         self.shop1_cards = state['shop']['rank1_cards']
         list_of_cards_rank1 = [
-            card.card_id for card in state['shop']['rank1_cards']]
+            card.cardId for card in state['shop']['rank1_cards']]
 
         if len(list_of_cards_rank1) < 4:
             for i in range(4 - len(list_of_cards_rank1)):
@@ -130,7 +130,7 @@ class SplendorEnv(gym.Env):
 
         self.shop2_cards = state['shop']['rank2_cards']
         list_of_cards_rank2 = [
-            card.card_id for card in state['shop']['rank2_cards']]
+            card.cardId for card in state['shop']['rank2_cards']]
         if len(list_of_cards_rank2) < 4:
             for i in range(4 - len(list_of_cards_rank2)):
                 list_of_cards_rank2.append(90)
@@ -138,7 +138,7 @@ class SplendorEnv(gym.Env):
 
         self.shop3_cards = state['shop']['rank3_cards']
         list_of_cards_rank3 = [
-            card.card_id for card in state['shop']['rank3_cards']]
+            card.cardId for card in state['shop']['rank3_cards']]
         if len(list_of_cards_rank3) < 4:
             for i in range(4 - len(list_of_cards_rank3)):
                 list_of_cards_rank3.append(90)
@@ -160,7 +160,6 @@ class SplendorEnv(gym.Env):
         obs = self.normalize_obs(obs)
         self.obs = obs
         return obs
-
 
     def normalize_obs(self, obs):
         """
@@ -201,17 +200,18 @@ class SplendorEnv(gym.Env):
         obs[85:88] = obs[85:88] / 30
 
         return obs
+
     def reset(self):
         self.number_turn = 0
         self.game_id += 1
         self.last_action = -1
-        #load the pickle file
+        # load the pickle file
         del self.game
         with open('game.pickle', 'rb') as f:
             self.game = pickle.load(f)
         self.game.randomize_first_player()
-        #print('game id : ', self.game_id)
-        #print('first player : ', self.game.currentPlayer)
+        # print('game id : ', self.game_id)
+        # print('first player : ', self.game.currentPlayer)
         return self.from_board_states_to_obs_train(self.game.currentPlayer)
 
     def is_last_turn(self):
@@ -224,38 +224,37 @@ class SplendorEnv(gym.Env):
         player_1_vp = self.game.get_player_victory_point(1)
         if self.game.is_last_turn():
 
-                # if the file blocked_logs.csv does not exist, we create it
-                if player_0_vp > player_1_vp:
-                    #print('player 0 win')
-                    info['flag'] = 0
-                elif player_0_vp < player_1_vp:
-                    #print('player 1 win')
-                    info['flag'] = 1
-                else:
-                    info['flag'] = 2
-                    #print('draw')
-                done = True
-                #print('last turn')
+            # if the file blocked_logs.csv does not exist, we create it
+            if player_0_vp > player_1_vp:
+                # print('player 0 win')
+                info['flag'] = 0
+            elif player_0_vp < player_1_vp:
+                # print('player 1 win')
+                info['flag'] = 1
+            else:
+                info['flag'] = 2
+                # print('draw')
+            done = True
+            # print('last turn')
         else:
-                done = False
-                info['flag'] = -1
+            done = False
+            info['flag'] = -1
         self.apply_action(action)
         # ave the last action
 
         has_finish = self.game.is_last_turn()
-        self.number_turn +=1
+        self.number_turn += 1
         # the ai has played
         obs = self.from_board_states_to_obs_train(self.game.currentPlayer)
 
-        #action_two = model.select_dummy_action(obs)
+        # action_two = model.select_dummy_action(obs)
         has_pass = True if action == 65 else False
-        #node = SplendiaMtcsNode(self.game,self.game.currentPlayer,10,has_pass,30)
-        #print('monte carlo for a number of iteration : ', 10)
-        #print('number of children : ', (len(node.child)))
+        # node = SplendiaMtcsNode(self.game,self.game.currentPlayer,10,has_pass,30)
+        # print('monte carlo for a number of iteration : ', 10)
+        # print('number of children : ', (len(node.child)))
 
         # reward = self.game.playerController.players[0].victoryPoints.value
         reward = -1/100
-
 
         if self.game.currentPlayer == 0:
 
@@ -267,9 +266,8 @@ class SplendorEnv(gym.Env):
 
         if action == 65 and self.last_action == 65 and done == False:
             info['flag'] = 3
-            #print('blocked')
+            # print('blocked')
             done = True
-
 
         self.last_action = action
 
@@ -319,29 +317,29 @@ class SplendorEnv(gym.Env):
         elif action == 14:
             self.game.take_token(TokenArray([0, 0, 0, 0, 2, 0]))
         elif action == 15:
-            self.game.buy_card(self.shop1_cards[0].card_id)
+            self.game.buy_card(self.shop1_cards[0].cardId)
         elif action == 16:
-            self.game.buy_card(self.shop1_cards[1].card_id)
+            self.game.buy_card(self.shop1_cards[1].cardId)
         elif action == 17:
-            self.game.buy_card(self.shop1_cards[2].card_id)
+            self.game.buy_card(self.shop1_cards[2].cardId)
         elif action == 18:
-            self.game.buy_card(self.shop1_cards[3].card_id)
+            self.game.buy_card(self.shop1_cards[3].cardId)
         elif action == 19:
-            self.game.buy_card(self.shop2_cards[0].card_id)
+            self.game.buy_card(self.shop2_cards[0].cardId)
         elif action == 20:
-            self.game.buy_card(self.shop2_cards[1].card_id)
+            self.game.buy_card(self.shop2_cards[1].cardId)
         elif action == 21:
-            self.game.buy_card(self.shop2_cards[2].card_id)
+            self.game.buy_card(self.shop2_cards[2].cardId)
         elif action == 22:
-            self.game.buy_card(self.shop2_cards[3].card_id)
+            self.game.buy_card(self.shop2_cards[3].cardId)
         elif action == 23:
-            self.game.buy_card(self.shop3_cards[0].card_id)
+            self.game.buy_card(self.shop3_cards[0].cardId)
         elif action == 24:
-            self.game.buy_card(self.shop3_cards[1].card_id)
+            self.game.buy_card(self.shop3_cards[1].cardId)
         elif action == 25:
-            self.game.buy_card(self.shop3_cards[2].card_id)
+            self.game.buy_card(self.shop3_cards[2].cardId)
         elif action == 26:
-            self.game.buy_card(self.shop3_cards[3].card_id)
+            self.game.buy_card(self.shop3_cards[3].cardId)
         elif action == 27:
             self.game.buy_card(self.reserved_cards[0])
         elif action == 28:
@@ -349,29 +347,29 @@ class SplendorEnv(gym.Env):
         elif action == 29:
             self.game.buy_card(self.reserved_cards[2])
         elif action == 30:
-            self.game.reserve_card(self.shop1_cards[0].card_id)
+            self.game.reserve_card(self.shop1_cards[0].cardId)
         elif action == 31:
-            self.game.reserve_card(self.shop1_cards[1].card_id)
+            self.game.reserve_card(self.shop1_cards[1].cardId)
         elif action == 32:
-            self.game.reserve_card(self.shop1_cards[2].card_id)
+            self.game.reserve_card(self.shop1_cards[2].cardId)
         elif action == 33:
-            self.game.reserve_card(self.shop1_cards[3].card_id)
+            self.game.reserve_card(self.shop1_cards[3].cardId)
         elif action == 34:
-            self.game.reserve_card(self.shop2_cards[0].card_id)
+            self.game.reserve_card(self.shop2_cards[0].cardId)
         elif action == 35:
-            self.game.reserve_card(self.shop2_cards[1].card_id)
+            self.game.reserve_card(self.shop2_cards[1].cardId)
         elif action == 36:
-            self.game.reserve_card(self.shop2_cards[2].card_id)
+            self.game.reserve_card(self.shop2_cards[2].cardId)
         elif action == 37:
-            self.game.reserve_card(self.shop2_cards[3].card_id)
+            self.game.reserve_card(self.shop2_cards[3].cardId)
         elif action == 38:
-            self.game.reserve_card(self.shop3_cards[0].card_id)
+            self.game.reserve_card(self.shop3_cards[0].cardId)
         elif action == 39:
-            self.game.reserve_card(self.shop3_cards[1].card_id)
+            self.game.reserve_card(self.shop3_cards[1].cardId)
         elif action == 40:
-            self.game.reserve_card(self.shop3_cards[2].card_id)
+            self.game.reserve_card(self.shop3_cards[2].cardId)
         elif action == 41:
-            self.game.reserve_card(self.shop3_cards[3].card_id)
+            self.game.reserve_card(self.shop3_cards[3].cardId)
         elif action == 42:
             self.game.reserve_pile_card(0)
         elif action == 43:

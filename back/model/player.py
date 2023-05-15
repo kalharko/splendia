@@ -16,7 +16,7 @@ class Player():
     It contains a list of players and methods to interact with them.
 
     Attributes:
-        player_id (int): The id of the player.
+        playerId (int): The id of the player.
         hand (Hand): The hand of the player.
         reserved (Hand): The reserved cards of the player.
         bonus_tokens (TokenArray): The bonus tokens of the player.
@@ -26,7 +26,7 @@ class Player():
         observer (PatronController): The patron controller.
 
         """
-    player_id: int
+    playerId: int
     hand: Hand
     reserved: Hand
     bonus_tokens: TokenArray
@@ -35,15 +35,15 @@ class Player():
     patrons: List[Patron]
     observer: PatronController
 
-    def __init__(self, player_id: int, observer: PatronController) -> None:
+    def __init__(self, playerId: int, observer: PatronController) -> None:
         """This method initializes the player.
 
         Args:
-            player_id (int): The id of the player.
+            playerId (int): The id of the player.
             observer (PatronController): The patron controller.
 
             """
-        self.player_id = player_id
+        self.playerId = playerId
         self.hand = Hand([])
         self.reserved = Hand([])
         self.tokens = TokenArray()
@@ -61,6 +61,7 @@ class Player():
         Returns:
             TokenArray: The price of the card.
             """
+        assert isinstance(cardId, int)
 
         return self.reserved.get_card_price(cardId)
 
@@ -74,6 +75,7 @@ class Player():
             int or PlayerCanNotPay: The number of tokens to deposit if the player can pay, PlayerCanNotPay otherwise.
             """
         assert isinstance(price, TokenArray)
+
         # tokens = self.tokens.get_tokens()
         can_pay, reduced_price = self.can_pay_with_reduced_price(price)
 
@@ -95,6 +97,7 @@ class Player():
             tuple[bool, TokenArray]: True if the player can pay, False otherwise. The reduced price.
             """
         assert isinstance(price, TokenArray)
+
         reduced_price = price - self.bonus_tokens
         for i in range(len(reduced_price.get_tokens())):
             if reduced_price.get_tokens()[i] < 0:
@@ -110,6 +113,8 @@ class Player():
         Returns:
             Card: The card withdrawn.
             """
+        assert isinstance(cardId, int)
+
         return self.reserved.pop_card(cardId)
 
     def deposit_card(self, card: Card) -> None:
@@ -117,7 +122,6 @@ class Player():
 
         Args:
             card (Card): The card to deposit.
-
             """
         assert isinstance(card, Card)
 
@@ -138,6 +142,7 @@ class Player():
         Returns:
             Patron: The patron if the player has one, None otherwise.
             """
+
         return self.observer.update(self.hand)
 
     def deposit_reserved_card(self, card: Card) -> None:
@@ -145,9 +150,9 @@ class Player():
 
         Args:
             card (Card): The card to deposit.
-
             """
         assert isinstance(card, Card)
+
         self.reserved.add_card(card)
 
     def deposit_tokens(self, tokens: TokenArray) -> None:
@@ -155,9 +160,9 @@ class Player():
 
         Args:
             tokens (TokenArray): The tokens to deposit.
-
                 """
         assert isinstance(tokens, TokenArray)
+
         if err := self.tokens.deposit_tokens(tokens):
             return err
 
@@ -172,17 +177,13 @@ class Player():
 
     def update_victory_points(self):
         """This method updates the victory points of the player.
-
             """
+
         out = 0
         out += self.hand.compute_victory_points()
         for patron in self.patrons:
             out += patron.victoryPoints.get_value()
         self.victoryPoints.set_value(out)
-
-    def take_randoms_tokens(self, bank_controller: TokenArray):
-
-        pass
 
     def gather_human_player_information_api_board_state(self) -> dict:
         """Gather the human player information needed for the api board state in a dictionnary.
@@ -194,15 +195,15 @@ class Player():
 
         Returns:
             dict: shop information for the api board state
-        """
-        
+            """
+
         return {
             'tokenList': self.tokens.get_tokens(),
             'bonusList': self.bonus_tokens.get_tokens(),
             'victoryPoints': self.victoryPoints.get_value(),
             'reservedCards': self.reserved.gather_cards_information_api_board_state()
         }
-        
+
     def gather_cpu_player_information_api_board_state(self) -> dict:
         """Gather the CPU player information needed for the api board state in a dictionnary.
         The dictionnary contains:
@@ -213,36 +214,39 @@ class Player():
 
         Returns:
             dict: shop information for the api board state
-        """
-        
+            """
+
         return {
             'tokenList': self.tokens.get_tokens(),
             'bonusList': self.bonus_tokens.get_tokens(),
             'victoryPoints': self.victoryPoints.get_value(),
             'numberReservedCards': self.reserved.get_number_cards()
         }
-        
+
     def check_too_many_tokens(self) -> bool:
         """Check if the player has too many tokens.
         The maximum of tokens a player can keep is 10
 
         Returns:
             bool: true if the player has too many tokens
-        """
+            """
+
         return sum(self.tokens.get_tokens()) > 10
-    
+
     def get_id(self) -> int:
         """Get the id of the player
 
         Returns:
             int: player id
-        """
-        return self.player_id
-    
+            """
+
+        return self.playerId
+
     def get_victory_points(self) -> VictoryPoint:
         """Get the victory points of the player
 
         Returns:
             VictoryPoint: victory points of the player
-        """
+            """
+
         return self.victoryPoints

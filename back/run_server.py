@@ -49,22 +49,22 @@ def buyCard() -> Response:
     """API route to buy a card
 
     Query params:
-        card_id (int): id of the card to buy
+        cardId (int): id of the card to buy
 
     Returns:
         An error message with the HTTP status 400 is returned in the following cases:
-        - no card_id query param was given
-        - the card_id query param is not an integer
+        - no cardId query param was given
+        - the cardId query param is not an integer
         - an exception happens when buying the card
         Otherwise, the board state of the game with the HTTP status 200 is returned.
     """
 
     try:
-        cardId = int(request.args['card_id'])
+        cardId = int(request.args['cardId'])
     except ValueError:
-        return jsonifyErrorMessage("card_id query param is not a integer. The given value was '" + request.args['card_id'] + "."), 400
+        return jsonifyErrorMessage("cardId query param is not a integer. The given value was '" + request.args['cardId'] + "."), 400
     except KeyError:
-        return jsonifyErrorMessage("No card_id query param was given"), 400
+        return jsonifyErrorMessage("No cardId query param was given"), 400
 
     if (err := gameManager.buy_card(cardId)):
         return jsonifyException(err), 400
@@ -80,21 +80,21 @@ def reserveCard():
     """API route to reserve a visible card
 
     Query params:
-        card_id (int): id of the card to reserve
+        cardId (int): id of the card to reserve
 
     Returns:
         An error message with the HTTP status 400 is returned in the following cases:
-        - no card_id query param was given
-        - the card_id query param is not an integer
+        - no cardId query param was given
+        - the cardId query param is not an integer
         - an exception happens when reserving the card
         Otherwise, the board state of the game with the HTTP status 200 is returned.
     """
     try:
-        cardId = int(request.args['card_id'])
+        cardId = int(request.args['cardId'])
     except ValueError:
-        return jsonifyErrorMessage("card_id query param is not a integer. The given value was " + request.args['card_id'] + "."), 400
+        return jsonifyErrorMessage("cardId query param is not a integer. The given value was " + request.args['cardId'] + "."), 400
     except KeyError:
-        return jsonifyErrorMessage("No card_id query param was given"), 400
+        return jsonifyErrorMessage("No cardId query param was given"), 400
 
     if (err := gameManager.reserve_card(cardId)):
         return jsonifyException(err), 400
@@ -158,7 +158,8 @@ def takeTokens():
         return jsonifyErrorMessage("No token_list query param was given"), 400
 
     # The following code is used to check that the given token_list query param is a list of 6 ints
-    jsonifiedIntListErrorMessageWith400HttpStats: Response = jsonifyErrorMessage("It was not possible to convert the token_list query params into a list of ints. The given value was " + tokensString + "."), 400
+    jsonifiedIntListErrorMessageWith400HttpStats: Response = jsonifyErrorMessage(
+        "It was not possible to convert the token_list query params into a list of ints. The given value was " + tokensString + "."), 400
     try:
         tokens = json.loads(tokensString)
     except JSONDecodeError:
@@ -185,7 +186,6 @@ def takeTokens():
 
 @app.route('/api/cpu_turn', methods=['GET'])
 def cpuTurn():
-
     """API route to make a CPU play
 
     Returns:

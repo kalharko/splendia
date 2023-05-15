@@ -7,13 +7,17 @@ from model.mtcs.splendia_mtcs_node import SplendiaMtcsNode
 import math
 
 # The evaluation function for the board position
-def evaluate(board : SplendiaMtcsNode,gene : Chromosome):
+
+
+def evaluate(board: SplendiaMtcsNode, gene: Chromosome):
     total_tokens = board
     # Your evaluation function here
     return 0
 
 # The Alpha-Beta algorithm
-def alpha_beta(board : SplendiaMtcsNode, depth : int, alpha : float, beta : float, maximizing_player : bool,gene):
+
+
+def alpha_beta(board: SplendiaMtcsNode, depth: int, alpha: float, beta: float, maximizing_player: bool, gene):
     if depth == 0 or (board.is_last_turn()):
         return evaluate(board, gene)
     board.find_children()
@@ -36,9 +40,10 @@ def alpha_beta(board : SplendiaMtcsNode, depth : int, alpha : float, beta : floa
                 break
         return min_eval
 
-def splendor_battle(gene1 : Chromosome, gene2 : Chromosome):
+
+def splendor_battle(gene1: Chromosome, gene2: Chromosome):
     first_state = GameManager(nbPlayer=2)
-    node : SplendiaMtcsNode = SplendiaMtcsNode(first_state, 2, 0, False, 9)
+    node: SplendiaMtcsNode = SplendiaMtcsNode(first_state, 2, 0, False, 9)
     # find best move with alpha beta
     while not node.is_last_turn():
         node.find_children()
@@ -48,7 +53,10 @@ def splendor_battle(gene1 : Chromosome, gene2 : Chromosome):
 
 """genetic_algorithm = GeneticAlgorithm(3, 0.2, 0.1, 10000, lambda x: sum(x), lambda population, n: population[:n])
 genetic_algorithm.run()"""
-fitness_function = lambda x: sum(x)
-selection_function = lambda population, n: population[:n]
-genetic_algorithm = GeneticAlgorithm(1000, 0.8, 0.01, 1000, fitness_function, selection_function)
+def fitness_function(x): return sum(x)
+def selection_function(population, n): return population[:n]
+
+
+genetic_algorithm = GeneticAlgorithm(
+    1000, 0.8, 0.01, 1000, fitness_function, selection_function)
 best_individual = genetic_algorithm.run()

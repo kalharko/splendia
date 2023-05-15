@@ -15,12 +15,13 @@ class Deck(CardStack):
         cards (List[Card]): The cards of the deck.
         """
 
-    def __init__(self, cards: List[Card]):
+    def __init__(self, cards: list[Card]):
         """This method initializes the deck.
 
         Args:
             cards (List[Card]): The cards of the deck.
             """
+        assert isinstance(cards, list)
 
         self.cards = cards
 
@@ -38,6 +39,7 @@ class Deck(CardStack):
         Returns:
             Card or EmptyDeck: The card drawn from the deck, EmptyDeck if the deck is empty.
             """
+
         if len(self.cards) == 0:
             return EmptyDeck()
         return self.cards.pop(randrange(0, len(self.cards)))
@@ -47,6 +49,6 @@ class Deck(CardStack):
 
         Returns:
             int: the number of cards of the deck
-        """
-        return len(self.cards)
+            """
 
+        return len(self.cards)

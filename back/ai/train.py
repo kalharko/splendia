@@ -95,8 +95,10 @@ def train():
     run_num2 = len(current_num_files2)
 
     # create new log file for each run
-    log_f_name1 = log_dir1 + '/PPO_' + env_name + "_log_" + str(run_num1) + ".csv"
-    log_f_name2 = log_dir2 + '/PPO_' + env_name + "_log_" + str(run_num2) + ".csv"
+    log_f_name1 = log_dir1 + '/PPO_' + \
+        env_name + "_log_" + str(run_num1) + ".csv"
+    log_f_name2 = log_dir2 + '/PPO_' + \
+        env_name + "_log_" + str(run_num2) + ".csv"
 
     print("current logging run number for " + env_name + " : ", run_num)
     print("logging at : " + log_f_name1)
@@ -118,9 +120,9 @@ def train():
         os.makedirs(directory2)
 
     checkpoint_path1 = directory1 + \
-                       "PPO_{}_{}_{}.pth".format(env_name, 0, 1)
+        "PPO_{}_{}_{}.pth".format(env_name, 0, 1)
     checkpoint_path2 = directory2 + \
-                       "PPO_{}_{}_{}.pth".format(env_name, 0, 1)
+        "PPO_{}_{}_{}.pth".format(env_name, 0, 1)
     print("save checkpoint path : " + checkpoint_path1)
     #####################################################
 
@@ -169,15 +171,15 @@ def train():
     # initialize a PPO agent
     ppo_agent_1 = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
                       has_continuous_action_space,
-                      action_std,1)
+                      action_std, 1)
 
-    ppo_agent_2 = PPO(state_dim, action_dim, lr_actor, lr_critic,gamma, K_epochs, eps_clip,
+    ppo_agent_2 = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
                       has_continuous_action_space,
-                      action_std,2)
+                      action_std, 2)
 
     directory = "PPO_preTrained" + '/' + env_name + '/'
     checkpoint_path = directory + \
-                      "PPO_{}_{}_{}.pth".format(env_name, random_seed, 0)
+        "PPO_{}_{}_{}.pth".format(env_name, random_seed, 0)
     print("loading network from : " + checkpoint_path)
     ppo_agent_1.load(checkpoint_path1)
     ppo_agent_2.load(checkpoint_path2)
@@ -195,7 +197,7 @@ def train():
 
     log_f1.write('episode,timestep,reward\n')
     log_f2.write('episode,timestep,reward\n')
-    #ppo_agent1.load(checkpoint_path1)
+    # ppo_agent1.load(checkpoint_path1)
 
     # printing and logging variables
     print_running_reward = 0
@@ -210,8 +212,8 @@ def train():
     time_step = 0
     saving_timestep = 0
     i_episode = 0
-    champion_path= "Champion/" + 'champion_0.pth'
-    #ppo_agent_1.save(champion_path,0)
+    champion_path = "Champion/" + 'champion_0.pth'
+    # ppo_agent_1.save(champion_path,0)
     # training loop
     while time_step <= max_training_timesteps:
 
@@ -240,7 +242,8 @@ def train():
             # select a random file name
             random_file_name = np.random.choice(files_names, 1)
             run_num_pretrained = directory2 + \
-                                 "PPO_{}_{}_{}.pth".format(env_name, random_seed, run_num_pretrained)
+                "PPO_{}_{}_{}.pth".format(
+                    env_name, random_seed, run_num_pretrained)
             print("loading network from : " + checkpoint_path2)
             ppo_agent_2.load(checkpoint_path2)
         for t in range(1, max_ep_len + 1):
@@ -253,41 +256,36 @@ def train():
                 ppo_agent_1.buffer.rewards.append(reward)
                 ppo_agent_1.buffer.is_terminals.append(done)
 
-
-
-
-
             else:
                 action = ppo_agent_2.select_action(state)
                 state, reward, done, info = env.step(action)
                 ppo_agent_2.buffer.rewards.append(reward)
                 ppo_agent_2.buffer.is_terminals.append(done)
             if info['flag'] == 0:
-                #print("player 1 win")
+                # print("player 1 win")
                 ppo_agent_1.buffer.rewards[-1] = 1000/100
                 ppo_agent_2.buffer.rewards[-1] = -1000/100
                 current_ep_reward1 += 1000/100
                 current_ep_reward2 -= 1000/100
             elif info['flag'] == 1:
-                #print("player 2 win")
+                # print("player 2 win")
                 ppo_agent_2.buffer.rewards[-1] = 1000/100
                 ppo_agent_1.buffer.rewards[-1] = -1000/100
                 current_ep_reward2 += 1000 / 100
                 current_ep_reward1 -= 1000 / 100
             elif info['flag'] == 2:
-                #print("draw")
+                # print("draw")
                 ppo_agent_1.buffer.rewards[-1] = 0
                 ppo_agent_2.buffer.rewards[-1] = 0
                 current_ep_reward1 += 0
                 current_ep_reward2 -= 0
                 reward = 0
-            elif info['flag'] == 3 :
-                #print("blocked")
+            elif info['flag'] == 3:
+                # print("blocked")
                 ppo_agent_1.buffer.rewards[-1] = -1500/100
                 ppo_agent_2.buffer.rewards[-1] = -1500/100
                 current_ep_reward1 -= 1500 / 100
                 current_ep_reward2 -= 1500 / 100
-
 
             time_step += 1
 
@@ -342,7 +340,8 @@ def train():
             if time_step % save_model_freq == 0:
                 print(
                     "--------------------------------------------------------------------------------------------")
-                print("saving model at : " + checkpoint_path1 + " and " + checkpoint_path2)
+                print("saving model at : " + checkpoint_path1 +
+                      " and " + checkpoint_path2)
                 # if there are more than 10 saved models; then delete the oldest one
                 if len(os.listdir(directory1)) >= 10:
                     os.remove(directory1 +
@@ -352,12 +351,14 @@ def train():
                               '/' + os.listdir(directory2)[0])
                 # remove the .pth extension and add _actor critic.pth
                 checkpoint_path1 = directory1 + \
-                "PPO_{}_{}_{}.pth".format(env_name, random_seed, saving_timestep)
+                    "PPO_{}_{}_{}.pth".format(
+                        env_name, random_seed, saving_timestep)
 
                 checkpoint_path2 = directory2 + \
-                "PPO_{}_{}_{}.pth".format(env_name, random_seed, saving_timestep)
-                ppo_agent_1.save(checkpoint_path1,saving_timestep)
-                ppo_agent_2.save(checkpoint_path2,saving_timestep)
+                    "PPO_{}_{}_{}.pth".format(
+                        env_name, random_seed, saving_timestep)
+                ppo_agent_1.save(checkpoint_path1, saving_timestep)
+                ppo_agent_2.save(checkpoint_path2, saving_timestep)
 
                 saving_timestep += 1
                 saving_timestep = saving_timestep % 10
@@ -372,7 +373,6 @@ def train():
         print_running_reward += current_ep_reward1
         print_running_episodes += 1
 
-
         log_running_reward1 += current_ep_reward1
         log_running_episodes1 += 1
         log_running_reward2 += current_ep_reward2
@@ -383,9 +383,11 @@ def train():
             champion_rival = 0
             # Challenge the champion
             # testing best agent between ppo_agent_1 and ppo_agent_2
-            print("============================================================================================")
+            print(
+                "============================================================================================")
             print("Agent 1 vs Agent 2")
-            print("============================================================================================")
+            print(
+                "============================================================================================")
             agent_1_wins = 0
             agent_2_wins = 0
             for i in range(400):
@@ -406,13 +408,13 @@ def train():
                         state, reward, done, info = env.step(action)
                         ppo_agent_2.buffer.rewards.append(reward)
                         ppo_agent_2.buffer.is_terminals.append(done)
-                if info['flag'] ==0:
+                if info['flag'] == 0:
                     agent_1_wins += 1
-                elif info['flag'] ==1:
+                elif info['flag'] == 1:
                     agent_2_wins += 1
 
-            print("Agent 1 wins : ",agent_1_wins)
-            print("Agent 2 wins : ",agent_2_wins)
+            print("Agent 1 wins : ", agent_1_wins)
+            print("Agent 2 wins : ", agent_2_wins)
             if agent_1_wins > agent_2_wins:
                 print("Agent 1 will play against the champion")
                 champion_rival = 1
@@ -424,22 +426,21 @@ def train():
                 champion_rival = 0
                 break
 
-
-
-
-            print("============================================================================================")
+            print(
+                "============================================================================================")
             print("CHALLENGING THE CHAMPION")
-            print("============================================================================================")
+            print(
+                "============================================================================================")
             # load the champion
             if champion_rival == 1:
-                champion  = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
-                          has_continuous_action_space,
-                          action_std,2)
+                champion = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
+                               has_continuous_action_space,
+                               action_std, 2)
                 champion.load(champion_path)
-            else :
-                champion  = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
-                          has_continuous_action_space,
-                          action_std,1)
+            else:
+                champion = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
+                               has_continuous_action_space,
+                               action_std, 1)
                 champion.load(champion_path)
 
             # challenge the champion for 400 games
@@ -456,7 +457,6 @@ def train():
                             action = ppo_agent_1.select_action(state)
                             state, reward, done, info = env.step(action)
 
-
                         else:
                             action = champion.select_action(state)
                             state, reward, done, info = env.step(action)
@@ -470,7 +470,7 @@ def train():
                 if agent_wins > champion_wins:
                     # save the agent as the new champion
                     print("Agent 1 is the new champion")
-                    ppo_agent_1.save(champion_path,0)
+                    ppo_agent_1.save(champion_path, 0)
                 elif agent_wins < champion_wins:
                     print("Champion is still the champion")
             else:
@@ -483,7 +483,6 @@ def train():
                         if env.game.currentPlayer == 1:
                             action = ppo_agent_2.select_action(state)
                             state, reward, done, info = env.step(action)
-
 
                         else:
                             action = champion.select_action(state)
@@ -503,11 +502,6 @@ def train():
                     print("Champion is still the champion")
             ppo_agent_1.buffer.clear()
             ppo_agent_2.buffer.clear()
-
-
-
-
-
 
         # break; if the episode is over
 

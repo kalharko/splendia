@@ -67,9 +67,11 @@ class InvalidRejectTokenAction(Exception):
 
     def __init__(self):
         super().__init__("A reject token action is invalid.")
-        
+
+
 class InvalidNbPlayer(Exception):
     """Raised when a number of players is rejected"""
 
     def __init__(self, nbPlayer: int):
-        super().__init__("The number of players is invalid. It should be between 2 and 4. " + str(nbPlayer) + " was given instead.")
+        super().__init__("The number of players is invalid. It should be between 2 and 4. " +
+                         str(nbPlayer) + " was given instead.")
