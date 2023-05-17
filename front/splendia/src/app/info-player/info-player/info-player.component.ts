@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { AppService } from 'src/app/shared/services/app.service';
+import { BoardState } from 'src/app/shared/models/board_state.model';
+import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
+import { Player } from 'src/app/shared/models/player.model';
 
 @Component({
   selector: 'app-info-player',
   templateUrl: './info-player.component.html',
   styleUrls: ['./info-player.component.scss']
 })
-export class InfoPlayerComponent implements OnInit {
+export class InfoPlayerComponent extends OnDestroyMixin implements OnInit {
 
-  constructor() { }
+  @Input()
+  player: Player = new Player();
+  showBonus: boolean[] = [true, true, true, true, true, false]
+  constructor(private appService: AppService) {
+  super();
+  }
 
   ngOnInit(): void {
+      this.appService.board_state.pipe(untilComponentDestroyed(this)).subscribe((board_state:BoardState) => {
+      this.player = board_state.humanPlayer;
+    });
   }
 
 }

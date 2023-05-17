@@ -1,1 +1,24 @@
-<p>info-player works!</p>
+<div class='info_box'>
+    <div class='line'>
+        <p id='name'> Player </p>
+        <p id='victorypoints'> {{this.player.victoryPoints}} </p>
+    </div>
+    <div class='line'>
+        <app-token id='tokens'
+        class="token"
+        *ngFor="let tokenQuantity of this.player.tokenList; let i = index"
+        [color]="i"
+        [quantity]="tokenQuantity"
+        [show]="true"
+        ></app-token>
+    </div>
+    <div class='line'>
+        <app-bonus id='tokens'
+        class="bonus"
+        *ngFor="let tokenQuantity of this.player.bonusList; let i = index"
+        [color]="i"
+        [quantity]="tokenQuantity"
+        [show]="this.showBonus[i]"
+        ></app-bonus>
+    </div>
+</div>

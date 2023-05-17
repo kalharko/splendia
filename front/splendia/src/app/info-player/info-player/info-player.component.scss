@@ -1,0 +1,25 @@
+.info_box {
+    display: grid;
+    outline: solid;
+    padding-left: 5%;
+    padding-right: 0%;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    margin: 5%;
+}
+
+.line {
+    display: inline-flex;
+    padding-bottom: 5%;
+}
+
+#tokens {
+    margin: -2%;
+}
+
+
+
+#victorypoints {
+    position: relative;
+    left: 250px;
+}
