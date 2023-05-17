@@ -14,11 +14,11 @@
     </div>
     <div class='line'>
         <app-bonus id='tokens'
-        class="token"
-        *ngFor="let tokenQuantity of this.player.bonusList; let i = index; let show of [true, true, true, true, true, false]"
+        class="bonus"
+        *ngFor="let tokenQuantity of this.player.bonusList; let i = index"
         [color]="i"
         [quantity]="tokenQuantity"
-        [show]="true"
+        [show]="this.showBonus[i]"
         ></app-bonus>
     </div>
 </div>

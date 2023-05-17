@@ -13,6 +13,7 @@ export class InfoPlayerComponent extends OnDestroyMixin implements OnInit {
 
   @Input()
   player: Player = new Player();
+  showBonus: boolean[] = [true, true, true, true, true, false]
   constructor(private appService: AppService) {
   super();
   }

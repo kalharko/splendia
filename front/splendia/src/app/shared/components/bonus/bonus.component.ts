@@ -28,7 +28,7 @@ export class BonusComponent implements OnInit {
    * @return the background image url
    */
   getBackgroundImageToken(): string {
-    return "url(../../../../assets/images/tokens/" + colorsEnumToString(this.color) + ".png)";
+    return "url(../../../../assets/images/bonuses/bonus_" + colorsEnumToString(this.color) + ".png)";
   }
 
   /**
