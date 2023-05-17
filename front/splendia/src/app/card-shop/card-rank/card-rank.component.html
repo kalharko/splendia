@@ -1,7 +1,6 @@
 <div id="cards">
-    nb card deck : {{cardRank.numberCardsDeck}}
+    <p id="decksize">{{cardRank.numberCardsDeck}}</p>
     <div *ngFor="let i of [0,1,2,3]">
         <app-card [rankNumber]="rankNumber" [cardNumber]="i"></app-card>
     </div>
 </div>
-
