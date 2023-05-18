@@ -1,10 +1,5 @@
-<div id="card">
-    <div>
-        Bonus : {{card.bonus}}
-        Price : {{card.price}}
-        VP : {{card.victoryPoint}}
-    </div>
-    <button (click)="buyCard()">Buy</button>
-    <button (click)="reserveCard()">Reserve</button>
+<div id="card" [style.backgroundImage]="getImagePath()">
+    <button class="appear" (click)="buyCard()">Buy</button>
+    <button class="appear" (click)="reserveCard()">Reserve</button>
 
 </div>

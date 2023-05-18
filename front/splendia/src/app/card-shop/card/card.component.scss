@@ -2,5 +2,16 @@
     width: 5em;
     height: 10em;
     background-color: red;
+    background-repeat: no-repeat;
+    background-size: 100%;
     margin:1em;
+}
+
+.appear{
+    display: none;
+    margin: 15%;
+}
+
+#card:hover > .appear {
+    display: grid;
 }
