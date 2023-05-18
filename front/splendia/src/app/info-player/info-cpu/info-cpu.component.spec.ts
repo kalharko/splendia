@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InfoPlayersComponent } from './info-players.component';
+import { InfoCpuComponent } from './info-cpu.component';
 
-describe('InfoPlayersComponent', () => {
-  let component: InfoPlayersComponent;
-  let fixture: ComponentFixture<InfoPlayersComponent>;
+describe('InfoCpuComponent', () => {
+  let component: InfoCpuComponent;
+  let fixture: ComponentFixture<InfoCpuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InfoPlayersComponent ]
+      declarations: [ InfoCpuComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InfoPlayersComponent);
+    fixture = TestBed.createComponent(InfoCpuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
