@@ -54,7 +54,7 @@ export class AppService {
   }
 
   reserveCard(cardId:number){
-    this.http.get<BoardState>(this.rootURL + '/reserve_card?card_id=' + cardId)
+    this.http.get<BoardState>(this.rootURL + '/reserve_card?cardId=' + cardId)
     .subscribe(
       board_state =>{
         this._board_state.next(Object.assign({}, board_state));
