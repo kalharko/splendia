@@ -1,215 +1,221 @@
-<mxfile host="app.diagrams.net" modified="2023-05-10T17:16:53.763Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" version="21.2.9" etag="XbjcTu7CyHGUY_q8THDx" type="device">
-  <diagram name="Page-1" id="9c096ad6-e400-ecc8-3e38-643d2caac077">
-    <mxGraphModel dx="1434" dy="796" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1.5" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
-      <root>
-        <mxCell id="0" style=";html=1;" />
-        <mxCell id="1" style=";html=1;" parent="0" />
-        <mxCell id="41" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=3;" parent="1" source="30e23a8a0b95c500-1" target="20" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="30e23a8a0b95c500-1" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Écrire l&#39;introduction&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;1&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="240" y="161.12" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="3cfceab9cabfe5b9-59" value="" style="line;strokeWidth=1;html=1;rounded=1;fontSize=12;align=center;verticalAlign=middle;strokeColor=#FF0000;endFill=1;endArrow=classic;endSize=10;startSize=10;" parent="1" vertex="1">
-          <mxGeometry x="87" y="1105" width="68" height="10" as="geometry" />
-        </mxCell>
-        <mxCell id="3cfceab9cabfe5b9-60" value="Preferred route" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;shadow=1;fontSize=12;" parent="1" vertex="1">
-          <mxGeometry x="172" y="1100" width="143" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="6D7u9FSeIXigumYbgQsU-21" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="270" y="140" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="42" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=3;" parent="1" source="2" target="20" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="440" y="520" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="2" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir les références&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;1&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="240" y="242.24" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="3" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="270" y="221.12" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="43" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=3;" parent="1" source="5" target="20" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="440" y="520" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="5" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir les besoins&lt;br&gt;fonctionnelles&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;1&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="240" y="321.12" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="6" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="270" y="300" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="44" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=3;" parent="1" source="7" target="20" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="440" y="520" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir les besoins en&lt;br&gt;performance&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;1&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="240" y="408.12" width="120" height="71.88" as="geometry" />
-        </mxCell>
-        <mxCell id="8" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="268" y="387" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="45" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=3;" parent="1" source="9" target="20" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="440" y="520" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="9" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir la spécification&lt;br&gt;des interfaces externes&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;1&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="238" y="499.12" width="120" height="71.88" as="geometry" />
-        </mxCell>
-        <mxCell id="10" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="266" y="478" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="46" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=3;" parent="1" source="11" target="20" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="440" y="520" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="11" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Rédiger la description&lt;br&gt;générale&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;1&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="239" y="587.12" width="120" height="71.88" as="geometry" />
-        </mxCell>
-        <mxCell id="12" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="267" y="566" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="47" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=3;" parent="1" source="13" target="20" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="13" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir la spécification&lt;br&gt;des structures de&lt;br&gt;données&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;1&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="240" y="677.12" width="120" height="82.88" as="geometry" />
-        </mxCell>
-        <mxCell id="14" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="268" y="656" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="48" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=3;" parent="1" source="16" target="20" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="16" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir les contraintes&lt;br&gt;de développement&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;1&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="240" y="781.12" width="120" height="71.88" as="geometry" />
-        </mxCell>
-        <mxCell id="17" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="268" y="760" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="52" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=4;" parent="1" source="18" target="24" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="53" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="18" target="26" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="58" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="18" target="30" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="18" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Faire des diagrammes&lt;br&gt;de séquence&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;20&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;20&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;25&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="640" y="438.12" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="19" value="5 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="670" y="417" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="49" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=4;" parent="1" source="20" target="18" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="50" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="20" target="22" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="20" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Faire un diagramme&lt;br&gt;de classes&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;15&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;19&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;15&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;19&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="440" y="480" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="21" value="4 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="470" y="460.12" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="63" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="22" target="30" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="64" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="22" target="26" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="65" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="22" target="24" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="22" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Faire un diagramme&lt;br&gt;d&#39;activité&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;20&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;22&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;23&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;25&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="640" y="528.12" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="23" value="2 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="670" y="507" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="51" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=4;" parent="1" source="24" target="28" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="24" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Développer le&lt;br&gt;modèle du jeu&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;26&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;26&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;45&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="840" y="383.43" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="25" value="19 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="870" y="362.31" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="57" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="26" target="28" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="26" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Développer l&#39;API&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;26&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;34&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;37&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;45&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="840" y="473.43" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="27" value="8 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="870" y="452.31" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="54" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="28" target="34" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="55" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=4;" parent="1" source="28" target="36" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="56" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.017;entryY=0.602;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="28" target="38" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="28" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Développer l&#39;IA&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;46&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;78&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;46&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;78&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="1040" y="430.24000000000007" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="29" value="32 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="1070" y="408.11999999999995" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="59" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="30" target="32" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="30" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Développer la&lt;br&gt;communication API&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;26&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;56&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;60&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="840" y="595.4300000000001" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="31" value="4 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="870" y="574.31" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="60" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.017;entryY=0.599;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="32" target="34" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="61" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="32" target="36" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="62" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="32" target="38" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="32" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Développer l&#39;interface&lt;br&gt;graphique&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;31&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;49&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;60&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;78&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="1040" y="595.4300000000001" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="33" value="18 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="1070" y="574.31" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="34" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Filmer vidéo&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;79&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;81&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;88&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;90&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="1240" y="408.12000000000006" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="35" value="2 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="1270" y="386.99999999999994" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="36" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Écrire le rapport&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;79&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;90&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;79&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;90&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="1240" y="514.0000000000001" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="37" value="11 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="1270" y="492.8799999999999" width="60" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="38" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Préparer la&lt;br&gt;soutenance&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;79&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;82&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;77&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;90&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
-          <mxGeometry x="1240" y="626.8800000000002" width="120" height="68.88" as="geometry" />
-        </mxCell>
-        <mxCell id="39" value="3 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="1270" y="605.7600000000001" width="60" height="30" as="geometry" />
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e">
+    <diagram name="Page-1" id="9c096ad6-e400-ecc8-3e38-643d2caac077">
+        <mxGraphModel dx="1186" dy="726" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1.5" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
+            <root>
+                <mxCell id="0" style=";html=1;"/>
+                <mxCell id="1" style=";html=1;" parent="0"/>
+                <mxCell id="78" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="30e23a8a0b95c500-1" target="70" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="30e23a8a0b95c500-1" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Écrire l'introduction&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;62&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;76&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="237" y="488.25" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="3cfceab9cabfe5b9-59" value="" style="line;strokeWidth=1;html=1;rounded=1;fontSize=12;align=center;verticalAlign=middle;strokeColor=#FF0000;endFill=1;endArrow=classic;endSize=10;startSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="87" y="1105" width="68" height="10" as="geometry"/>
+                </mxCell>
+                <mxCell id="3cfceab9cabfe5b9-60" value="Preferred route" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;shadow=1;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="172" y="1100" width="143" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="6D7u9FSeIXigumYbgQsU-21" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="267" y="467.13" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="79" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="2" target="70" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir les références&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;62&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;76&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="237" y="569.37" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="267" y="548.25" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="82" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="5" target="22" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir les besoins&lt;br&gt;fonctionnelles&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;3&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;17&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="238" y="654.1200000000001" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="266" y="629.3699999999999" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="77" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="7" target="70" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir les besoins en&lt;br&gt;performance&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;62&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;76&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="237" y="395.25" width="120" height="71.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="265" y="374.13" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="81" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=4;" parent="1" source="9" target="18" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir la spécification&lt;br&gt;des interfaces externes&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;1&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="238" y="744.1200000000001" width="120" height="71.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="266" y="723" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="11" target="70" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Rédiger la description&lt;br&gt;générale&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;62&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;76&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="237" y="305.25" width="120" height="71.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="265" y="284.13" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="80" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=4;" parent="1" source="13" target="18" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir la spécification&lt;br&gt;des structures de&lt;br&gt;données&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;1&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="837.1200000000001" width="120" height="82.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="268" y="816" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="75" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="16" target="70" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Établir les contraintes&lt;br&gt;de développement&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;1&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;14&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;62&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;76&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="235" y="212.25" width="120" height="71.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="14 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="263" y="191.13" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="65" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=4;" parent="1" source="18" target="20" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Faire des diagrammes&lt;br&gt;de séquence&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;15&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;20&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;15&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;20&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="744.12" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="5 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="723" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="67" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=4;" parent="1" source="20" target="24" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="760" y="592.3300000000002" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="68" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="20" target="26" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="760" y="592.3300000000002" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="69" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="20" target="30" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="760" y="592.3300000000002" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="73" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontStyle=1" parent="1" source="20" target="70" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="760" y="592.3300000000002" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="20" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Faire un diagramme&lt;br&gt;de classes&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;21&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;21&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;25&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="640" y="596.3700000000001" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="4 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="670" y="569.94" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="22" target="20" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="620" y="765.25" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="22" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Faire un diagramme&lt;br&gt;d'activité&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;15&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;17&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;18&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;20&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="654.1200000000001" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="2 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="629.37" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="51" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=4;" parent="1" source="24" target="28" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Développer le&lt;br&gt;modèle du jeu&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;26&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;26&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;45&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="840" y="506.37" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="19 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="870" y="485.2499999999999" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="57" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="26" target="28" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="26" target="32">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Développer l'API&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;26&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;34&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;37&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;45&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="840" y="596.37" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="8 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="870" y="575.2499999999999" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="54" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="28" target="34" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#FF0000;strokeWidth=4;" parent="1" source="28" target="36" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="56" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.017;entryY=0.602;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="28" target="38" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Développer l'IA&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;46&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;78&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;46&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;78&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="1040" y="501.06000000000006" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="32 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="1070" y="476.3699999999999" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="59" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="30" target="32" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Développer la&lt;br&gt;communication API&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;26&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;56&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;60&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="840" y="686.37" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="4 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="870" y="665.2499999999999" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="60" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.017;entryY=0.599;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="32" target="34" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="61" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="32" target="36" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="32" target="38" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Développer l'interface&lt;br&gt;graphique&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;35&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;53&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;60&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;78&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="1040" y="646.3700000000001" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="18 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="1070" y="625.25" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Filmer vidéo&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;79&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;81&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;88&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;90&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="1240" y="536.7700000000001" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="2 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="1270" y="515.25" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Écrire le rapport&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;79&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;90&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;79&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;90&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="1240" y="419.44000000000005" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="11 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="1270" y="398.31999999999994" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Préparer la&lt;br&gt;soutenance&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;79&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;82&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;87&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;90&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="1240" y="657.7700000000002" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="3 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="1270" y="636.6500000000001" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="72" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="70" target="36" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="70" value="&lt;table style=&quot;width: 100% ; height: 100% ; border-collapse: collapse&quot; width=&quot;100%&quot; border=&quot;1&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;Compiler le cahier&lt;br&gt;des charges&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;26&lt;/font&gt;&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;27&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;77&lt;/td&gt;&lt;td align=&quot;center&quot;&gt;78&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;strokeColor=#FF0000;fillColor=#f5f5f5;overflow=fill;rounded=0;shadow=1;fontSize=12;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="840" y="416.37" width="120" height="68.88" as="geometry"/>
+                </mxCell>
+                <mxCell id="71" value="1 jours" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="870" y="395.2499999999999" width="60" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
 </mxfile>
