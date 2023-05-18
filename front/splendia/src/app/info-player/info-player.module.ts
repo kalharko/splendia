@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReservedCardsComponent } from './reserved-cards/reserved-cards.component';
 import { InfoPlayerComponent } from './info-player/info-player.component';
-import { InfoPlayersComponent } from './info-players/info-players.component';
+import { InfoCpuComponent } from './info-cpu/info-cpu.component';
 import { SharedModule } from '../shared/shared.module';
 
 
@@ -11,14 +11,15 @@ import { SharedModule } from '../shared/shared.module';
   declarations: [
     ReservedCardsComponent,
     InfoPlayerComponent,
-    InfoPlayersComponent
+    InfoCpuComponent
   ],
   imports: [
     CommonModule,
     SharedModule
   ],
   exports:[
-    InfoPlayerComponent
+    InfoPlayerComponent,
+    InfoCpuComponent
   ]
 })
 export class InfoPlayerModule { }
