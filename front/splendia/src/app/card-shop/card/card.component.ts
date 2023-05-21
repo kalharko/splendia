@@ -32,4 +32,8 @@ export class CardComponent extends OnDestroyMixin implements OnInit {
     this.appService.reserveCard(this.card.cardId);
   }
 
+  getImagePath(): string {
+    return "url(../../../assets/images/cards/" + this.card.cardId + ".png)"
+  }
+
 }

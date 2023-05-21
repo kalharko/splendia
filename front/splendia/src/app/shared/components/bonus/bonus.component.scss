@@ -1,8 +1,12 @@
 .token {
     background-size: contain;
     background-position: center;
-    width: 70px;
-    height: 70px;
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    margin-left: 10px;
+    // margin-top: 15px;
     text-align: center;
     font-size: 18px;
     font-weight: bold;

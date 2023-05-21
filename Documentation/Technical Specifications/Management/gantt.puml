@@ -1,0 +1,44 @@
+
+@startuml gantt
+
+Project starts 2023-03-15
+
+[Établir les contraintes de développement] lasts 15 day
+[Rédiger la description générale] lasts 15 day
+[Établir les besoins en performance] lasts 15 day
+[Écrire l'introduction] lasts 15 day
+[Établir les références] lasts 15 day
+[Établir les besoins fonctionnels] as [uno] lasts 15 day
+[Spécification des interfaces externes] lasts 15 day
+[Spécification des structures de données] lasts 15 day
+
+[Faire un diagramme d'activité] starts at D+18 and lasts 3 day
+[Faire des diagrammes de séquence] starts at D+15 and lasts 6 day
+
+[Faire un diagramme de classes] starts at D+21 and lasts 5 day
+
+[Compiler le cahier des charges] happens at D+25
+
+[Développer le modèle du jeu] starts at D+26 and lasts 20 day
+[Développer l'API] starts at D+37 and lasts 9 day
+[Développer l'IA] starts at D+46 and lasts 33 day
+
+[Développer la communication API] starts at D+55 and lasts 5 day
+[Développer l'interface graphique] starts at D+60 and lasts 19 day
+
+[Fin développement] happens at D+78
+[Écrire le rapport] starts at D+79 and lasts 12 day
+[Préparer la soutenance] starts at D+87 and lasts 4 day
+[Filmer vidéo] starts at D+88 and lasts 3 day
+
+
+[Établir les besoins fonctionnels] -> [Faire un diagramme d'activité]
+[Établir les besoins fonctionnels] -> [Faire des diagrammes de séquence]
+[Faire un diagramme d'activité] -> [Faire un diagramme de classes]
+[Faire un diagramme de classes] -> [Développer le modèle du jeu]
+[Faire un diagramme de classes] -> [Développer l'API]
+[Faire un diagramme de classes] -> [Développer la communication API]
+[Développer le modèle du jeu] -> [Développer l'IA]
+[Développer la communication API] -> [Développer l'interface graphique]
+[Développer l'IA] -> [Écrire le rapport]
+@enduml

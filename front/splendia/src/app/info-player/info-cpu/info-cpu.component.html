@@ -1,12 +1,12 @@
 <div class='info_box'>
     <div class='line'>
-        <p id='name'> Player </p>
-        <p id='victorypoints'> {{this.player.victoryPoints}} </p>
+        <p id='name'> CPU#{{this.cpuId}} </p>
+        <p id='victorypoints'> {{this.cpu.victoryPoints}} </p>
     </div>
     <div class='line'>
         <app-token id='tokens'
         class="token"
-        *ngFor="let tokenQuantity of this.player.tokenList; let i = index"
+        *ngFor="let tokenQuantity of this.cpu.tokenList; let i = index"
         [color]="i"
         [quantity]="tokenQuantity"
         [show]="true"
@@ -15,7 +15,7 @@
     <div class='line'>
         <app-bonus id='tokens'
         class="bonus"
-        *ngFor="let tokenQuantity of this.player.bonusList; let i = index"
+        *ngFor="let tokenQuantity of this.cpu.bonusList; let i = index"
         [color]="i"
         [quantity]="tokenQuantity"
         [show]="this.showBonus[i]"

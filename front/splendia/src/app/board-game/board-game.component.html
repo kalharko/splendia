@@ -8,5 +8,10 @@
         <app-card-shop></app-card-shop>
     </div>
 
-    <app-info-player></app-info-player>
+    <div>
+        <app-info-cpu *ngFor="let cpu of this.board_state.CPUS; let i=index"
+        [cpu]="cpu"
+        [cpuId]="i"></app-info-cpu>
+        <app-info-player></app-info-player>
+    </div>
 </div>
