@@ -215,8 +215,8 @@ class GameManager():
 
         board_state = {}
         board_state['shop'] = self._shopController.gather_shop_information_api_board_state()
-        board_state['humanPlayer'] = self._playerController.gather_human_player_information_api_board_state()
-        board_state['CPUS'] = self._playerController.gather_cpu_players_information_api_board_state()
+        board_state['humanPlayer'] = self._playerController.gather_human_player_information_api_board_state(self.currentPlayer)
+        board_state['CPUS'] = self._playerController.gather_cpu_players_information_api_board_state(self.currentPlayer)
         board_state['bank'] = self._bankController.gather_bank_information_api_board_state()
         board_state['patrons'] = self._patronController.gather_patrons_information_api_board_state()
         board_state['gameState'] = {

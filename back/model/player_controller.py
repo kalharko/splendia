@@ -199,23 +199,23 @@ class PlayerController():
         human_player = self.get_human_player()
         return filter(lambda player: player != human_player, self.players)
 
-    def gather_human_player_information_api_board_state(self) -> dict:
+    def gather_human_player_information_api_board_state(self, currentPlayer: int) -> dict:
         """Gather the human player information needed for the api board state in a dictionnary.
 
         Returns:
             dict: human player information for the api board state
             """
 
-        return self.get_human_player().gather_human_player_information_api_board_state()
+        return self.get_human_player().gather_human_player_information_api_board_state(currentPlayer)
 
-    def gather_cpu_players_information_api_board_state(self) -> list:
+    def gather_cpu_players_information_api_board_state(self, currentPlayer: int) -> list:
         """Gather the information of the CPU players needed for the api board state in a list
 
         Returns:
             list: contains information of each CPU player for the api board state
             """
 
-        return [cpu_player.gather_cpu_player_information_api_board_state() for cpu_player in self.get_cpu_players()]
+        return [cpu_player.gather_cpu_player_information_api_board_state(currentPlayer) for cpu_player in self.get_cpu_players()]
 
     def check_human_player_too_many_tokens(self) -> bool:
         """Check if the human player has too many tokens

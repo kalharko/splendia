@@ -185,26 +185,28 @@ class Player():
             out += patron.victoryPoints.get_value()
         self.victoryPoints.set_value(out)
 
-    def gather_human_player_information_api_board_state(self) -> dict:
+    def gather_human_player_information_api_board_state(self, currentPlayer: int) -> dict:
         """Gather the human player information needed for the api board state in a dictionnary.
         The dictionnary contains:
         - the tokens of the player
         - the bonuses of the player in the form of a list of tokens
         - the victory points of the player
         - the reserved cards of the player
+        - if the human player is current player
 
         Returns:
-            dict: shop information for the api board state
+            dict: human player information for the api board state
             """
 
         return {
             'tokenList': self.tokens.get_tokens(),
             'bonusList': self.bonus_tokens.get_tokens(),
             'victoryPoints': self.victoryPoints.get_value(),
-            'reservedCards': self.reserved.gather_cards_information_api_board_state()
+            'reservedCards': self.reserved.gather_cards_information_api_board_state(),
+            'currentPlayer': (self.playerId == currentPlayer)
         }
 
-    def gather_cpu_player_information_api_board_state(self) -> dict:
+    def gather_cpu_player_information_api_board_state(self, currentPlayer: int) -> dict:
         """Gather the CPU player information needed for the api board state in a dictionnary.
         The dictionnary contains:
         - the tokens of the player
@@ -220,7 +222,8 @@ class Player():
             'tokenList': self.tokens.get_tokens(),
             'bonusList': self.bonus_tokens.get_tokens(),
             'victoryPoints': self.victoryPoints.get_value(),
-            'numberReservedCards': self.reserved.get_number_cards()
+            'numberReservedCards': self.reserved.get_number_cards(),
+            'currentPlayer': (self.playerId == currentPlayer)
         }
 
     def check_too_many_tokens(self) -> bool:
