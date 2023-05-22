@@ -38,6 +38,7 @@ class GameManager():
     currentPlayer: int
     firstPlayerId: int
     userId: int
+    logs: list[str]
 
     def __init__(self, nbPlayer=2) -> None:
         """This method initializes the game manager. It creates the controllers of the game.
@@ -68,6 +69,7 @@ class GameManager():
         self.randomize_first_player()
         self.cpu_Id = 1
         self.initialize_cpu()
+        self.logs = []
 
     def initialize_cpu(self):
         """This method initializes the cpu.
@@ -223,6 +225,7 @@ class GameManager():
             'humanPlayerTooManyTokens': self._playerController.check_human_player_too_many_tokens(),
             'winners': self._playerController.gather_winner_information_api_board_state()
         }
+        board_state['logs'] = self.logs
 
         return board_state
 
@@ -267,6 +270,7 @@ class GameManager():
         # print('bank token after', self.bankController.bank.get_tokens())
 
         if err is None:
+            self.append_log("buys card " + str(cardId))
             self.next_player()
 
     def reserve_card(self, cardId: int) -> None:
@@ -283,6 +287,7 @@ class GameManager():
             return err
 
         if err is None:
+            self.append_log("reserves card " + str(cardId))
             self.next_player()
 
     def reserve_pile_card(self, pile_level: int) -> None:
@@ -298,6 +303,7 @@ class GameManager():
             return err
 
         if err is None:
+            self.append_log("reserves from pile " + str(pile_level))
             self.next_player()
 
     def take_token(self, tokens: TokenArray) -> None:
@@ -313,7 +319,17 @@ class GameManager():
             return err
 
         if err is None:
+            self.append_log("takes tokens " + str(tokens))
             self.next_player()
+
+    def append_log(self, line: str) -> None:
+        if self.currentPlayer == self.userId:
+            line = "Player " + line
+        else:
+            line = "CPU#" + str(self.currentPlayer) + " " + line
+        self.logs.append(line)
+        if len(self.logs) > 10:
+            self.logs.pop(0)
 
     def pass_turn(self):
         """This method passes the turn.
@@ -353,6 +369,7 @@ class GameManager():
         ai_action = self.cpu.select_action(obs)
 
         string_action = self.apply_action(ai_action)
+        self.append_log(string_action)
         return string_action
 
     def from_board_state_to_obs(self, opponent_string, player_string, state):
