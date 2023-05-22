@@ -72,4 +72,14 @@ export class AppService {
       error => console.log('Error while trying to buy tokens')
     );
   }
+
+  cpuTurn(){
+    this.http.get<BoardState>(this.rootURL + '/cpu_turn')
+    .subscribe(
+      board_state =>{
+        this._board_state.next(Object.assign({}, board_state));
+      },
+      error => console.log('Error while trying to buy tokens')
+    );
+  }
 }

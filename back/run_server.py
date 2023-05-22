@@ -192,6 +192,8 @@ def cpuTurn():
         An error message with the HTTP status 400 is returned if an error happens during the turn of the cpu
         Otherwise, the board state of the game with the HTTP status 200 is returned.
     """
+    if gameManager.currentPlayer == gameManager.userId:
+        return jsonifyException('cpu turn called when it is human turn'), 400
 
     if (err := gameManager.cpu_turn()):
         return jsonifyException(err), 400
