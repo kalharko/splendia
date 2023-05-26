@@ -267,6 +267,15 @@ class CliApp():
 
     def help(self, user_input: list[str]) -> None:
         pass
+        self.histWin.display([
+            'Controls :',
+            'color1 color2 color3 => take 3 different colored tokens',
+            'color1               => take 2 tokens of the same color',
+            'buy cardId           => buy card with id cardId',
+            'reserve cardId       => reserve card with id cardId',
+            'press any key to quit the help display'
+        ][::-1])
+        self.screen.getch()
 
     def restart(self, user_input: list[str]) -> None:
         self.gm = GameManager(self.gm.nbPlayer)
