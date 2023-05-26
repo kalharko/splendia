@@ -156,51 +156,6 @@ class GameManager():
         else:
             return None
 
-    def gather_cli_board_state(self) -> dict:
-        """This method gathers the board state for the CLI.
-
-        Returns:
-            dict: The board state.
-            """
-
-        out = {}
-        out['cpu1-vp'] = self._playerController.players[0].victoryPoints.value
-        out['cpu1-bonus'] = self._playerController.players[0].hand.compute_hand_bonuses()
-        out['cpu1-tokens'] = self._playerController.players[0].tokens
-        out['cpu1-nbReserved'] = self._playerController.players[0].reserved.get_size()
-
-        out['cpu2-vp'] = self._playerController.players[1].victoryPoints.value
-        out['cpu2-bonus'] = self._playerController.players[1].hand.compute_hand_bonuses()
-        out['cpu2-tokens'] = self._playerController.players[1].tokens
-        out['cpu2-nbReserved'] = self._playerController.players[1].reserved.get_size()
-
-        out['cpu3-vp'] = self._playerController.players[2].victoryPoints.value
-        out['cpu3-bonus'] = self._playerController.players[2].hand.compute_hand_bonuses()
-        out['cpu3-tokens'] = self._playerController.players[2].tokens
-        out['cpu3-nbReserved'] = self._playerController.players[2].reserved.get_size()
-
-        out['player-vp'] = self._playerController.players[3].victoryPoints.value
-        out['player-bonus'] = self._playerController.players[3].hand.compute_hand_bonuses()
-        out['player-tokens'] = self._playerController.players[3].tokens
-        out['player-nbReserved'] = self._playerController.players[3].reserved.get_size()
-        out['player-reserved'] = []
-        for i in range(out['player-nbReserved']):
-            out['player-reserved'].append([
-                self._playerController.players[3].reserved.cards[i].price,
-                self._playerController.players[3].reserved.cards[i].bonus,
-                self._playerController.players[3].reserved.cards[i].victoryPoint])
-
-        out['bank'] = self._bankController.bank.get_tokens()
-        out['patrons'] = [x.requirements for x in self._patronController.patrons]
-
-        for y, yy in zip(range(3), [2, 1, 0]):
-            for x in range(4):
-                out[f'shop{x}{y}-pv'] = self._shopController.ranks[yy].hand.cards[x].victoryPoint.value
-                out[f'shop{x}{y}-bonus'] = self._shopController.ranks[yy].hand.cards[x].bonus
-                out[f'shop{x}{y}-price'] = self._shopController.ranks[yy].hand.cards[x].price
-
-        return out
-
     def gather_api_board_state(self) -> dict:
         """Returns the board state in a dictionnary that is in the following format:
         - shop: it corresponds to a list of "rank" objets. A rank contains visible cards and the number of cards in the deck associated to the rank
