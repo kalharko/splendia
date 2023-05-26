@@ -39,9 +39,8 @@ def launchGame() -> Response:
         return jsonifyException(err), 400
 
     while gameManager.currentPlayer != gameManager.userId:
-        err = gameManager.cpu_turn()
-        if type(err) != type(str):
-            break
+        if (err := gameManager.cpu_turn()) is not None:
+            return jsonifyException('cpu turn problem : ' + str(err)), 400
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
@@ -74,9 +73,8 @@ def buyCard() -> Response:
         return jsonifyException(err), 400
 
     while gameManager.currentPlayer != gameManager.userId:
-        err = gameManager.cpu_turn()
-        if type(err) != type(str):
-            break
+        if (err := gameManager.cpu_turn()) is not None:
+            return jsonifyException('cpu turn problem : ' + str(err)), 400
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
@@ -108,9 +106,8 @@ def reserveCard():
         return jsonifyException(err), 400
 
     while gameManager.currentPlayer != gameManager.userId:
-        err = gameManager.cpu_turn()
-        if type(err) != type(str):
-            break
+        if (err := gameManager.cpu_turn()) is not None:
+            return jsonifyException('cpu turn problem : ' + str(err)), 400
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
@@ -142,9 +139,8 @@ def reserveCardOnPile():
         return jsonifyException(err), 400
 
     while gameManager.currentPlayer != gameManager.userId:
-        err = gameManager.cpu_turn()
-        if type(err) != type(str):
-            break
+        if (err := gameManager.cpu_turn()) is not None:
+            return jsonifyException('cpu turn problem : ' + str(err)), 400
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
@@ -195,9 +191,8 @@ def takeTokens():
         return jsonifyException(err), 400
 
     while gameManager.currentPlayer != gameManager.userId:
-        err = gameManager.cpu_turn()
-        if type(err) != type(str):
-            break
+        if (err := gameManager.cpu_turn()) is not None:
+            return jsonifyException('cpu turn problem : ' + str(err)), 400
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
@@ -216,9 +211,8 @@ def cpuTurn():
         return jsonifyException('cpu turn called when it is human turn'), 400
 
     while gameManager.currentPlayer != gameManager.userId:
-        err = gameManager.cpu_turn()
-        if type(err) != type(str):
-            break
+        if (err := gameManager.cpu_turn()) is not None:
+            return jsonifyException('cpu turn problem : ' + str(err)), 400
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
