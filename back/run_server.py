@@ -38,6 +38,10 @@ def launchGame() -> Response:
     except InvalidNbPlayer as err:
         return jsonifyException(err), 400
 
+    while gameManager.currentPlayer != gameManager.userId:
+        err = gameManager.cpu_turn()
+        if type(err) != type(str):
+            break
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
@@ -69,6 +73,10 @@ def buyCard() -> Response:
     if (err := gameManager.buy_card(cardId)):
         return jsonifyException(err), 400
 
+    while gameManager.currentPlayer != gameManager.userId:
+        err = gameManager.cpu_turn()
+        if type(err) != type(str):
+            break
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
@@ -99,6 +107,10 @@ def reserveCard():
     if (err := gameManager.reserve_card(cardId)):
         return jsonifyException(err), 400
 
+    while gameManager.currentPlayer != gameManager.userId:
+        err = gameManager.cpu_turn()
+        if type(err) != type(str):
+            break
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
@@ -129,6 +141,10 @@ def reserveCardOnPile():
     if (err := gameManager.reserve_pile_card(deckLevel)):
         return jsonifyException(err), 400
 
+    while gameManager.currentPlayer != gameManager.userId:
+        err = gameManager.cpu_turn()
+        if type(err) != type(str):
+            break
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
@@ -178,6 +194,10 @@ def takeTokens():
     if (err := gameManager.take_token(TokenArray(tokens))):
         return jsonifyException(err), 400
 
+    while gameManager.currentPlayer != gameManager.userId:
+        err = gameManager.cpu_turn()
+        if type(err) != type(str):
+            break
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
@@ -195,8 +215,10 @@ def cpuTurn():
     if gameManager.currentPlayer == gameManager.userId:
         return jsonifyException('cpu turn called when it is human turn'), 400
 
-    if (err := gameManager.cpu_turn()):
-        return jsonifyException(err), 400
+    while gameManager.currentPlayer != gameManager.userId:
+        err = gameManager.cpu_turn()
+        if type(err) != type(str):
+            break
     response = jsonify(gameManager.gather_api_board_state())
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
