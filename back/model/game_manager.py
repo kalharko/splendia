@@ -225,7 +225,7 @@ class GameManager():
             'humanPlayerTooManyTokens': self._playerController.check_human_player_too_many_tokens(),
             'winners': self._playerController.gather_winner_information_api_board_state()
         }
-        board_state['logs'] = self.logs
+        board_state['logs'] = self.logs[::-1]
 
         return board_state
 
