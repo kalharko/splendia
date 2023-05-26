@@ -369,8 +369,6 @@ class GameManager():
         ai_action = self.cpu.select_action(obs)
 
         string_action = self.apply_action(ai_action)
-        self.append_log(string_action)
-        return string_action
 
     def from_board_state_to_obs(self, opponent_string, player_string, state):
         """TODO: documentation
@@ -556,7 +554,7 @@ class GameManager():
 
         return self._bankController
 
-    def apply_action(self, action):
+    def apply_action(self, action) -> str:
         """TODO: Documentation
             """
         assert isinstance(action, int)
