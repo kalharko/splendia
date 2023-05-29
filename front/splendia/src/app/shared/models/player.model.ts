@@ -5,4 +5,5 @@ export class Player{
     reservedCards: Card[];
     tokenList: number[];
     victoryPoints: number;
+    currentPlayer: boolean;
 }

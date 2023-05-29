@@ -271,3 +271,6 @@ class TokenArray():
             """
 
         return self._tokens
+
+    def __str__(self) -> str:
+        return str(self._tokens)

@@ -11,7 +11,6 @@ class CliApp():
     def __init__(self, nbPlayer: int, stdscr) -> None:
         # encoding
         locale.setlocale(locale.LC_ALL, 'fr_FR.UTF-8')
-        self.code = locale.getpreferredencoding()
         curses.curs_set(0)
         if not curses.has_colors():
             exit('Your terminal does not support curses colors')
@@ -71,12 +70,9 @@ class CliApp():
 
             # cpu action
             if self.gm.currentPlayer != self.gm.userId:
-                string_action = self.gm.cpu_turn()
-                if not isinstance(string_action, str):
-                    Logger().log(0, string_action, 'cpu_turn did not return a string')
-                else:
-                    self.history.append(string_action)
-                    self.display()
+                self.gm.cpu_turn()
+                self.history.append(self.gm.logs[-1])
+                self.display()
                 continue
 
             # player action
@@ -266,7 +262,15 @@ class CliApp():
         return self.gm.buy_card(cardId)
 
     def help(self, user_input: list[str]) -> None:
-        pass
+        self.histWin.display([
+            'Controls :',
+            'color1 color2 color3 => take 3 different colored tokens',
+            'color1               => take 2 tokens of the same color',
+            'buy cardId           => buy card with id cardId',
+            'reserve cardId       => reserve card with id cardId',
+            'press any key to quit the help display'
+        ][::-1])
+        self.screen.getch()
 
     def restart(self, user_input: list[str]) -> None:
         self.gm = GameManager(self.gm.nbPlayer)

@@ -12,13 +12,15 @@ import { CardShopModule } from './card-shop/card-shop.module';
 import { TokenShopComponent } from './token-shop/token-shop/token-shop.component';
 import { TokenShopModule } from './token-shop/token-shop.module';
 import { CommonModule } from '@angular/common';
+import { LogsComponent } from './logs/logs.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    BoardGameComponent
+    BoardGameComponent,
+    LogsComponent
   ],
   imports: [
     BrowserModule,
