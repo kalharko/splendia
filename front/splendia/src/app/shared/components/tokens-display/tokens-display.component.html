@@ -1,7 +1,7 @@
 <div class="tokens-display">
     <app-token 
         class="token"
-        *ngFor="let tokenQuantity of tokenQuantities; let i = index" 
+        *ngFor="let tokenQuantity of tokenList; let i = index" 
         [color]="i"
         [quantity]="tokenQuantity"
         [show]="showTokens[i]"

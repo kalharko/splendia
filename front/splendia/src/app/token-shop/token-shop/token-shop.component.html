@@ -1,5 +1,11 @@
 
 
-<ul id="token-shop">
-    <app-tokens-display [tokenQuantities]="tokenQuantities" [showTokens]="[true, true, true, true, true, true]"></app-tokens-display>
+<ul id="token-shop" (click)="takeToken()">
+    <app-token id='tokens'
+        class="token"
+        *ngFor="let tokenQuantity of tokenList; let i = index"
+        [color]="i"
+        [quantity]="tokenQuantity"
+        [show]="true"
+        ></app-token>
 </ul>

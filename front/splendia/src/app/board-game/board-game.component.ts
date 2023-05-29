@@ -10,10 +10,10 @@ import { BoardState } from 'src/app/shared/models/board_state.model';
 })
 export class BoardGameComponent extends OnDestroyMixin implements OnInit {
 
-    board_state: BoardState;
+    board_state: BoardState= new BoardState();
 
     constructor(private appService: AppService) {
-      super()
+      super();
   }
 
   ngOnInit(): void {

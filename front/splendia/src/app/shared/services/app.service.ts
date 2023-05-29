@@ -73,6 +73,16 @@ export class AppService {
     );
   }
 
+  rejectToken(tokensToReject: number[]){
+    this.http.get<BoardState>(this.rootURL + '/reject_tokens?token_list=[' + tokensToReject + ']')
+    .subscribe(
+      board_state =>{
+        this._board_state.next(Object.assign({}, board_state));
+      },
+      error => console.log('Error while trying to buy tokens')
+    );
+  }
+
   cpuTurn(){
     this.http.get<BoardState>(this.rootURL + '/cpu_turn')
     .subscribe(

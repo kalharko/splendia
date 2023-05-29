@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
@@ -8,17 +9,29 @@ import { AppService } from 'src/app/shared/services/app.service';
 })
 export class BuyTokenComponent implements OnInit {
 
+  
   tokensToBuy: number[];
 
-  constructor(private appService: AppService) {
+  constructor(private appService: AppService, 
+    public dialogRef: MatDialogRef<BuyTokenComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: {tokenList: number[]}) {
+
     this.tokensToBuy = [0, 0, 0, 0, 0, 0];
+    
   }
 
   ngOnInit(): void {
   }
 
-  buyTokens(): void {
-    this.appService.buyTokens(this.tokensToBuy);
+  buyToken(i: number) : void {
+    console.log(++this.tokensToBuy[i]);
+
   }
+  buyTokensConfirmation(): void {
+    this.appService.buyTokens(this.tokensToBuy);
+    this.dialogRef.close();
+  }
+
+  
 
 }
