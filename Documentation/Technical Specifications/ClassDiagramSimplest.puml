@@ -26,7 +26,7 @@ package Model {
     Hand o-- Card
 
     Card o-- TokenArray
-    TokenArray <.. Color
+    TokenArray +.l. Color
 
 
     BankController .r[hidden]. PatronController
@@ -104,12 +104,6 @@ class TokenArray {
 
 
 enum Color {
-    WHITE
-    BLUE
-    GREEN
-    RED
-    BLACK
-    GOLD
 }
 
 @enduml
