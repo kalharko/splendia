@@ -38,6 +38,7 @@ class GameManager():
     currentPlayer: int
     firstPlayerId: int
     userId: int
+    logs: list[str]
 
     def __init__(self, nbPlayer=2) -> None:
         """This method initializes the game manager. It creates the controllers of the game.
@@ -68,6 +69,7 @@ class GameManager():
         self.randomize_first_player()
         self.cpu_Id = 1
         self.initialize_cpu()
+        self.logs = []
 
     def initialize_cpu(self):
         """This method initializes the cpu.
@@ -154,51 +156,6 @@ class GameManager():
         else:
             return None
 
-    def gather_cli_board_state(self) -> dict:
-        """This method gathers the board state for the CLI.
-
-        Returns:
-            dict: The board state.
-            """
-
-        out = {}
-        out['cpu1-vp'] = self._playerController.players[0].victoryPoints.value
-        out['cpu1-bonus'] = self._playerController.players[0].hand.compute_hand_bonuses()
-        out['cpu1-tokens'] = self._playerController.players[0].tokens
-        out['cpu1-nbReserved'] = self._playerController.players[0].reserved.get_size()
-
-        out['cpu2-vp'] = self._playerController.players[1].victoryPoints.value
-        out['cpu2-bonus'] = self._playerController.players[1].hand.compute_hand_bonuses()
-        out['cpu2-tokens'] = self._playerController.players[1].tokens
-        out['cpu2-nbReserved'] = self._playerController.players[1].reserved.get_size()
-
-        out['cpu3-vp'] = self._playerController.players[2].victoryPoints.value
-        out['cpu3-bonus'] = self._playerController.players[2].hand.compute_hand_bonuses()
-        out['cpu3-tokens'] = self._playerController.players[2].tokens
-        out['cpu3-nbReserved'] = self._playerController.players[2].reserved.get_size()
-
-        out['player-vp'] = self._playerController.players[3].victoryPoints.value
-        out['player-bonus'] = self._playerController.players[3].hand.compute_hand_bonuses()
-        out['player-tokens'] = self._playerController.players[3].tokens
-        out['player-nbReserved'] = self._playerController.players[3].reserved.get_size()
-        out['player-reserved'] = []
-        for i in range(out['player-nbReserved']):
-            out['player-reserved'].append([
-                self._playerController.players[3].reserved.cards[i].price,
-                self._playerController.players[3].reserved.cards[i].bonus,
-                self._playerController.players[3].reserved.cards[i].victoryPoint])
-
-        out['bank'] = self._bankController.bank.get_tokens()
-        out['patrons'] = [x.requirements for x in self._patronController.patrons]
-
-        for y, yy in zip(range(3), [2, 1, 0]):
-            for x in range(4):
-                out[f'shop{x}{y}-pv'] = self._shopController.ranks[yy].hand.cards[x].victoryPoint.value
-                out[f'shop{x}{y}-bonus'] = self._shopController.ranks[yy].hand.cards[x].bonus
-                out[f'shop{x}{y}-price'] = self._shopController.ranks[yy].hand.cards[x].price
-
-        return out
-
     def gather_api_board_state(self) -> dict:
         """Returns the board state in a dictionnary that is in the following format:
         - shop: it corresponds to a list of "rank" objets. A rank contains visible cards and the number of cards in the deck associated to the rank
@@ -215,14 +172,15 @@ class GameManager():
 
         board_state = {}
         board_state['shop'] = self._shopController.gather_shop_information_api_board_state()
-        board_state['humanPlayer'] = self._playerController.gather_human_player_information_api_board_state()
-        board_state['CPUS'] = self._playerController.gather_cpu_players_information_api_board_state()
+        board_state['humanPlayer'] = self._playerController.gather_human_player_information_api_board_state(self.currentPlayer)
+        board_state['CPUS'] = self._playerController.gather_cpu_players_information_api_board_state(self.currentPlayer)
         board_state['bank'] = self._bankController.gather_bank_information_api_board_state()
         board_state['patrons'] = self._patronController.gather_patrons_information_api_board_state()
         board_state['gameState'] = {
             'humanPlayerTooManyTokens': self._playerController.check_human_player_too_many_tokens(),
             'winners': self._playerController.gather_winner_information_api_board_state()
         }
+        board_state['logs'] = self.logs[::-1]
 
         return board_state
 
@@ -267,6 +225,7 @@ class GameManager():
         # print('bank token after', self.bankController.bank.get_tokens())
 
         if err is None:
+            self.append_log("buys card " + str(cardId))
             self.next_player()
 
     def reserve_card(self, cardId: int) -> None:
@@ -283,6 +242,7 @@ class GameManager():
             return err
 
         if err is None:
+            self.append_log("reserves card " + str(cardId))
             self.next_player()
 
     def reserve_pile_card(self, pile_level: int) -> None:
@@ -298,6 +258,7 @@ class GameManager():
             return err
 
         if err is None:
+            self.append_log("reserves from pile " + str(pile_level))
             self.next_player()
 
     def take_token(self, tokens: TokenArray) -> None:
@@ -313,7 +274,17 @@ class GameManager():
             return err
 
         if err is None:
+            self.append_log("takes tokens " + str(tokens))
             self.next_player()
+
+    def append_log(self, line: str) -> None:
+        if self.currentPlayer == self.userId:
+            line = "Player " + line
+        else:
+            line = "CPU#" + str(self.currentPlayer) + " " + line
+        self.logs.append(line)
+        if len(self.logs) > 10:
+            self.logs.pop(0)
 
     def pass_turn(self):
         """This method passes the turn.
@@ -353,7 +324,6 @@ class GameManager():
         ai_action = self.cpu.select_action(obs)
 
         string_action = self.apply_action(ai_action)
-        return string_action
 
     def from_board_state_to_obs(self, opponent_string, player_string, state):
         """TODO: documentation
@@ -539,7 +509,7 @@ class GameManager():
 
         return self._bankController
 
-    def apply_action(self, action):
+    def apply_action(self, action) -> str:
         """TODO: Documentation
             """
         assert isinstance(action, int)

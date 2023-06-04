@@ -11,5 +11,6 @@ export class BoardState{
     humanPlayer: Player;
     patrons: Patron[];
     shop: Rank[];
+    logs: string[];
 }
 

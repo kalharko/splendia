@@ -4,4 +4,5 @@ export class Cpu {
     numberReservedCards: number;
     tokenList: number[];
     victoryPoints: number;
+    currentPlayer: boolean;
 }
