@@ -29,8 +29,6 @@ export class TokenShopComponent extends OnDestroyMixin implements OnInit {
 
   takeToken(): void{
     let dialogRef = this.dialog.open(BuyTokenComponent, {
-      height: '400px',
-      width: '600px',
       data: { tokenList: this.tokenList }
     }
 
