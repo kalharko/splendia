@@ -1,7 +1,12 @@
 <div id="card" [style.backgroundImage]="getImagePath()">
 </div>
 <div id="buttons">
-    <div>
-        <button id="first-button"  (click)="buyCard()">Buy</button>
+    <div *ngIf="card">
+        <div *ngIf="card.buyable">
+            <button id="buyable"  (click)="buyCard()">Buy</button>
+        </div>
+        <div *ngIf="!card.buyable">
+            <button id="notbuyable"  (click)="buyCard()">Buy</button>
+        </div>
     </div>
 </div>

@@ -202,7 +202,7 @@ class Player():
             'tokenList': self.tokens.get_tokens(),
             'bonusList': self.bonus_tokens.get_tokens(),
             'victoryPoints': self.victoryPoints.get_value(),
-            'reservedCards': self.reserved.gather_cards_information_api_board_state(),
+            'reservedCards': self.reserved.gather_cards_information_api_board_state(self),
             'currentPlayer': (self.playerId == currentPlayer)
         }
 

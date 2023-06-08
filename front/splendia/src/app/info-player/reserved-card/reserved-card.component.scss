@@ -6,17 +6,6 @@
     margin:1em;
 }
 
-.appear{
-    display: grid;
-    margin: 15%;
-    transform: translateY(-4em);
-}
-
-#card:hover > .appear {
-    display: grid;
-}
-
-
 #buttons{
     display: flex;
     flex-direction: column;
@@ -45,12 +34,16 @@ button {
   width: 5em;
 }
 
-button:hover {
-  background-color: #f7fafa;
+#notbuyable {
+  background-color: #666;
+  border: 1px solid #777;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  color: lightgray;
+
+  margin-bottom: 1%;
 }
 
-button:focus {
-  border-color: #008296;
-  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
-  outline: 0;
+#buyable {
+  background-color: #fff;
+  margin-bottom: 1%;
 }
