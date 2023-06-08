@@ -1,2 +1,24 @@
-<p>buy-token works!</p>
-<button (click)="buyTokens()">Confirm selection</button>
+
+<div class="flex">
+<app-token id='tokens'
+        class="token"
+        *ngFor="let tokenQuantity of data.tokenList; let i = index"
+        [color]="i"
+        [quantity]="tokenQuantity"
+        [show]="true"
+        (click)="buyToken(i)"
+        ></app-token>
+
+</div>
+
+<div class="flex">
+<app-token id='tokens'
+        class="token"
+        *ngFor="let tokenQuantity of tokensToBuy; let i = index"
+        [color]="i"
+        [quantity]="tokenQuantity"
+        [show]="true"
+        
+        ></app-token>
+<button (click)="buyTokensConfirmation()">Confirm selection</button>
+</div>

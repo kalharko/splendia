@@ -6,6 +6,7 @@ ul {
   border-radius: 25px;
   transition-duration: 0.5s;
   cursor: pointer;
+  display: flex;
 
   &:hover {
     background-color: #a9a9a9;

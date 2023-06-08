@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AppService } from 'src/app/shared/services/app.service';
 
 @Component({
   selector: 'app-reject-token',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RejectTokenComponent implements OnInit {
 
-  constructor() { }
+  tokensToReject: number[] = [0, 0, 0, 0, 0, 0];
+  constructor(  private appService: AppService, 
+    public dialogRef: MatDialogRef<RejectTokenComponent>) { }
 
   ngOnInit(): void {
+  }
+
+  rejectTokenConfirmation():void{
+    this.appService.rejectToken(this.tokensToReject);
+  
   }
 
 }

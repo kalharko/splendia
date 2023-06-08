@@ -1,5 +1,6 @@
 <div id="logs">
-    <div *ngFor="let message of logs">
+    <div *ngFor="let message of logs; let i = index">
+        <p *ngIf="i%2 == 0">== Turn {{i/2}} </p>
         <p>{{ message }}</p>
     </div>
 </div>

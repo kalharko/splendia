@@ -24,11 +24,14 @@ export class ReservedCardComponent extends OnDestroyMixin implements OnInit {
   }
 
   buyCard(){
+    console.log("buy")
     this.appService.buyCard(this.card.cardId);
   }
 
   getImagePath(): string {
-    return "url(../../../assets/images/cards/" + this.card.cardId + ".png)"
+    if(this.card)
+      return "url(../../../assets/images/cards/" + this.card.cardId + ".png)"
+    return "";
   }
 
 }

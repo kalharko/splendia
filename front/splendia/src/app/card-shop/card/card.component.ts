@@ -14,6 +14,7 @@ export class CardComponent extends OnDestroyMixin implements OnInit {
   @Input() rankNumber: number;
   @Input() cardNumber: number;
   card: Card = new Card();
+
   constructor(private appService: AppService) {
     super();
   }

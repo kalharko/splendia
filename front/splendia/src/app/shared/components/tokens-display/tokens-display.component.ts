@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ColorsEnum } from '../../enums/colors.enum';
 
 @Component({
   selector: 'app-tokens-display',
@@ -7,7 +8,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class TokensDisplayComponent implements OnInit {
   // token quantities to display
-  @Input() tokenQuantities: number[];
+  @Input() tokenList: number[];
+
 
    /**
     * boolean array that dictates if a token should be displayed or not.
@@ -16,7 +18,8 @@ export class TokensDisplayComponent implements OnInit {
   @Input() showTokens: boolean[];
 
 
-  constructor() { }
+  constructor() { 
+  }
 
   ngOnInit(): void {
   }
