@@ -63,7 +63,7 @@ def buyCard() -> Response:
     """
 
     try:
-        cardId = int(request.args['cardId'])
+        cardId = int(request.args['card_id'])
     except ValueError:
         return jsonifyErrorMessage("cardId query param is not a integer. The given value was '" + request.args['cardId'] + "."), 400
     except KeyError:
