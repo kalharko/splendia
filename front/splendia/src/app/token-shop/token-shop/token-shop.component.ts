@@ -14,9 +14,9 @@ import { BuyTokenComponent } from '../buy-token/buy-token.component';
 export class TokenShopComponent extends OnDestroyMixin implements OnInit {
 
   // token quantities to display
-  tokenList: number[] = [0, 0,0,0,0,0];
+  tokenList: number[] = [0,0,0,0,0,0];
 
-  constructor(private appService: AppService, public dialog: MatDialog) { 
+  constructor(private appService: AppService, public dialog: MatDialog) {
     super();
   }
 
@@ -33,6 +33,6 @@ export class TokenShopComponent extends OnDestroyMixin implements OnInit {
     }
 
     );
-    
+
   }
 }
