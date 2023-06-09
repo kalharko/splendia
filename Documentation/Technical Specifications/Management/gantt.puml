@@ -1,6 +1,5 @@
-
-@startuml gantt
-
+@startgantt gantt
+printscale weekly zoom 4
 Project starts 2023-03-15
 
 [Établir les contraintes de développement] lasts 15 day
@@ -41,4 +40,31 @@ Project starts 2023-03-15
 [Développer le modèle du jeu] -> [Développer l'IA]
 [Développer la communication API] -> [Développer l'interface graphique]
 [Développer l'IA] -> [Écrire le rapport]
-@enduml
+
+' Couleurs
+[Établir les contraintes de développement] is colored in LightGreen
+[Rédiger la description générale] is colored in LightGreen
+[Établir les besoins en performance] is colored in LightGreen
+[Écrire l'introduction] is colored in LightGreen
+[Établir les références] is colored in LightGreen
+[uno] is colored in LightGreen
+[Spécification des interfaces externes] is colored in LightGreen
+[Spécification des structures de données] is colored in LightGreen
+[Faire un diagramme d'activité] is colored in LightGreen
+[Faire des diagrammes de séquence] is colored in LightGreen
+[Faire un diagramme de classes] is colored in LightGreen
+
+[Développer le modèle du jeu] is colored in Salmon
+[Développer l'API] is colored in Salmon
+[Développer l'IA] is colored in Salmon
+[Développer la communication API] is colored in Salmon
+[Développer l'interface graphique] is colored in Salmon
+
+[Écrire le rapport] is colored in LightGreen
+[Préparer la soutenance] is colored in LightGreen
+[Filmer vidéo] is colored in LightGreen
+
+2023-04-16 to 2023-04-23 is colored in Lavender/LightBlue
+
+
+@endgantt

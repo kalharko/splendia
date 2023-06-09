@@ -1,0 +1,48 @@
+@startuml api
+
+boundary Front
+control API
+entity GameManager
+
+== launch_game ==
+
+activate Front
+Front -> API : api/launch_game\n?nbPlayer=2
+activate API
+API -> GameManager ** : instantiate
+activate GameManager
+API <-- GameManager
+deactivate GameManager
+API -> GameManager : cpu_turn
+activate GameManager
+API <-- GameManager
+deactivate GameManager
+API -> GameManager : gather_board_state()
+activate GameManager
+API <-- GameManager : BoardState
+deactivate GameManager
+Front <- API : BoardState
+deactivate API
+
+
+== take_token ==
+Front -> API : api/buy_card\n?cardId=18
+activate API
+API -> GameManager : buy_card(cardId=18)
+activate GameManager
+API <-- GameManager
+deactivate GameManager
+API -> GameManager : cpu_turn
+activate GameManager
+API <-- GameManager
+deactivate GameManager
+API -> GameManager : gather_board_state()
+activate GameManager
+API <-- GameManager : BoardState
+deactivate GameManager
+Front <- API : BoardState
+deactivate API
+
+
+deactivate Front
+@enduml
