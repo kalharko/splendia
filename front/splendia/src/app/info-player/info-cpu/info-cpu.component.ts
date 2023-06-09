@@ -15,6 +15,7 @@ export class InfoCpuComponent extends OnDestroyMixin implements OnInit {
   cpu: Cpu = new Cpu();
   @Input()
   cpuId: number;
+  winner: boolean;
   showBonus: boolean[] = [true, true, true, true, true, false]
 
   constructor(private appService: AppService) {
@@ -24,7 +25,10 @@ export class InfoCpuComponent extends OnDestroyMixin implements OnInit {
   ngOnInit(): void {
     this.appService.board_state.pipe(untilComponentDestroyed(this)).subscribe((board_state:BoardState) => {
       this.cpu = board_state.CPUS[this.cpuId];
+      this.winner = false;
+      if (board_state.gameState.winners.includes(this.cpu.id)) {
+        this.winner = true;
+      }
     });
   }
-
 }

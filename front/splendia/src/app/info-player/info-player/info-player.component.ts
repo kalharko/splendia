@@ -13,6 +13,7 @@ export class InfoPlayerComponent extends OnDestroyMixin implements OnInit {
 
   @Input()
   player: Player = new Player();
+  winner: boolean;
   showBonus: boolean[] = [true, true, true, true, true, false]
   constructor(private appService: AppService) {
   super();
@@ -21,6 +22,10 @@ export class InfoPlayerComponent extends OnDestroyMixin implements OnInit {
   ngOnInit(): void {
       this.appService.board_state.pipe(untilComponentDestroyed(this)).subscribe((board_state:BoardState) => {
       this.player = board_state.humanPlayer;
+      this.winner = false;
+      if (board_state.gameState.winners.includes(this.player.id)) {
+        this.winner = true;
+      }
     });
   }
 

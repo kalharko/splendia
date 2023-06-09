@@ -29,10 +29,6 @@ export class AppService {
     );
   }
 
-  // buyCard() {
-  //   return this.http.get<BoardState>(this.rootURL + '/buy_card');
-  // }
-
   takeToken() {
     this.http.get<BoardState>(this.rootURL + '/take_token')
     .subscribe(
