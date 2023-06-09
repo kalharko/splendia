@@ -4,15 +4,17 @@
     flex-wrap: nowrap;
     justify-content: space-between;
     height: auto;
-    // background-color: #234975;
+
+    justify-content: center;
 }
 
 #left-column {
     align-self: stretch;
-    margin-right: 2em;
+    margin-right: 0em;
+    padding-right: 2%;
     display: flex;
     flex-direction: column;
-    width: 6em;
+    min-width: 6em;
 }
 
 #logs {

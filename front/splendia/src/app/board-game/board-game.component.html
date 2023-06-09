@@ -4,12 +4,11 @@
         <app-logs></app-logs>
     </div>
     <div id="middle-shop">
-        
+        <div><app-token-shop></app-token-shop></div>
         <app-card-shop></app-card-shop>
     </div>
 
-    <div><app-token-shop></app-token-shop></div>
-    
+
     <div>
         <app-info-cpu *ngFor="let cpu of this.board_state.CPUS; let i=index"
         [cpu]="cpu"

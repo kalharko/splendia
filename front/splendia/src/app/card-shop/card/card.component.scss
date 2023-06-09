@@ -1,9 +1,10 @@
 #card{
     width: 5em;
-    height: 7em;
+    height: 7.5em;
     background-repeat: no-repeat;
     background-size: 100%;
     margin:0.5em;
+    margin-bottom: 0em;
 }
 
 
@@ -23,14 +24,15 @@ button {
   box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
   box-sizing: border-box;
   color: #0f1111;
-  
+
   cursor: pointer;
   display: inline-block;
   font-family: "Amazon Ember",sans-serif;
   font-size: 11px;
-  padding: 0 10px 0 11px;
+  padding: 0 5px 0 5px;
   text-align: center;
   width: 5em;
+  height: 90%;
 }
 
 button:hover {
@@ -41,4 +43,18 @@ button:focus {
   border-color: #008296;
   box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
   outline: 0;
+}
+
+#notbuyable {
+  background-color: #666;
+  border: 1px solid #777;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  color: lightgray;
+
+  margin-bottom: 1%;
+}
+
+#buyable {
+  background-color: #fff;
+  margin-bottom: 1%;
 }

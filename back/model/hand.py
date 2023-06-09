@@ -66,11 +66,11 @@ class Hand(CardStack):
 
         return len(self.cards)
 
-    def gather_cards_information_api_board_state(self) -> list:
+    def gather_cards_information_api_board_state(self, player) -> list:
         """Gather the information of the cards of the hand needed for the api board state in a list
 
         Returns:
             list: information about the cards of the hand for the api board state
         """
 
-        return [card.gather_card_information_api_board_state() for card in self.cards]
+        return [card.gather_card_information_api_board_state(player) for card in self.cards]

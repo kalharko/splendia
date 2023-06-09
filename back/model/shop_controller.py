@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 
+from model.player import Player
 from model.rank import Card, Rank
 from model.token_array import TokenArray
 from utils.parsing import retrieve_and_parse_cards
@@ -105,7 +106,7 @@ class ShopController():
 
         return self.ranks[pileLevel].withdraw_pile_card()
 
-    def gather_shop_information_api_board_state(self) -> list:
+    def gather_shop_information_api_board_state(self, player: Player) -> list:
         """Gather the shop information needed for the api board state in a list that contains "rank" objects.
         A rank object contains:
         - the number of cards in the deck associated to that rank
@@ -119,7 +120,7 @@ class ShopController():
         for i in range(len(self.ranks)):
             info.append({
                 'numberCardsDeck': self.ranks[i].get_number_of_cards_deck(),
-                'visibleCards': self.ranks[i].gather_visible_cards_information_api_board_state()
+                'visibleCards': self.ranks[i].gather_visible_cards_information_api_board_state(player)
             })
 
         return info

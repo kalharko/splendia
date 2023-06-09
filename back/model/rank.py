@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 from model.card import Card
 from model.token_array import TokenArray
@@ -119,11 +118,11 @@ class Rank():
 
         return self.deck.get_number_of_cards()
 
-    def gather_visible_cards_information_api_board_state(self) -> list:
+    def gather_visible_cards_information_api_board_state(self, player) -> list:
         """Gather the information of the visible cards of the rank needed for the api board state in a list
 
         Returns:
             list: information about the visible cards of the rank for the api board state
         """
 
-        return self.hand.gather_cards_information_api_board_state()
+        return self.hand.gather_cards_information_api_board_state(player)

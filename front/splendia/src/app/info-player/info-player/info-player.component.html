@@ -1,8 +1,7 @@
 <div class='info_box'>
-    <div class='line'>
-        <p *ngIf="this.player.currentPlayer">></p>
+    <div class='line' id="text">
         <p id='name'> Player </p>
-        <p id='victorypoints'> {{this.player.victoryPoints}} </p>
+        <p id='victorypoints'> VP : {{this.player.victoryPoints}} </p>
     </div>
     <div class='line'>
         <app-token id='tokens'

@@ -1,6 +1,8 @@
 <div id="logs">
     <div *ngFor="let message of logs; let i = index">
-        <p *ngIf="i%2 == 0">== Turn {{i/2}} </p>
-        <p>{{ message }}</p>
+        <!-- <p *ngIf="i%2 == 0" class="turn">Turn {{(this.logs.length-i-1)/2}} </p> -->
+
+        <p *ngIf="i%2 == 0" class="even">{{ message }}</p>
+        <p *ngIf="i%2 == 1" class="odd">{{ message }}</p>
     </div>
 </div>

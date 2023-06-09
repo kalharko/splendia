@@ -1,8 +1,7 @@
 <div class='info_box'>
-    <div class='line'>
-        <p *ngIf="this.cpu.currentPlayer">></p>
+    <div class='line' id="text">
         <p id='name'> CPU#{{this.cpuId}} </p>
-        <p id='victorypoints'> {{this.cpu.victoryPoints}} </p>
+        <p id='victorypoints'> VP : {{this.cpu.victoryPoints}} </p>
     </div>
     <div class='line'>
         <app-token id='tokens'
@@ -21,5 +20,6 @@
         [quantity]="tokenQuantity"
         [show]="this.showBonus[i]"
         ></app-bonus>
+        <p id='nb-reserved' title="Number of cards reserved buy the CPU">{{ this.cpu.numberReservedCards }}</p>
     </div>
 </div>

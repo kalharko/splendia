@@ -6,11 +6,44 @@
     margin:1em;
 }
 
-.appear{
-    display: none;
-    margin: 15%;
+#buttons{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+
+    transform: translateY(-4em);
+
+}
+button {
+
+  background-color: #fff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  box-sizing: border-box;
+  color: #0f1111;
+
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Amazon Ember",sans-serif;
+  font-size: 11px;
+  padding: 0 10px 0 11px;
+  text-align: center;
+  width: 5em;
 }
 
-#card:hover > .appear {
-    display: grid;
+#notbuyable {
+  background-color: #666;
+  border: 1px solid #777;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  color: lightgray;
+
+  margin-bottom: 1%;
+}
+
+#buyable {
+  background-color: #fff;
+  margin-bottom: 1%;
 }

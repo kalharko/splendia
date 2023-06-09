@@ -9,29 +9,38 @@ import { AppService } from 'src/app/shared/services/app.service';
 })
 export class BuyTokenComponent implements OnInit {
 
-  
-  tokensToBuy: number[];
 
-  constructor(private appService: AppService, 
-    public dialogRef: MatDialogRef<BuyTokenComponent>, 
+  tokensToBuy: number[];
+  tokenList: number[];
+
+  constructor(private appService: AppService,
+    public dialogRef: MatDialogRef<BuyTokenComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {tokenList: number[]}) {
 
     this.tokensToBuy = [0, 0, 0, 0, 0, 0];
-    
+    this.tokenList = data.tokenList;
   }
 
   ngOnInit(): void {
   }
 
   buyToken(i: number) : void {
-    console.log(++this.tokensToBuy[i]);
-
+    if (this.tokenList[i] > this.tokensToBuy[i]) {
+      ++this.tokensToBuy[i];
+    }
   }
+
+  cancelToken(i: number) : void {
+    if (this.tokensToBuy[i] > 0) {
+      --this.tokensToBuy[i];
+    }
+  }
+
   buyTokensConfirmation(): void {
     this.appService.buyTokens(this.tokensToBuy);
     this.dialogRef.close();
   }
 
-  
+
 
 }

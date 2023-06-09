@@ -18,7 +18,8 @@
         [color]="i"
         [quantity]="tokenQuantity"
         [show]="true"
-        
+        (click)="cancelToken(i)"
+
         ></app-token>
 <button (click)="buyTokensConfirmation()">Confirm selection</button>
 </div>

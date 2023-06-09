@@ -41,7 +41,7 @@ class Card():
         self.victoryPoint = victoryPoint
         self.cardId = cardId
 
-    def gather_card_information_api_board_state(self) -> dict:
+    def gather_card_information_api_board_state(self, player) -> dict:
         """Gather the card information needed for the api board state in a dictionnary.
         The dictionnary contains!
         - the id of the card
@@ -52,9 +52,10 @@ class Card():
         Returns:
             dict: _description_
         """
+        canPay, reducedPrice = player.can_pay_with_reduced_price(self.price)
+        if canPay:
+            print(self.cardId)
         return {
             "cardId": self.cardId,
-            "price": self.price.get_tokens(),
-            "bonus": self.bonus.get_tokens(),
-            "victoryPoint": self.victoryPoint.get_value()
+            "buyable": canPay
         }
