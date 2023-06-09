@@ -95,6 +95,7 @@ def reserveCard():
         - an exception happens when reserving the card
         Otherwise, the board state of the game with the HTTP status 200 is returned.
     """
+
     try:
         cardId = int(request.args['cardId'])
     except ValueError:
@@ -128,6 +129,7 @@ def reserveCardOnPile():
         - an exception happens when reserving the card
         Otherwise, the board state of the game with the HTTP status 200 is returned.
     """
+
     try:
         deckLevel = int(request.args['deck_level'])
     except ValueError:
@@ -217,6 +219,18 @@ def cpuTurn():
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
     return response
+
+
+@app.route('/api/gather_board_state', methods=['GET'])
+def gatherBoardState():
+    """API route to gather the boardstate
+
+    Returns:
+        the boardstate
+    """
+    response = jsonify(gameManager.gather_api_board_state())
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
 
 
 if __name__ == "__main__":

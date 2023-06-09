@@ -10,6 +10,7 @@ import { BehaviorSubject, ReplaySubject } from 'rxjs';
 export class AppService {
 
   private _board_state = new ReplaySubject<BoardState>(1);
+  private _err = new Boolean;
   constructor(private http: HttpClient) { }
 
   rootURL = 'http://127.0.0.1:5000/api';
@@ -25,7 +26,9 @@ export class AppService {
       board_state =>{
         this._board_state.next(Object.assign({}, board_state));
       },
-      error => console.log('Error while trying to launch game')
+      error => {
+        console.log('Error while trying to launch game');
+      }
     );
   }
 
@@ -44,13 +47,23 @@ export class AppService {
   }
 
   buyCard(cardId:number){
+    this._err = false;
+
     this.http.get<BoardState>(this.rootURL + '/buy_card?card_id=' + cardId)
     .subscribe(
       board_state =>{
         this._board_state.next(Object.assign({}, board_state));
       },
-      error => console.log('Error while trying to buy a card')
+      error => {
+        console.log('Error while trying to buy a card');
+        this._err = true;
+      }
     );
+
+  if (this._err) {
+    this.gatherBoardState();
+  }
+
   }
 
   reserveCard(cardId:number){
@@ -90,6 +103,16 @@ export class AppService {
         this._board_state.next(Object.assign({}, board_state));
       },
       error => console.log('Error while trying to buy tokens')
+    );
+  }
+
+  gatherBoardState(){
+    this.http.get<BoardState>(this.rootURL + '/gather_board_state')
+    .subscribe(
+      board_state =>{
+        this._board_state.next(Object.assign({}, board_state));
+      },
+      error => console.log('Error while gathering boardstate')
     );
   }
 }

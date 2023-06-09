@@ -9,11 +9,12 @@
     </div>
 
 
-    <div>
+    <div id="right-column">
         <app-info-cpu *ngFor="let cpu of this.board_state.CPUS; let i=index"
         [cpu]="cpu"
         [cpuId]="i"></app-info-cpu>
         <app-info-player></app-info-player>
         <app-reserved-cards></app-reserved-cards>
+        <app-error-feedback></app-error-feedback>
     </div>
 </div>

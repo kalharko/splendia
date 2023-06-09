@@ -14,6 +14,7 @@ import { TokenShopModule } from './token-shop/token-shop.module';
 import { CommonModule } from '@angular/common';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { LogsComponent } from './logs/logs.component';
+import { ErrorFeedbackComponent } from './error-feedback/error-feedback.component';
 
 
 
@@ -22,7 +23,8 @@ import { LogsComponent } from './logs/logs.component';
   declarations: [
     AppComponent,
     BoardGameComponent,
-    LogsComponent
+    LogsComponent,
+    ErrorFeedbackComponent
   ],
   imports: [
     BrowserModule,

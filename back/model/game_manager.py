@@ -178,7 +178,8 @@ class GameManager():
         board_state['patrons'] = self._patronController.gather_patrons_information_api_board_state()
         board_state['gameState'] = {
             'humanPlayerTooManyTokens': self._playerController.check_human_player_too_many_tokens(),
-            'winners': self._playerController.gather_winner_information_api_board_state()
+            'winners': self._playerController.gather_winner_information_api_board_state(),
+            'errorMessage': Logger().get_last_error_message()
         }
         board_state['logs'] = self.logs[::-1]
 

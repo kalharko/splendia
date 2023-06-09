@@ -10,6 +10,7 @@ class Logger(metaclass=SingletonMeta):
         self._log_path = ''
         self._log_name = 'log.txt'
         self._path = path.join(self._log_path, self._log_name)
+        self._last_error_message = ""
 
         self._error_levels = ['[Err]', '[War]', '[Inf]']
 
@@ -22,6 +23,7 @@ class Logger(metaclass=SingletonMeta):
         log = self._error_levels[error_level] + '  '
         if origin:
             log += str(type(origin)).split(" '")[1].rstrip("'>")
+            self._last_error_message = str(type(origin)).split(" '")[1].rstrip("'>")
         else:
             log += 8 * ' '
         log += '  ' + message + '\n'
@@ -32,3 +34,8 @@ class Logger(metaclass=SingletonMeta):
 
         with open(self._path, 'a') as file:
             file.write(log)
+
+    def get_last_error_message(self):
+        out = self._last_error_message
+        self._last_error_message = ""
+        return out

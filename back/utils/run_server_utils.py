@@ -14,7 +14,7 @@ def jsonifyException(err: Exception) -> Response:
 
 
 def jsonifyErrorMessage(errorMessage: str) -> Response:
-    """Jsonify an error message 
+    """Jsonify an error message
 
     Args:
         errorMessage (str): error message to jsonify
