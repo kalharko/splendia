@@ -6,4 +6,5 @@ export class Player{
     tokenList: number[];
     victoryPoints: number;
     currentPlayer: boolean;
+    id: number;
 }

@@ -203,7 +203,8 @@ class Player():
             'bonusList': self.bonus_tokens.get_tokens(),
             'victoryPoints': self.victoryPoints.get_value(),
             'reservedCards': self.reserved.gather_cards_information_api_board_state(self),
-            'currentPlayer': (self.playerId == currentPlayer)
+            'currentPlayer': (self.playerId == currentPlayer),
+            'id': self.get_id()
         }
 
     def gather_cpu_player_information_api_board_state(self, currentPlayer: int) -> dict:
@@ -223,7 +224,8 @@ class Player():
             'bonusList': self.bonus_tokens.get_tokens(),
             'victoryPoints': self.victoryPoints.get_value(),
             'numberReservedCards': self.reserved.get_number_cards(),
-            'currentPlayer': (self.playerId == currentPlayer)
+            'currentPlayer': (self.playerId == currentPlayer),
+            'id': self.get_id()
         }
 
     def check_too_many_tokens(self) -> bool:

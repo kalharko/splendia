@@ -5,4 +5,5 @@ export class Cpu {
     tokenList: number[];
     victoryPoints: number;
     currentPlayer: boolean;
+    id: number;
 }

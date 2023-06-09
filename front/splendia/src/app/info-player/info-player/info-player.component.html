@@ -1,4 +1,29 @@
-<div class='info_box'>
+<div *ngIf="this.winner" class='info_box_won'>
+    <div class='line' id="text">
+        <p id='name'> Player Has Won !</p>
+        <p id='victorypoints'> VP : {{this.player.victoryPoints}} </p>
+    </div>
+    <div class='line'>
+        <app-token id='tokens'
+        class="token"
+        *ngFor="let tokenQuantity of this.player.tokenList; let i = index"
+        [color]="i"
+        [quantity]="tokenQuantity"
+        [show]="true"
+        ></app-token>
+    </div>
+    <div class='line'>
+        <app-bonus id='tokens'
+        class="bonus"
+        *ngFor="let tokenQuantity of this.player.bonusList; let i = index"
+        [color]="i"
+        [quantity]="tokenQuantity"
+        [show]="this.showBonus[i]"
+        ></app-bonus>
+    </div>
+</div>
+
+<div *ngIf="!this.winner" class='info_box'>
     <div class='line' id="text">
         <p id='name'> Player </p>
         <p id='victorypoints'> VP : {{this.player.victoryPoints}} </p>
