@@ -1,8 +1,8 @@
 
 <div class="flex">
 <app-token id='tokens'
-        class="token"
-        *ngFor="let tokenQuantity of data.tokenList; let i = index"
+        class="token click-me"
+        *ngFor="let tokenQuantity of getRealTokenList(); let i = index"
         [color]="i"
         [quantity]="tokenQuantity"
         [show]="true"
@@ -13,8 +13,8 @@
 
 <div class="flex">
 <app-token id='tokens'
-        class="token"
-        *ngFor="let tokenQuantity of tokensToBuy; let i = index"
+        class="token click-me"
+        *ngFor="let tokenQuantity of getTokensToBuy(); let i = index"
         [color]="i"
         [quantity]="tokenQuantity"
         [show]="true"

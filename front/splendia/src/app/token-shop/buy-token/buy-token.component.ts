@@ -45,6 +45,14 @@ export class BuyTokenComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  getTokensToBuy(): number[] {
+    // Filters out the joker tokens
+    return this.tokensToBuy.slice(0, -1);
+  }
 
+  getRealTokenList(): number[] {
+    // Filters out the joker tokens
+    return this.realTokenList.slice(0, -1);
+  }
 
 }
