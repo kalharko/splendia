@@ -56,12 +56,12 @@ python traina_i.py
 Angular CLI: 14.2.11   
 Node: 16.14  
 
-## Run the front-end s
-Navigate to the front directory.
+## Run the front-end 
+1) Navigate to the front directory.
 \
-Run `npm install` to install the dependencies.
+2) Run `npm install` to install the dependencies.
 \
-Run `ng serve` for a dev server. 
+3) Run `ng serve` for a dev server. 
 \
-Open `http://localhost:4200/` in an internet navigator. 
+4) Open `http://localhost:4200/` in an internet navigator. 
 
