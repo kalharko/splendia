@@ -58,10 +58,7 @@ Node: 16.14
 
 ## Run the front-end 
 1) Navigate to the front directory.
-\
 2) Run `npm install` to install the dependencies.
-\
 3) Run `ng serve` for a dev server. 
-\
 4) Open `http://localhost:4200/` in an internet navigator. 
 
