@@ -73,11 +73,12 @@ class CardWin(MyWin):
 
 
 class PlayerWin(MyWin):
-    def __init__(self, player: Player, name: str, y, x) -> None:
+    def __init__(self, player: Player, name: str, y, x, eval: int) -> None:
         self.player = player
         self.name = name
         self.currentPlayer = False
-        self.win = curses.newwin(5, 22, y, x)
+        self.eval = eval
+        self.win = curses.newwin(6, 22, y, x)
         self.win.refresh()
 
     def display(self) -> None:
@@ -88,6 +89,7 @@ class PlayerWin(MyWin):
             self.win.addstr(1, 1, '>')
         self.win.addstr(1, 2, self.name)
         self.win.addstr(1, 15, f'VP:{self.player.victoryPoints.value}')
+        self.win.addstr(4, 1, 'e: ' + str(self.eval)[:18])
 
         for i, v in enumerate(self.player.tokens.get_tokens()):
             self.win.addstr(

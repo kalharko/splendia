@@ -11,6 +11,7 @@ from ai.model_ppo import PPO
 import random
 import numpy
 import pickle
+from math import trunc
 from utils.exception import InvalidNbPlayer
 
 
@@ -181,6 +182,8 @@ class GameManager():
             'winners': self._playerController.gather_winner_information_api_board_state()
         }
         board_state['logs'] = self.logs[::-1]
+        board_state['humanEvaluation'] = self.evaluate_player_position(self._playerController.get_human_player())
+        board_state['cpuEvaluation'] = self.evaluate_player_position(self._playerController.get_cpu_players()[0])
 
         return board_state
 
@@ -450,6 +453,47 @@ class GameManager():
         obs[85:88] = obs[85:88] / 30
 
         return obs
+
+    def evaluate_player_position(self, player: Player) -> int:
+        """This method returns the evaluation of a player's current position
+
+        Args:
+            player (Player): the player to evaluate
+
+        Returns:
+            int: the evaluation's score
+        """
+        assert isinstance(player, Player)
+
+        wheights = {
+            "victory_points": 1,
+            "distance_to_patron": 1,
+            "can_buy_vp": 1
+        }
+        out = []
+
+        # victory points
+        out.append(round(player.get_victory_points().get_value() * wheights["victory_points"], 2))
+
+        # distance to patron
+        dist_to_patron = 0
+        bonuses = player.hand.compute_hand_bonuses()
+        for patron in self._patronController.get_patrons():
+            distance = patron.requirements - bonuses
+            distance = [x if x > 0 else 0 for x in distance.get_tokens()]
+            dist_to_patron += 1 / (sum(distance) + 1) * wheights['distance_to_patron']
+        out.append(round(dist_to_patron, 2))
+
+        # can buy
+        can_buy = 0
+        for card in self._shopController.get_all_shop_cards():
+            distance = card.price - player.hand.compute_hand_bonuses()
+            distance -= player.tokens
+            distance = [x if x > 0 else 0 for x in distance.get_tokens()]
+            can_buy += 1 / (sum(distance) + 1) * wheights['can_buy_vp']
+        out.append(round(can_buy, 3))
+
+        return out
 
     def get_player_victory_point(self, playerId: int) -> int:
         """This method returns the victory points of a player.

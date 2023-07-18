@@ -72,3 +72,6 @@ class PatronController():
         """
 
         return [patron.gather_patron_information_api_board_state() for patron in self.patrons]
+
+    def get_patrons(self) -> list[Patron]:
+        return self.patrons

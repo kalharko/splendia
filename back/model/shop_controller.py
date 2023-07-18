@@ -106,6 +106,18 @@ class ShopController():
 
         return self.ranks[pileLevel].withdraw_pile_card()
 
+    def get_all_shop_cards(self) -> list[Card]:
+        """This function returns a list with all the cards in the shop's ranks
+
+        Returns:
+            list[Card]: shop's ranks cards
+        """
+
+        out = []
+        for rank in self.ranks:
+            out += rank.hand.get_cards()
+        return out
+
     def gather_shop_information_api_board_state(self, player: Player) -> list:
         """Gather the shop information needed for the api board state in a list that contains "rank" objects.
         A rank object contains:

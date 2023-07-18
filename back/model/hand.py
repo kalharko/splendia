@@ -66,6 +66,15 @@ class Hand(CardStack):
 
         return len(self.cards)
 
+    def get_cards(self) -> list[Card]:
+        """Get the cards in this hand
+
+        Returns:
+            list[Card]: this hand's cards
+        """
+
+        return self.cards
+
     def gather_cards_information_api_board_state(self, player) -> list:
         """Gather the information of the cards of the hand needed for the api board state in a list
 

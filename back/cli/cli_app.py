@@ -162,14 +162,14 @@ class CliApp():
                 humanPlayer = player
                 continue
             name = f'CPU#{player.playerId}'
-            self.playerWin.append(PlayerWin(player, name, y * 6 + 1, 47))
+            self.playerWin.append(PlayerWin(player, name, y * 7 + 1, 47, self.gm.evaluate_player_position(player)))
             y += 1
             if self.gm.currentPlayer == player.playerId:
                 self.playerWin[-1].currentPlayer = True
             self.playerWin[-1].display()
 
         # player window
-        self.playerWin.append(PlayerWin(humanPlayer, 'Player', y * 5 + 1, 47))
+        self.playerWin.append(PlayerWin(humanPlayer, 'Player', y * 6 + 1, 47, self.gm.evaluate_player_position(humanPlayer)))
         if self.gm.currentPlayer == humanPlayer.playerId:
             self.playerWin[-1].currentPlayer = True
         self.playerWin[-1].display()
@@ -274,3 +274,4 @@ class CliApp():
 
     def restart(self, user_input: list[str]) -> None:
         self.gm = GameManager(self.gm.nbPlayer)
+        self.history = ['Game Start']
