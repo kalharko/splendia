@@ -137,3 +137,31 @@ class HistWin(MyWin):
                     Logger().log(0, self, line)
                     exit()
         self.win.refresh()
+
+
+class AdviceWin(MyWin):
+    def __init__(self, y: int, x: int, h: int, w: int) -> None:
+        self.nbLines = h - 2
+        self.win = curses.newwin(h, w, y, x)
+        self.win.refresh()
+
+    def display(self, advices: list[str]) -> None:
+        self.win.erase()
+        self.win.border()
+        Logger().log(1, self, str(advices))
+
+        if len(advices) > self.nbLines:
+            toDisplay = advices[len(advices) - self.nbLines::-1]
+        else:
+            toDisplay = advices[::-1]
+
+        for i, line in enumerate(toDisplay):
+            if i == 0:
+                self.win.addstr(i + 1, 2, line)
+            else:
+                try:
+                    self.win.addstr(i + 1, 2, line, curses.color_pair(5))
+                except:
+                    Logger().log(0, self, line)
+                    exit()
+        self.win.refresh()

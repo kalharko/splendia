@@ -3,7 +3,7 @@ import locale
 
 from model.game_manager import GameManager
 from model.token_array import TokenArray
-from cli.objects_win import PatronWin, CardWin, PlayerWin, InputWin, HistWin
+from cli.objects_win import PatronWin, CardWin, PlayerWin, InputWin, HistWin, AdviceWin
 from utils.logger import Logger
 
 
@@ -56,6 +56,8 @@ class CliApp():
         self.inputWin = InputWin()
         self.histWin = HistWin(25, 0, self.screenH - 25)
         self.history = ['Game Start']
+        self.adviceWin = AdviceWin(2, 69, 7, 30)
+        self.ally_cpu_advice = []
 
         # main loop
         self.main_loop()
@@ -73,6 +75,10 @@ class CliApp():
                 self.gm.cpu_turn()
                 self.history.append(self.gm.logs[-1])
                 self.display()
+
+                # load ally cpu advice
+                self.ally_cpu_advice = [self.gm.cpu_ask()]
+                Logger().log(1, self, str(self.ally_cpu_advice))
                 continue
 
             # player action
@@ -173,6 +179,9 @@ class CliApp():
         if self.gm.currentPlayer == humanPlayer.playerId:
             self.playerWin[-1].currentPlayer = True
         self.playerWin[-1].display()
+
+        # Advice Window
+        self.adviceWin.display(self.ally_cpu_advice)
 
         # card windows
         # shop

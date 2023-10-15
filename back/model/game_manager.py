@@ -101,18 +101,18 @@ class GameManager():
         self.firstPlayerId = random.randint(0, self.nbPlayer - 1)
         self.currentPlayer = self.firstPlayerId
 
-    def gather_ia_board_state(self, nb_players=2) -> dict or None:
+    def gather_ia_board_state(self, player_id: int) -> dict or None:
         """This method gathers the board state for the IA.
 
         Args:
-            nb_players (int): The number of players.
+            player_id: which player to gather for
 
         Returns:
             dict: The board state.
             """
-        assert isinstance(nb_players, int)
+        assert isinstance(player_id, int)
 
-        if nb_players == 2:
+        if player_id == self.cpu_Id:
             dictionary = {
                 'player1': {
                     'object': self._playerController.players[0],
@@ -153,8 +153,47 @@ class GameManager():
             }
 
             return dictionary
-        else:
-            return None
+        elif player_id == self._playerController.idHumanPlayer:
+            dictionary = {
+                'player2': {
+                    'object': self._playerController.players[0],
+                    # pad with none to have 20 reserved cards
+                    'cards': self._playerController.players[0].hand.cards + [None] * (
+                        20 - self._playerController.players[0].hand.get_size()),
+                    'tokens': self._playerController.players[0].tokens.get_tokens(),
+                    # pad with none to have 3 reserved cards
+                    'reserved': self._playerController.players[0].reserved.cards + [None] * (
+                        3 - self._playerController.players[0].reserved.get_size()),
+
+                    'nobles': self._playerController.players[0].patrons
+                },
+                'player1': {
+                    'object': self._playerController.players[1],
+                    # pad with none to have 20 reserved cards
+                    'cards': self._playerController.players[1].hand.cards + [None] * (
+                        20 - self._playerController.players[1].hand.get_size()),
+                    'tokens': self._playerController.players[1].tokens.get_tokens(),
+                    # pad with none to have 3 reserved cards
+                    'reserved': self._playerController.players[1].reserved.cards + [None] * (
+                        3 - self._playerController.players[1].reserved.get_size()),
+                    'nobles': self._playerController.players[1].patrons
+                },
+                'shop': {
+                    'rank1_cards': self._shopController.ranks[0].hand.cards,
+                    'rank2_cards': self._shopController.ranks[1].hand.cards,
+                    'rank3_cards': self._shopController.ranks[2].hand.cards,
+                    'rank1_size': self._shopController.ranks[0].deck.get_size(),
+                    'rank2_size': self._shopController.ranks[1].deck.get_size(),
+                    'rank3_size': self._shopController.ranks[2].deck.get_size(),
+                    'nobles': self._patronController.patrons,
+                    'tokens': self._bankController.bank,
+                },
+
+                'nobles': self._patronController.patrons,
+                'tokens': self._bankController.bank
+            }
+
+            return dictionary
 
     def gather_api_board_state(self) -> dict:
         """Returns the board state in a dictionnary that is in the following format:
@@ -309,7 +348,7 @@ class GameManager():
             """
 
         playerId = self.cpu_Id
-        state = self.gather_ia_board_state()
+        state = self.gather_ia_board_state(playerId)
         player_string = 'player' + str(playerId + 1)
         player2 = (playerId + 1) % 3
         opponent_string = 'player' + str(player2)
@@ -324,6 +363,23 @@ class GameManager():
         ai_action = self.cpu.select_action(obs)
 
         string_action = self.apply_action(ai_action)
+
+    def cpu_ask(self) -> str:
+        playerId = self._playerController.idHumanPlayer
+        state = self.gather_ia_board_state(playerId)
+        player_string = 'player' + str(playerId + 1)
+        player2 = (playerId + 1) % 3
+        opponent_string = 'player' + str(player2)
+
+        obs = self.from_board_state_to_obs(
+            opponent_string, player_string, state)
+        # save it as a pickle
+        with open('obs.pkl', 'wb') as f:
+            pickle.dump(state, f)
+        obs = self.normalize_obs(obs)
+
+        ai_action = self.cpu.select_action(obs)
+        return self.translate_cpu_action(ai_action)
 
     def from_board_state_to_obs(self, opponent_string, player_string, state):
         """TODO: documentation
@@ -753,4 +809,182 @@ class GameManager():
         elif action == 65:
             self.pass_turn()
             string_action = "The cpu passed his turn"
+        return string_action
+
+    def translate_cpu_action(self, action: int) -> str:
+        assert isinstance(action, int)
+        assert 0 <= action < 66
+
+        string_action = ""
+        # print the action done
+        # print('action done : ', action)
+        if action == 0:
+            # take [1,1,1,0,0,0] tokens
+            string_action = "take white blue green tokens"
+        elif action == 1:
+            # take [1,1,0,1,0,0] tokens
+            string_action = "take white blue red tokens"
+        elif action == 2:
+            # take [1,1,0,0,1,0] tokens
+            string_action = "take white blue black tokens"
+        elif action == 3:
+            # take [1,0,1,1,0,0] tokens
+            string_action = "take white green red tokens"
+        elif action == 4:
+            # take [1,0,1,0,1,0] tokens
+            string_action = "take white green black tokens"
+        elif action == 5:
+            # take [1,0,0,1,1,0] tokens
+            string_action = "take white red black tokens"
+        elif action == 6:
+            # take [0,1,1,1,0,0] tokens
+            string_action = "take blue green red tokens"
+        elif action == 7:
+            # take [0,1,1,0,1,0] tokens
+            string_action = "take blue green black tokens"
+        elif action == 8:
+            # take [0,1,0,1,1,0] tokens
+            string_action = "take blue red black tokens"
+        elif action == 9:
+            # take [0,0,1,1,1,0] tokens
+            string_action = "take green red black tokens"
+        elif action == 10:
+            string_action = "take 2 white tokens"
+        elif action == 11:
+            string_action = "take 2 blue tokens"
+        elif action == 12:
+            string_action = "take 2 green tokens"
+        elif action == 13:
+            string_action = "take 2 red tokens"
+        elif action == 14:
+            string_action = "take 2 black tokens"
+        elif action == 15:
+            string_action = "buy from shop 1 card " + \
+                str(self.shop1_cards[0].cardId)
+        elif action == 16:
+            string_action = "buy from shop 1 card " + \
+                str(self.shop1_cards[1].cardId)
+        elif action == 17:
+            string_action = "buy from shop 1 card " + \
+                str(self.shop1_cards[2].cardId)
+        elif action == 18:
+            string_action = "buy from shop 1 card " + \
+                str(self.shop1_cards[3].cardId)
+        elif action == 19:
+            string_action = "buy from shop 2 card " + \
+                str(self.shop2_cards[0].cardId)
+        elif action == 20:
+            string_action = "buy from shop 2 card " + \
+                str(self.shop2_cards[1].cardId)
+        elif action == 21:
+            string_action = "buy from shop 2 card " + \
+                str(self.shop2_cards[2].cardId)
+        elif action == 22:
+            string_action = "buy from shop 2 card " + \
+                str(self.shop2_cards[3].cardId)
+        elif action == 23:
+            string_action = "buy from shop 3 card " + \
+                str(self.shop3_cards[0].cardId)
+        elif action == 24:
+            string_action = "buy from shop 3 card " + \
+                str(self.shop3_cards[1].cardId)
+        elif action == 25:
+            string_action = "buy from shop 3 card " + \
+                str(self.shop3_cards[2].cardId)
+        elif action == 26:
+            string_action = "buy from shop 3 card " + \
+                str(self.shop3_cards[3].cardId)
+        elif action == 27:
+            string_action = "buy reserved card " + \
+                str(self.reserved_cards[0])
+        elif action == 28:
+            string_action = "buy reserved card " + \
+                str(self.reserved_cards[1])
+        elif action == 29:
+            string_action = "buy reserved card " + \
+                str(self.reserved_cards[2])
+        elif action == 30:
+            string_action = "reserve from shop 1 card " + \
+                str(self.shop1_cards[0].cardId)
+        elif action == 31:
+            string_action = "reserve from shop 1 card " + \
+                str(self.shop1_cards[1].cardId)
+        elif action == 32:
+            string_action = "reserve from shop 1 card " + \
+                str(self.shop1_cards[2].cardId)
+        elif action == 33:
+            string_action = "reserve from shop 1 card " + \
+                str(self.shop1_cards[3].cardId)
+        elif action == 34:
+            string_action = "reserve from shop 2 card " + \
+                str(self.shop2_cards[0].cardId)
+        elif action == 35:
+            string_action = "reserve from shop 2 card " + \
+                str(self.shop2_cards[1].cardId)
+        elif action == 36:
+            string_action = "reserve from shop 2 card " + \
+                str(self.shop2_cards[2].cardId)
+        elif action == 37:
+            string_action = "reserve from shop 2 card " + \
+                str(self.shop2_cards[3].cardId)
+        elif action == 38:
+            string_action = "reserve from shop 3 card " + \
+                str(self.shop3_cards[0].cardId)
+        elif action == 39:
+            string_action = "reserve from shop 3 card " + \
+                str(self.shop3_cards[1].cardId)
+        elif action == 40:
+            string_action = "reserve from shop 3 card " + \
+                str(self.shop3_cards[2].cardId)
+        elif action == 41:
+            string_action = "reserve from shop 3 card " + \
+                str(self.shop3_cards[3].cardId)
+        elif action == 42:
+            string_action = "reserve from pile 1"
+        elif action == 43:
+            string_action = "reserve from pile 2"
+        elif action == 44:
+            string_action = "reserve from pile 3"
+        elif action == 45:
+            string_action = "take a white token"
+        elif action == 46:
+            string_action = "take a blue token"
+        elif action == 47:
+            string_action = "take a green token"
+        elif action == 48:
+            string_action = "take a red token"
+        elif action == 49:
+            string_action = "take a black token"
+        elif action == 50:
+            string_action = "take white and blue tokens"
+        elif action == 51:
+            string_action = "take white and green tokens"
+        elif action == 52:
+            string_action = "take white and red tokens"
+        elif action == 53:
+            string_action = "take white and black tokens"
+        elif action == 54:
+            string_action = "take blue and green tokens"
+        elif action == 55:
+            string_action = "take blue and red tokens"
+        elif action == 56:
+            string_action = "take blue and black tokens"
+        elif action == 57:
+            string_action = "take green and red tokens"
+        elif action == 58:
+            string_action = "take green and black tokens"
+        elif action == 59:
+            string_action = "take red and black tokens"
+        elif action == 60:
+            string_action = "take 2 white tokens"
+        elif action == 61:
+            string_action = "take 2 blue tokens"
+        elif action == 62:
+            string_action = "take 2 green tokens"
+        elif action == 63:
+            string_action = "take 2 red tokens"
+        elif action == 64:
+            string_action = "take 2 black tokens"
+        elif action == 65:
+            string_action = "pass turn"
         return string_action

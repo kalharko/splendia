@@ -13,7 +13,7 @@ class Logger(metaclass=SingletonMeta):
 
         self._error_levels = ['[Err]', '[War]', '[Inf]']
 
-        self._verbose = True
+        self._verbose = False
 
         with open(self._path, 'w') as file:
             file.write('Start log ' + str(datetime.now()) + '\n')
