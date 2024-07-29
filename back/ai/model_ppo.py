@@ -17,8 +17,8 @@ if __name__ == '__main__':
         device = torch.device('cuda:0')
         torch.cuda.empty_cache()
         print("Device set to : " + str(torch.cuda.get_device_name(device)))
-    else:
-        print("Device set to : cpu")
+    # else:
+        # print("Device set to : cpu")
     print("============================================================================================")
 
 
@@ -41,11 +41,10 @@ class RolloutBuffer:
         del self.is_terminals[:]
 
 
-def get_mask(playerId):
-
-    player_str = 'player' + str(playerId)
+def get_mask(playerId, state):
+    player_str = 'player2'
     # read the pickle
-    state = pickle.load(open('obs.pkl', 'rb'))
+    # state = pickle.load(open('obs.pkl', 'rb'))
     mask = numpy.zeros(88)
     shop_cards_rank1 = state['shop']['rank1_cards']
     shop_cards_rank2 = state['shop']['rank2_cards']
@@ -71,7 +70,8 @@ def get_mask(playerId):
 
     mask = Checker.get_mask(state[player_str]['cards'], shop_cards, state['shop']['rank1_size'], state['shop']['rank2_size'], state['shop']['rank3_size'], number_card_reserved, TokenArray(state[player_str]['tokens']), state['shop']['tokens'], state[player_str]['reserved'],
                             state[player_str]['object'])
-
+    
+    # print("mask : ", mask)
     return mask
 
 
@@ -127,17 +127,17 @@ class ActorCritic(nn.Module):
     def forward(self):
         raise NotImplementedError
 
-    def act(self, state):
-
+    def act(self, state, state_dict):
         if self.has_continuous_action_space:
             action_mean = self.actor(state)
             cov_mat = torch.diag(self.action_var).unsqueeze(dim=0)
             dist = MultivariateNormal(action_mean, cov_mat)
         else:
+            
             action_probs = self.actor(state)
             # print('action_probs',action_probs)
             action_probs = action_probs * \
-                torch.from_numpy(get_mask(self.playerId)).to(self.device)
+                torch.from_numpy(get_mask(self.playerId, state_dict)).to(self.device)
             # check if the action_probs is all zero
             if torch.sum(action_probs) == 0:
                 # if all zero, the last action is the only valid action
@@ -146,14 +146,15 @@ class ActorCritic(nn.Module):
             dist = Categorical(action_probs)
 
             # print('dist',dist.probs)
+            action_probs_np = action_probs.cpu().detach().numpy()
 
-        action = dist.sample()
+        action = torch.argmax(dist.probs)
         action_logprob = dist.log_prob(action)
         state_val = self.critic(state)
 
-        return action.detach(), action_logprob.detach(), state_val.detach()
+        return action.detach(), action_logprob.detach(), state_val.detach(), action_probs_np
 
-    def evaluate(self, state, action):
+    def evaluate(self, state, state_dict, action=None):
 
         if self.has_continuous_action_space:
             action_mean = self.actor(state)
@@ -168,7 +169,7 @@ class ActorCritic(nn.Module):
         else:
             action_probs = self.actor(state)
             action_probs = action_probs * \
-                torch.from_numpy(get_mask(self.playerId)).to(self.device)
+                torch.from_numpy(get_mask(self.playerId), state_dict).to(self.device)
             # check if the action_probs is all zero
             iterator = 0
             tensor_list = []
@@ -181,7 +182,9 @@ class ActorCritic(nn.Module):
 
             dist = Categorical(action_probs)
 
-        action_logprobs = dist.log_prob(action)
+        action_logprobs = dist
+        best_action = torch.argmax(dist.probs)
+        # action_logprobs = dist.log_prob(action)
         dist_entropy = dist.entropy()
         state_values = self.critic(state)
 
@@ -198,8 +201,8 @@ class PPO:
             device = torch.device('cuda:0')
             torch.cuda.empty_cache()
             print("Device set to : " + str(torch.cuda.get_device_name(device)))
-        else:
-            print("Device set to : cpu")
+        # else:
+            # print("Device set to : cpu")
         self.device = device
         if has_continuous_action_space:
             self.action_std = action_std_init
@@ -254,7 +257,7 @@ class PPO:
                 "WARNING : Calling PPO::decay_action_std() on discrete action space policy")
         print("--------------------------------------------------------------------------------------------")
 
-    def select_action(self, state):
+    def select_action(self, state, state_dict):
         """Select an appropriate action from the agent policy.
 
         Arguments:
@@ -264,7 +267,7 @@ class PPO:
         if self.has_continuous_action_space:
             with torch.no_grad():
                 state = torch.FloatTensor(state).to(self.device)
-                action, action_logprob, state_val = self.policy_old.act(state)
+                action, action_logprob, state_val, action_logprob_np = self.policy_old.act(state)
 
             self.buffer.states.append(state)
             self.buffer.actions.append(action)
@@ -275,14 +278,14 @@ class PPO:
         else:
             with torch.no_grad():
                 state = torch.FloatTensor(state).to(self.device)
-                action, action_logprob, state_val = self.policy_old.act(state)
+                action, action_logprob, state_val, action_logprob_np = self.policy_old.act(state, state_dict)
 
             self.buffer.states.append(state)
             self.buffer.actions.append(action)
             self.buffer.logprobs.append(action_logprob)
             self.buffer.state_values.append(state_val)
-
-            return action.item()
+            
+            return action.item(), action_logprob.item(), state_val.item(), action_logprob_np
 
     def update(self):
         """--------------------------------------------------------------------------------------------

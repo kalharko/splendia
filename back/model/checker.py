@@ -284,7 +284,6 @@ class Checker:
 
         # check if mask is full of 0
         if numpy.all(mask == 0):
-
             mask[-1] = 1
         # print(mask)
         return mask

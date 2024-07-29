@@ -4,10 +4,37 @@ from ai.environment import SplendorEnv
 import torch
 import numpy as np
 from model.game_manager import GameManager
-
+import pickle
 from ai.model_ppo import PPO
+import copy
 
+def store_state_and_action(data_list, game, action, filename="game_state_data.pkl"):
+    data = {"game_state": game, "action": action}
+    data_list.append(data)
+    # with open(filename, "wb") as file:
+        # pickle.dump(data_list, file, protocol=pickle.HIGHEST_PROTOCOL)
 
+def save_data_list(data_list, filename="game_state_data.pkl"):
+    with open(filename, "wb") as file:
+        pickle.dump(data_list, file, protocol=pickle.HIGHEST_PROTOCOL)
+        
+def denormalize_obs(obs):
+    obs[0:6] = obs[0:6] * 10
+    obs[6:26] = obs[6:26] * 90
+    obs[26:31] = obs[26:31] * 10
+    obs[31:34] = obs[31:34] * 90
+
+    obs[34:40] = obs[34:40] * 10
+    obs[40:60] = obs[40:60] * 90
+    obs[60:65] = obs[60:65] * 10
+    obs[65:68] = obs[65:68] * 90
+
+    obs[68:80] = obs[68:80] * 90
+    obs[80:85] = obs[80:85] * 10
+    obs[85:88] = obs[85:88] * 30
+
+    return obs
+    
 ################################### Training ###################################
 
 def train():
@@ -20,7 +47,7 @@ def train():
 
     max_ep_len = 400  # max timesteps in one episode
     # break training loop if timeteps > max_training_timesteps
-    max_training_timesteps = int(3e9)
+    max_training_timesteps = int(3000)
 
     # print avg reward in the interval (in num timesteps)
     print_freq = max_ep_len * 5
@@ -102,6 +129,8 @@ def train():
 
     print("current logging run number for " + env_name + " : ", run_num)
     print("logging at : " + log_f_name1)
+    
+    data_list = []
     #####################################################
 
     ################### checkpointing ###################
@@ -124,6 +153,8 @@ def train():
     checkpoint_path2 = directory2 + \
         "PPO_{}_{}_{}.pth".format(env_name, 0, 1)
     print("save checkpoint path : " + checkpoint_path1)
+    
+    champion_path = "Champion/" + 'champion_0.pth'
     #####################################################
 
     ############# print all hyperparameters #############
@@ -172,17 +203,25 @@ def train():
     ppo_agent_1 = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
                       has_continuous_action_space,
                       action_std, 1)
+    ppo_agent_1.load(champion_path)
 
     ppo_agent_2 = PPO(state_dim, action_dim, lr_actor, lr_critic, gamma, K_epochs, eps_clip,
                       has_continuous_action_space,
                       action_std, 2)
+    ppo_agent_2.load(champion_path)
+    
+    #print the playerid of the agent
+    print(ppo_agent_1.policy.playerId)
+    print(ppo_agent_2.policy.playerId)
 
-    directory = "PPO_preTrained" + '/' + env_name + '/'
-    checkpoint_path = directory + \
-        "PPO_{}_{}_{}.pth".format(env_name, random_seed, 0)
-    print("loading network from : " + checkpoint_path)
-    ppo_agent_1.load(checkpoint_path1)
-    ppo_agent_2.load(checkpoint_path2)
+    print ("loading network from : " + champion_path)
+    # directory = "PPO_preTrained" + '/' + env_name + '/'
+    # checkpoint_path = directory + \
+
+
+    # print("loading network from : " + checkpoint_path)
+    # ppo_agent_1.load(checkpoint_path1)
+    # ppo_agent_2.load(checkpoint_path2)
     # ppo_agent.load(checkpoint_path)
 
     # track total training time
@@ -212,7 +251,6 @@ def train():
     time_step = 0
     saving_timestep = 0
     i_episode = 0
-    champion_path = "Champion/" + 'champion_0.pth'
     # ppo_agent_1.save(champion_path,0)
     # training loop
     while time_step <= max_training_timesteps:
@@ -250,9 +288,16 @@ def train():
 
             # select action with policy
             if env.game.currentPlayer == 0:
+                
                 action = ppo_agent_1.select_action(state)
+                print("action : ", action)
+                print(denormalize_obs(state))
+                game_state = copy.deepcopy(env.game)
+                store_state_and_action(data_list, game_state, action, "state_action_data_0.pkl")
                 state, reward, done, info = env.step(action)
-                # saving reward and is_terminals
+                print(denormalize_obs(state))
+                print("===================================================")
+                print("===================================================")
                 ppo_agent_1.buffer.rewards.append(reward)
                 ppo_agent_1.buffer.is_terminals.append(done)
 
@@ -288,6 +333,11 @@ def train():
                 current_ep_reward2 -= 1500 / 100
 
             time_step += 1
+            
+            if time_step % 1000 == 0:
+                print("saving data")
+                save_data_list(data_list, "state_action_data_{}.pkl".format(saving_timestep))
+                pass
 
             # update PPO agent
             if time_step % update_timestep == 0:

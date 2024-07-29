@@ -49,17 +49,17 @@ class SplendorEnv(gym.Env):
         self.game: GameManager = game
         self.game.launch_game(2)
 
-        # save the game in a pickle file
+        # save the game in a pickle file for fixed
         # with open('game.pickle', 'wb') as handle:
-        # pickle.dump(self.game, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        #     pickle.dump(self.game, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         pass
 
     def from_board_states_to_obs_train(self, playerId: int):
-        state = self.game.gather_ia_board_state()
-        player_string = 'player' + str(playerId+1)
-        player2 = (playerId + 1) % 3
-        opponent_string = 'player' + str(player2)
+        state = self.game.gather_ia_board_state(playerId)
+        player_string = 'player2' #+ str(playerId+1)
+        # player2 = (playerId + 1) % 3
+        opponent_string = 'player1'# + str(player2)
 
         obs = numpy.zeros(88)
         obs[0:6] = state[player_string]['tokens']
@@ -204,15 +204,11 @@ class SplendorEnv(gym.Env):
     def reset(self):
         self.number_turn = 0
         self.game_id += 1
-        self.last_action = -1
-        # load the pickle file
-        del self.game
-        with open('game.pickle', 'rb') as f:
-            self.game = pickle.load(f)
-        self.game.randomize_first_player()
-        # print('game id : ', self.game_id)
-        # print('first player : ', self.game.currentPlayer)
-        return self.from_board_states_to_obs_train(self.game.currentPlayer)
+       
+        self.game.launch_game(2)
+        print('game id : ', self.game_id)
+
+        return self.from_board_states_to_obs_train(0)
 
     def is_last_turn(self):
         return self.game.is_last_turn()
@@ -245,7 +241,7 @@ class SplendorEnv(gym.Env):
         has_finish = self.game.is_last_turn()
         self.number_turn += 1
         # the ai has played
-        obs = self.from_board_states_to_obs_train(self.game.currentPlayer)
+        obs = self.from_board_states_to_obs_train((self.game.currentPlayer + 1)%2)
 
         # action_two = model.select_dummy_action(obs)
         has_pass = True if action == 65 else False

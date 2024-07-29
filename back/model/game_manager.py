@@ -13,6 +13,8 @@ import numpy
 import pickle
 from utils.exception import InvalidNbPlayer
 
+from model.card import Card
+from model.patron import Patron
 
 @dataclass
 class GameManager():
@@ -988,3 +990,109 @@ class GameManager():
         elif action == 65:
             string_action = "pass turn"
         return string_action
+    
+    
+    def from_obs_to_board_state(self, obs):
+        """
+        Transform the observation (obs) back into a dictionary representation of the game state (board_state).
+
+        Args:
+            obs (numpy.ndarray): The observation tensor.
+
+        Returns:
+            dict: The board state.
+        """
+        # Assuming obs is a 1D numpy array of length 88
+        board_state = {
+            'player1': {
+                'tokens': obs[0:6] * 10,
+                'cards': [Card(card_id) if card_id != 90 else None for card_id in obs[6:26]],
+                'nobles': [Patron(patron_id) for patron_id in obs[26:31]],
+                'reserved': [Card(card_id) if card_id != 90 else None for card_id in obs[31:34]],
+            },
+            'player2': {
+                'tokens': obs[34:40] * 10,
+                'cards': [Card(card_id) if card_id != 90 else None for card_id in obs[40:60]],
+                'nobles': [Patron(patron_id) for patron_id in obs[60:65]],
+                'reserved': [Card(card_id) if card_id != 90 else None for card_id in obs[65:68]],
+            },
+            'shop': {
+                'rank1_cards': [Card(card_id) for card_id in obs[68:72]],
+                'rank2_cards': [Card(card_id) for card_id in obs[72:76]],
+                'rank3_cards': [Card(card_id) for card_id in obs[76:80]],
+                'nobles': [Patron(patron_id) for patron_id in obs[80:85]],
+                'rank1_size': int(obs[85] * 10),
+                'rank2_size': int(obs[86] * 10),
+                'rank3_size': int(obs[87] * 10),
+            },
+            'nobles': [Patron(patron_id) for patron_id in obs[80:85]],
+            'tokens': obs[85:88] * 10,
+        }
+
+        # Update the game state with the new board_state
+        self.update_game_state(board_state)
+
+        return board_state
+
+    def update_game_state(self, board_state):
+        """
+        Update the game state with the provided board_state.
+
+        Args:
+            board_state (dict): The board state.
+        """
+        # Update player1 state
+        player1_state = board_state['player1']
+        self._playerController.players[0].hand.cards = player1_state['cards']
+        self._playerController.players[0].tokens.set_tokens(player1_state['tokens'])
+        self._playerController.players[0].reserved.cards = player1_state['reserved']
+        self._playerController.players[0].patrons = player1_state['nobles']
+
+        # Update player2 state
+        player2_state = board_state['player2']
+        self._playerController.players[1].hand.cards = player2_state['cards']
+        self._playerController.players[1].tokens.set_tokens(player2_state['tokens'])
+        self._playerController.players[1].reserved.cards = player2_state['reserved']
+        self._playerController.players[1].patrons = player2_state['nobles']
+
+        # Update shop state
+        self._shopController.ranks[0].hand.cards = board_state['shop']['rank1_cards']
+        self._shopController.ranks[1].hand.cards = board_state['shop']['rank2_cards']
+        self._shopController.ranks[2].hand.cards = board_state['shop']['rank3_cards']
+        self._shopController.ranks[0].deck.set_size(board_state['shop']['rank1_size'])
+        self._shopController.ranks[1].deck.set_size(board_state['shop']['rank2_size'])
+        self._shopController.ranks[2].deck.set_size(board_state['shop']['rank3_size'])
+        self._patronController.patrons = board_state['nobles']
+        self._bankController.bank = board_state['tokens']
+
+        # ... (update other relevant game information)
+        
+        
+    def set_state_from_dict(self, state_dict):
+        """
+        Sets the state of the game manager from a dictionary.
+
+        Args:
+        state_dict (dict): A dictionary containing the state of the game.
+        """
+        # Assuming state_dict is structured with keys like 'player1', 'player2', etc.
+        # Update the GameManager attributes
+        self.nbPlayer = state_dict.get('nbPlayer', self.nbPlayer)
+        self.currentPlayer = state_dict.get('currentPlayer', self.currentPlayer)
+        self.firstPlayerId = state_dict.get('firstPlayerId', self.firstPlayerId)
+        self.userId = state_dict.get('userId', self.userId)
+        self.logs = state_dict.get('logs', self.logs)
+
+        # Update the state of each controller
+        # This requires each controller to have a method to set its state from a dictionary
+        if 'bankControllerState' in state_dict:
+            self._bankController.set_state_from_dict(state_dict['bankControllerState'])
+
+        if 'patronControllerState' in state_dict:
+            self._patronController.set_state_from_dict(state_dict['patronControllerState'])
+
+        if 'playerControllerState' in state_dict:
+            self._playerController.set_state_from_dict(state_dict['playerControllerState'])
+
+        if 'shopControllerState' in state_dict:
+            self._shopController.set_state_from_dict(state_dict['shopControllerState'])
